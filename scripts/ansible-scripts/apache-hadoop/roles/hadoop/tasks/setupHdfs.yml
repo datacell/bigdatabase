@@ -1,0 +1,10 @@
+---
+- name: Create /tmp HDFS directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -mkdir -p /tmp"
+  args:
+     executable: /bin/bash
+
+- name: Changing permission of /tmp HDFS directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0777 /tmp"
+  args:
+     executable: /bin/bash

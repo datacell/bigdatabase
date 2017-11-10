@@ -1,0 +1,8 @@
+---
+hadoop_expended_version: "hadoop-{{ hadoop_version }}"
+hadoop_archive: "{{ hadoop_expended_version }}.tar.gz"
+hadoop_profile_path: /etc/profile.d/hadoop.sh
+hadoop_services_dir: "{{ hadoop_dir }}/services"
+hadoop_local_dir: "{{ package_download_dir }}/hadoop"
+hadoop_local_path: "{{ hadoop_local_dir }}/{{ hadoop_archive }}"
+

@@ -1,0 +1,60 @@
+---
+
+- name: Check if NodeJs module executed
+  stat: path={{ nodestat }}
+  register: nodestatflag
+
+
+- block:
+  - include: download.yml
+    environment:
+      "{{ proxy_env }}"
+
+  - name: Create Node Dir
+    file: path={{ node_install_path }} state=directory
+
+  - name: Extract NodeJs
+    unarchive: src={{ node_local_path }} dest={{ node_install_path }} remote_src=yes
+
+  - name: Set Node Vars
+    template: src=node_path.j2 dest={{ node_profile_path }} mode=0755
+
+  - name: Set NPM http proxy
+    shell: "source /etc/profile && npm config set http-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g"
+    args:
+      executable: /bin/bash
+    when: proxy_optional
+
+  - name: Set NPM https proxy
+    shell: "source /etc/profile && npm config set https-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g"
+    args:
+     executable: /bin/bash
+    when: proxy_optional
+
+  - name: Remove NPM http proxy
+    shell: "source /etc/profile && npm config delete http-proxy -g"
+    args:
+     executable: /bin/bash
+    when: not proxy_optional
+
+  - name: Remove NPM https proxy
+    shell: "source /etc/profile && npm config delete https-proxy -g"
+    args:
+     executable: /bin/bash
+    when: not proxy_optional
+
+
+  - name: Install NPM module
+    shell: "source /etc/profile && npm install {{ item.name }} -g"
+    args:
+     chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
+     executable: /bin/bash
+    with_items:
+      - { name: 'stylus' }
+
+    
+
+  - file: path={{ nodestat }} state=touch
+  when: not nodestatflag.stat.exists
+
+

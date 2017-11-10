@@ -1,0 +1,3 @@
+{% for host in groups['spark_slaves'] %}
+{{ hostvars[host]['ansible_fqdn'] }}
+{% endfor %}

@@ -1,0 +1,27 @@
+
+- include: check-prep.yml
+
+- block:
+  - include: prep.yml
+  - file: path={{ preparatorystat }} state=touch
+  when: not preparatoryflag.stat.exists
+
+- block:
+  - name: Basic-package
+    include: basic-package.yml
+  - file: path={{ basicpackagesstat }} state=touch
+  when: not basicpackagesflag.stat.exists
+
+- block:
+  - name: Disable selinux for Redhat family
+    include: selinux.yml
+  - file: path={{ selinuxstat }} state=touch
+  when: (not selinuxflag.stat.exists) and (ansible_os_family=="RedHat")
+
+- block:
+  - name: Disabling AppArmor for Debian family
+    include: apparmor.yml
+  - file: path={{ selinuxstat }} state=touch
+  when: (not selinuxflag.stat.exists) and (ansible_os_family=="Debian")
+
+

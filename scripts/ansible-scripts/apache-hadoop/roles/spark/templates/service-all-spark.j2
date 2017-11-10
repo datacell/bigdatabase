@@ -1,0 +1,9 @@
+#!/bin/bash
+# file: Service-all-spark.sh
+# Purpose: This script will start the Spark services
+
+source /etc/profile
+
+/bin/bash "{{ spark_services_dir }}/service-spark-master.sh"
+/bin/bash "{{ spark_services_dir }}/service-spark-history-server.sh"
+/bin/bash "{{ spark_services_dir }}/service-spark-slave.sh"

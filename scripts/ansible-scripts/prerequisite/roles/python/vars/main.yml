@@ -1,0 +1,31 @@
+---
+# vars file for Python
+PythonStat: "{{ stat_dir }}/python-stat"
+python_profile_path: /etc/profile.d/python.sh 
+python_pkgs_download_dir: /tmp/download/python-pkg
+
+bin_path: /usr/local/bin
+python_2_6_path: "{{ bin_path }}/python2.6"
+
+python_2_6_6_version: 2.6.6
+python_expanded_version: "Python-{{ python_2_6_6_version }}"
+python_archive: "{{ python_expanded_version }}.tgz"
+python_local_dir: "{{ package_download_dir }}/python"
+python_local_path: "{{ python_local_dir }}/{{ python_archive }}"
+python_mirror_download: "https://www.python.org/download/releases/{{ python_2_6_6_version }}/{{ python_archive }}"
+
+
+anaconda_platform : '{{ ansible_system }}-{{ ansible_machine }}'
+anaconda_name : 'Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-{{anaconda_platform}}'
+anaconda_installer_sh : '{{ anaconda_name }}.sh'
+anaconda_mirror: "https://repo.continuum.io/archive"
+anaconda_installer_url : '{{ anaconda_mirror }}/{{ anaconda_installer_sh }}'
+
+anaconda_install_dir: '{{ anaconda_parent_dir }}/{{ anaconda_name }}'
+anaconda_link_subdir: anaconda
+anaconda_link_dir: '{{ anaconda_parent_dir }}/{{ anaconda_link_subdir }}'
+anaconda_conda_bin: '{{ anaconda_link_dir }}/bin/conda'
+
+anaconda_local_dir: "{{ package_download_dir }}/anaconda"
+anaconda_local_path: "{{ anaconda_local_dir }}/{{ anaconda_installer_sh }}"
+

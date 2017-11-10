@@ -1,0 +1,7 @@
+#!/bin/bash
+# file: service-nodemanager.sh
+# Purpose: This script will start the Hadoop services
+
+
+su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/yarn-daemon.sh start nodemanager"
+sleep 2s

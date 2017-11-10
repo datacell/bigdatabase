@@ -1,0 +1,26 @@
+---
+
+- name: Create Download location
+  file:
+    path: "{{ package_download_dir }}"
+    state: directory
+    mode: 0755
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: hadoop.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: hive.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: scala.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: spark.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+

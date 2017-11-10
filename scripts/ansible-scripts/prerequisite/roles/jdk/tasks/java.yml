@@ -1,0 +1,30 @@
+---
+
+#Install Java
+
+- name: install java for centos
+  package: name={{item}} state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+  when: ansible_os_family == 'RedHat'
+
+
+- name: install java for ubuntu
+  package: name={{item}} state=present
+  with_items:
+    - openjdk-8-jdk-headless
+  when: ansible_os_family == 'Debian'
+
+
+#Set JAVA_HOME
+
+- name: Set JAVA_HOME for centos
+  template: src=java_centos.j2 dest=/etc/profile.d/jdk.sh mode=0755
+  when: ansible_os_family == 'RedHat'
+
+- name: Set JAVA_HOME for ubuntu
+  template: src=java_ubuntu.j2 dest=/etc/profile.d/jdk.sh mode=0755
+  when: ansible_os_family == 'Debian'
+  
+

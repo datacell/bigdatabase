@@ -1,0 +1,6 @@
+---
+- include: python266.yml
+  when: not setup_anaconda
+
+- include: anaconda.yml
+  when: setup_anaconda

@@ -1,0 +1,12 @@
+---
+
+#update local variables
+
+- include: checkPip.yml
+
+- block:
+  - name: Create temporary loaction for downloading Python packages
+    file: path={{ python_pkgs_download_dir }} state=directory
+  - include: install.yml
+  - file: path={{ PythonPipStat }} state=touch
+  when: not pythonPip.stat.exists

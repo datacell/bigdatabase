@@ -1,0 +1,5 @@
+---
+ph_hba_conf: /var/lib/pgsql/data/pg_hba.conf
+postresql_jdbc_jar_path: /usr/share/java
+postresql_jdbc_jar: postgresql-jdbc.jar
+postgresql_daemon: postgresql

@@ -1,0 +1,9 @@
+---
+##################Setting path in /etc/profile.d #####################################
+- name: Setting Java and Hadoop Path in /etc/profile.d
+  template:
+     src: hdp.j2
+     dest: "{{ hadoop_profile_path }}"
+     mode: 0755
+#######################################################################################
+

@@ -1,0 +1,11 @@
+---
+git_version: 2.0.4
+git_install_path: /opt/git
+
+gitstat: "{{ stat_dir }}/git-stat"
+git_profile_path: /etc/profile.d/git.sh
+git_expanded_version: "git-{{ git_version }}"
+git_archive: "{{ git_expanded_version }}.tar.gz"
+git_local_dir: "{{ package_download_dir }}/git"
+git_local_path: "{{ git_local_dir }}/{{ git_archive }}"
+git_mirror_download: "https://www.kernel.org/pub/software/scm/git/{{ git_archive }}"

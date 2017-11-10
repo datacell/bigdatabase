@@ -1,0 +1,7 @@
+#!/bin/bash
+# file: service-datanode.sh
+# Purpose: This script will start the Hadoop services
+
+
+su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start datanode"
+sleep 2s

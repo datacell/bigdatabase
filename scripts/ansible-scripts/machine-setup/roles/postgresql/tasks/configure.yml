@@ -1,0 +1,122 @@
+---
+- name: Creating postgresql log directory
+  file:
+    path: "{{ logDir }}/postgresql/"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: 0770
+
+############ pg_hba.conf STARTS ############
+- name: Configure 0.0.0.0 to md5 auth-method in pg_hba.conf
+  lineinfile:
+    dest: "{{ph_hba_conf}}"
+    insertbefore: "^# IPv6 local connections:"
+    line: "host\tall\t\tall\t\t0.0.0.0/0\t\tmd5"
+    state: present
+
+- name: Fetch all IP address
+  shell: "cat /tmp/allips"
+  register: allips
+
+- name: Remove previous entry of all-ipaddr in pg_hba.conf
+  shell: 'sed -i "s/^host.*.{{ item }}.*.trust$//g" {{ph_hba_conf}}'
+  with_items: "{{ allips.stdout_lines }}"
+
+- name: Remove local host from pg_hba.conf
+  shell: 'sed -i "s/^host.*.{{ item }}.*//g" {{ph_hba_conf}}'
+  with_items: "127.0.0.1"
+
+- name: Remove empty lines from pg_hba.conf
+  shell: 'sed -i "/^\s*$/d" {{ph_hba_conf}}'
+
+- name: Fetch pg_hba entries
+  shell: cat /tmp/pg_hba
+  register: pg_hba_entry
+
+- name: Configure local host in pg_hba.conf
+  lineinfile:
+    dest: "{{ph_hba_conf}}"
+    insertafter: "^# IPv4 local connections:"
+    line: "host      all        all      127.0.0.1/32     trust"
+    state: present
+
+- name: Configure all-ipaddr to trust auth-method in pg_hba.conf
+  lineinfile:
+    dest: "{{ph_hba_conf}}"
+    insertafter: "^# IPv4 local connections:"
+    line: "{{ pg_hba_entry.stdout }}"
+    state: present
+############# pg_hba.conf ENDS #############
+
+########## postgresql.conf STARTS ##########
+- name: Configure listen_addresses in postgresql.conf
+  lineinfile:
+    backup: yes
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?listen_addresses =.*
+    line: "listen_addresses = '*'"
+
+- name: Configure port in postgresql.conf
+  lineinfile:
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?port =.*
+    line: "port = {{ ports }}"
+
+- name: Configure logging_collector in postgresql.conf
+  lineinfile:
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?logging_collector =.*
+    line: "logging_collector = on"
+
+- name: Configure log_directory in postgresql.conf
+  lineinfile:
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?log_directory =.*
+    line: "log_directory = '{{ logDir }}/postgresql'"
+
+- name: Configure log_filename in postgresql.conf
+  lineinfile:
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?log_filename =.*
+    line: "log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'"
+
+- name: Configure log_rotation_age in postgresql.conf
+  lineinfile:
+    dest: "{{postgresql_conf}}"
+    regexp: ^#?log_rotation_age =.*
+    line: "log_rotation_age = 60"
+
+- name: Configure bytea_output in postgresql.conf
+  lineinfile:
+    backrefs: yes
+    dest: "{{ postgresql_conf }}"
+    regexp: ^#?bytea_output =.*
+    line: "bytea_output = 'escape'			# hex, escape"
+########### postgresql.conf ENDS ###########
+
+- name: Start postgresql
+  service:
+    name: postgresql
+    state: restarted
+    enabled: yes
+
+- name: Create Postgresql User
+  postgresql_user:
+    name: "{{ psqlUser }}"
+    password: "{{ psqlPassword }}"
+    role_attr_flags: SUPERUSER,CREATEROLE,CREATEDB
+    port: "{{ ports }}"
+    state: present
+  become_method: sudo
+  become_user: postgres
+
+- name: Create Postgresql Database
+  postgresql_db:
+    name: "{{ psqlUser }}"
+    encoding: 'UTF-8'
+    owner: "{{ psqlUser }}"
+    port: "{{ ports }}"
+    state: present
+  become_method: sudo
+  become_user: postgres

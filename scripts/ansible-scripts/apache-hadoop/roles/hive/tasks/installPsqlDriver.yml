@@ -1,0 +1,19 @@
+---
+- name: Install postgresql driver for hive on Redhat family
+  package: name=postgresql-jdbc state=latest
+  when: "ansible_os_family == 'RedHat'"
+
+
+- name: Install postgresql driver for hive on Debian family
+  package: name=libpostgresql-jdbc-java state=latest
+  when: "ansible_os_family == 'Debian'"
+
+
+
+- name: Creating symlink for postgresql-jdbc.jar
+  file:
+    state: link
+    src: "{{ postresql_jdbc_jar_path }}/{{ postresql_jdbc_jar }}"
+    dest: "{{ hadoop_dir }}/{{ hive_expended_version }}/lib/{{ postresql_jdbc_jar }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"

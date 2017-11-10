@@ -1,0 +1,5 @@
+---
+# Check pip and its components
+- name: check if pip module executed
+  stat: path={{PythonPipStat}}
+  register: pythonPip

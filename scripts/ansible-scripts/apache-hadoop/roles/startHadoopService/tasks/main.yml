@@ -1,0 +1,9 @@
+---
+- name: Kill all previous hadoop services if any
+  shell: "jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
+  ignore_errors: yes
+
+
+- include: service_hadoop.yml
+- include: service_hive.yml
+- include: service_spark.yml

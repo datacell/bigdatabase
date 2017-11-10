@@ -1,0 +1,8 @@
+---
+- name: install libselinux-python for RedHat family
+  package: name=libselinux-python state=present
+  when: ansible_os_family=="RedHat"
+  
+- name: Disabling SElinux for RedHat family
+  selinux: state=disabled
+  when: ansible_os_family=="RedHat"

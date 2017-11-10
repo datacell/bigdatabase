@@ -1,0 +1,69 @@
+---
+#- hosts: all
+#  gather_facts: False
+#  pre_tasks:
+#   - setup:
+#       filter: ansible_*
+
+- name: Initalize playbook
+  hosts: all
+  gather_facts: False
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - block:
+    - name: Setting proxy
+      set_fact:
+        proxy_env: {
+                   "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+                 }
+
+    - name: Setting download proxy
+      set_fact:
+        get_url_proxy_env: {
+                   "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+                 }
+    when: proxy_optional
+
+
+- name: Gathering Facts
+  hosts: all
+  gather_facts: True
+  become: yes
+  become_method: sudo
+
+- name: Download prerequisites
+  hosts: all
+  serial: 1
+  become: yes
+  become_method: sudo
+  roles:
+  - downloads
+
+- name: Setup machine prerequisites
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+  - pip
+  environment:
+    "{{ proxy_env }}"
+
+
+- name: Install Git
+  hosts: git
+  become: yes
+  become_method: sudo
+  roles:
+  - git
+
+
+- name: Install JDK
+  hosts: hadoop_clients
+  become: yes
+  become_method: sudo
+  roles:
+  - jdk

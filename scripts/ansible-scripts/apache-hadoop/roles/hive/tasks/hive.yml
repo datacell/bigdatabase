@@ -1,0 +1,41 @@
+##############################Extracting Hive Tar and assigning ownership#####################################
+- name: Extract Hive
+  unarchive: src={{ hive_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
+##########################################################################################################
+
+
+####################### Setting HIVE_HOME ################################################################
+- name: Copy hive-env.sh.template to hive-env.sh
+  template:
+    src: hive_env.j2
+    dest: "{{ hadoop_dir }}/{{ hive_expended_version }}/conf/hive-env.sh"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+##########################################################################################################
+
+
+- name: mkdir for log files
+  action: file path={{ hive_log_dir }} state=directory mode=0755
+
+
+######################## Creating warehouse directory for hive ############################################
+- name: create /usr/hive/warehouse directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -mkdir -p /usr/hive/warehouse"
+  args:
+     executable: /bin/bash
+
+
+- name: Changing permission to /usr/hive/warehouse directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod g+w /usr/hive/warehouse"
+  args:
+     executable: /bin/bash
+##########################################################################################################
+
+
+- name: Copy hive_site.xml template
+  template:
+    src: hive_site.j2
+    dest: "{{ hadoop_dir }}/{{ hive_expended_version }}/conf/hive-site.xml"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+

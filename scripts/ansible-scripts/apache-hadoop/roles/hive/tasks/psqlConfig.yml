@@ -1,0 +1,56 @@
+---
+- name: Create Hive user under Postgresql
+  postgresql_user:
+    name: "{{ hive_user }}"
+    password: "{{ hive_password }}"
+    role_attr_flags: SUPERUSER,CREATEROLE,CREATEDB
+    port: "{{ postgresql_port }}"
+    state: present
+  become: true
+  become_user: postgres
+
+- name: Create Hive database under Postgresql
+  postgresql_db:
+    name: "{{ hive_database_name }}"
+    encoding: 'UTF-8'
+    owner: "{{ hive_user }}"
+    port: "{{ postgresql_port }}"
+    state: present
+  become: true
+  become_user: postgres
+
+
+- name: Remove hive host from pg_hba.conf
+  shell: 'sed -i "s/^host.*.hive.*//g" {{ph_hba_conf}}'
+
+- name: Remove empty lines from pg_hba.conf
+  shell: 'sed -i "/^\s*$/d" {{ph_hba_conf}}'
+
+
+- name: Create content of pg_hba
+  template:
+     src: pg_hba.j2
+     dest: /tmp/pg_hba
+
+- name: Fetch pg_hba entries
+  shell: cat /tmp/pg_hba
+  register: pg_hba_entry
+
+- name: Configure hadoop-ipaddr to trust auth-method in pg_hba.conf
+  lineinfile:
+   dest: "{{ ph_hba_conf }}"
+   insertafter: "^# IPv4 local connections:"
+   line: "{{ pg_hba_entry.stdout }}"
+   state: present
+
+- name: Start postgresql
+  service:
+   name: postgresql
+   state: restarted
+
+
+- name: Verifying Tables exist in Image
+  shell: 'psql -U {{ hive_user }} -h {{ inventory_hostname }} -d {{ hive_database_name }} -c
+           "\i {{ hadoop_dir }}/{{ hive_expended_version }}/scripts/metastore/upgrade/postgres/{{ hive_schema }}"'
+
+

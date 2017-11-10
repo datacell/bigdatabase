@@ -1,0 +1,5 @@
+---
+# vars file for Prep
+preparatorystat: "{{ stat_dir }}/preparatory-stat"
+basicpackagesstat: "{{ stat_dir }}/basicpackages-stat"
+selinuxstat: "{{ stat_dir }}/selinux-stat"

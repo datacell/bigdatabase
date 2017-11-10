@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+export SPARK_MASTER_WEBUI_PORT={{ spark_master_web_ui_port }}
+export SPARK_WORKER_WEBUI_PORT={{ spark_worker_web_ui_port }}
+export SPARK_PID_DIR=${SPARK_HOME}
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HDFS_URL=hdfs://{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8020
+export SPARK_LOG_DIR="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/log"
+export SPARK_WORKER_DIR="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/work"
+export SPARK_LOCAL_DIRS="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/data"

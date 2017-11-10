@@ -1,0 +1,12 @@
+---
+- name: Check if preparatory module executed
+  stat: path={{ preparatorystat }}
+  register: preparatoryflag
+
+- name: Check if basic-packages module executed
+  stat: path={{ basicpackagesstat }}
+  register: basicpackagesflag
+
+- name: Check if selinux/apparmor module executed
+  stat: path={{ selinuxstat }}
+  register: selinuxflag

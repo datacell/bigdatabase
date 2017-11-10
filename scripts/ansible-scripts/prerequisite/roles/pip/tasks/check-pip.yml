@@ -1,0 +1,7 @@
+---
+# Check pip status
+- name: Check if pip module executed
+  stat: path={{ pipstats }}
+  register: pipstatsFlag
+
+

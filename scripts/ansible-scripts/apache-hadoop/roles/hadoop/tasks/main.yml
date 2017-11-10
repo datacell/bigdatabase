@@ -1,0 +1,26 @@
+---
+#- include: known_host.yml
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['hadoop_namenode'] }}"
+
+
+- include: hadoop.yml
+  become: true
+  become_user: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+
+- include: configureHdfs.yml
+  become: true
+  become_user: "{{ hadoop_user }}"
+
+- include: configureVars.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: service.yml
+
+- include: setupHdfs.yml
+  become: true
+  become_user: "{{ hadoop_user }}"

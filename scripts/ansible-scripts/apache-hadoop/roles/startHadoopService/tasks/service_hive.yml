@@ -1,0 +1,16 @@
+---
+
+- name: Start Metastore service
+  shell: "{{ hadoop_services_dir }}/service-metastore.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hive'] }}"
+
+
+- name: Start namenode service
+  shell: "{{ hadoop_services_dir }}/service-hive-server2.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hive'] }}"

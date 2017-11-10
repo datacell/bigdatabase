@@ -1,0 +1,10 @@
+---
+hive_expended_version: "apache-hive-{{ hive_version }}-bin"
+hive_archive: "apache-hive-{{ hive_version }}-bin.tar.gz"
+hive_profile_path: /etc/profile.d/hive.sh
+hive_services_dir: "{{ hadoop_dir }}/services"
+hadoop_expended_version: "hadoop-{{ hadoop_version }}"
+hive_log_dir: "{{ hadoop_dir }}/{{ hive_expended_version }}/log"
+hive_local_dir: "{{ package_download_dir }}/hive"
+hive_local_path: "{{ hive_local_dir }}/{{ hive_archive }}"
+

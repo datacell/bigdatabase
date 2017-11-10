@@ -1,0 +1,21 @@
+---
+- name: Creating Webserver User 
+  user:
+    name: "{{ webserver_user }}"
+    state: present
+    generate_ssh_key: yes
+    shell: /bin/bash
+
+- name: Remove previous Vars
+  lineinfile:    
+    dest: "/home/{{ webserver_user }}/.bashrc"
+    line: source /etc/profile
+    state: absent
+
+- name: Add env Vars
+  lineinfile:
+    dest: "/home/{{ webserver_user }}/.bashrc"
+    line: source /etc/profile
+    state: present
+
+

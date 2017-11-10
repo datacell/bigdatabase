@@ -1,0 +1,12 @@
+---
+
+- include: checkPython.yml
+
+- block:
+   - include: prep.yml
+
+   - include: install.yml
+   - include: configure.yml
+
+   - file: path={{ PythonStat }} state=touch
+  when: "{{ python_version_value.stdout | version_compare('2.6.5', '<=') }} and not pythonFlag.stat.exists"

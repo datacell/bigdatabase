@@ -1,0 +1,7 @@
+---
+scala_expended_version: "scala-{{ scala_version }}"
+scala_archive: "{{ scala_expended_version }}.tgz"
+scala_profile_path: /etc/profile.d/scala.sh
+scala_local_dir: "{{ package_download_dir }}/scala"
+scala_local_path: "{{ scala_local_dir }}/{{ scala_archive }}"
+

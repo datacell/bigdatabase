@@ -1,0 +1,42 @@
+---
+
+- name: check if hosts-file module executed
+  stat: path=/usr/java/jdk1.8.0_144
+  register: jdkavailable
+
+- block:
+  - name: Check if /usr/java is created
+    file: path=/usr/java state=directory owner=root group=root mode=0755
+
+  - name: Extract JDK under /usr/java
+    unarchive: src=jdk-8u144-linux-x64.tar.gz  dest=/usr/java/ owner=root group=root mode=0755
+
+  - name: Running update-alternatives to create links to /usr/bin/java
+    command: "{{ item }}"
+    with_items:
+     - update-alternatives --install "/usr/bin/java" "java" "/usr/java/jdk1.8.0_144/bin/java" 1
+     - update-alternatives --install "/usr/bin/javac" "javac" "/usr/java/jdk1.8.0_144/bin/javac" 1
+     - update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/java/jdk1.8.0_144/bin/javaws" 1
+  when: not jdkavailable.stat.exists
+
+- name: Create /usr/java/latest
+  file: src=/usr/java/jdk1.8.0_144 dest=/usr/java/latest state=link owner=root group=root mode=777
+
+- name: Create /usr/java/default links
+  file: src=/usr/java/latest dest=/usr/java/default state=link owner=root group=root mode=777
+
+- name: Create directory
+  file: path=/usr/lib/jvm state=directory owner=root group=root
+  when: ansible_os_family == 'Debian'
+
+- name: Create /usr/java/default links for Debian
+  file: src=/usr/java/latest dest=/usr/lib/jvm/default-java state=link owner=root group=root mode=777
+  when: ansible_os_family == 'Debian'
+
+- name: Create link for libjvm.so
+  file: src=/usr/java/latest/jre/lib/amd64/server/libjvm.so dest=/lib64/libjvm.so owner=root group=root state=link
+
+- name: Set java home and path
+  template: src=java_path.j2 dest={{ jdk_profile_path }} mode=0755
+
+

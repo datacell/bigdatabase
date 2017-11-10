@@ -1,0 +1,57 @@
+---
+- name: Initalize playbook
+  hosts: all
+  gather_facts: False
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Setting proxy
+    set_fact:
+      proxy_env: {
+                   "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+                 }
+    when: proxy_optional
+
+  - name: Removing proxy info
+    set_fact: proxy_env={}
+    when: not proxy_optional
+
+
+
+- name: Gathering Facts
+  hosts: all
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+- name: Install Postgresql
+  hosts: postgresql
+  become: yes
+  become_method: sudo
+  roles:
+  - { role: postgresql, when: psql_optional }
+  environment: 
+    "{{ proxy_env }}"
+
+
+
+- name: Install Python packages
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - python_pkgs
+  environment:
+    "{{ proxy_env }}"
+
+
+- name: Install Node module
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - nodejs
+
+

@@ -1,0 +1,22 @@
+---
+- name: Create Hive Download location
+  file:
+    path: "{{ hive_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Hive is available locally
+  stat: path="{{ hive_local_path }}"
+  register: hive_stat
+
+- block:
+  - debug: msg="Requested Hive package is not available locally. Will download {{ hive_archive }}"
+
+  - name: Downloading Hive please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ hive_local_path }} {{ hive_mirror_download }}"
+    #get_url:
+    #  url: "{{ hive_mirror_download }}"
+    #  dest: "{{ hive_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not hive_stat.stat.exists

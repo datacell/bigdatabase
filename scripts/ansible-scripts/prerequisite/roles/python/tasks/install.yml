@@ -1,0 +1,20 @@
+---
+# Install Python if lower version than Python 2.6 version is present
+
+- name: Extract python installer
+  unarchive: src={{ python_local_path }} dest={{ python_pkgs_download_dir }} remote_src=yes
+
+- name: Preparing server for installing Python
+  shell: cd {{ python_pkgs_download_dir }}/{{ item }} ; ./configure --prefix=/usr/local --enable-unicode=ucs4
+  with_items:
+    - "{{ python_expanded_version }}"
+
+- name: Make Python
+  shell: cd {{ python_pkgs_download_dir }}/{{ item }} ; make 
+  with_items:
+    - "{{ python_expanded_version }}"
+
+- name: Installing Python
+  shell: cd {{ python_pkgs_download_dir }}/{{ item }} ; make altinstall 
+  with_items:
+    - "{{ python_expanded_version }}"

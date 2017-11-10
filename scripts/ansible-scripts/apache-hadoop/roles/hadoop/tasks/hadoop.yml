@@ -1,0 +1,102 @@
+---
+
+- name: Create Datanode directory
+  file:
+    path: "{{ hadoop_dir }}/volume/datanode"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+
+- name: Create service directory
+  file:
+    path: "{{ hadoop_services_dir }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+
+
+- name: Extract Hadoop
+  unarchive: src={{ hadoop_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
+
+
+###############Copy xml required for confiuration#####################################
+
+- name: Copy core-site.xml
+  template:
+     src: core-site.j2
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/core-site.xml"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+
+- name: Copy hdfs-site.xml
+  template:
+     src: hdfs-site.j2
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/hdfs-site.xml"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+
+
+- name: Copy mapred-site.xml
+  template:
+     src: mapred-site.j2
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/mapred-site.xml"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+
+
+- name: Copy yarn-site.xml
+  template:
+     src: yarn-site.j2
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/yarn-site.xml"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+
+- name: Copy slaves
+  template:
+     src: slaves.j2
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/slaves"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+
+
+- name: Register JAVA_HOME
+  shell: "source /etc/profile && echo $JAVA_HOME"
+  register: java_home_vars
+  args:
+     executable: /bin/bash
+
+
+- name: Setting JAVA_HOME in hadoop-env.sh file
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/hadoop-env.sh"
+     regexp: ^export JAVA_HOME=.*
+     line: "export JAVA_HOME={{ java_home_vars.stdout }}"
+     state: present
+
+
+- name: Setting HADOOP_PID_DIR in hadoop-env.sh file
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/hadoop-env.sh"
+     regexp: ^export HADOOP_PID_DIR=.*
+     line: "export HADOOP_PID_DIR=${HADOOP_HOME}"
+     state: present
+
+- name: Setting Hadoop Datanode pid
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/hadoop-env.sh"
+     regexp: ^export HADOOP_SECURE_DN_PID_DIR=.*
+     line: "export HADOOP_SECURE_DN_PID_DIR=${HADOOP_HOME}"
+     state: present
+
+- name: Setting Yarn pid
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/yarn-env.sh"
+     regexp: ^export YARN_PID_DIR=.*
+     line: "export YARN_PID_DIR=${HADOOP_HOME}"
+     state: present
+     
+
+######################################################################################
+

@@ -1,0 +1,3 @@
+---
+hadoop_services_dir: "{{ hadoop_dir }}/services"
+

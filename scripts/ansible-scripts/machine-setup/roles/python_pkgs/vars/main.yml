@@ -1,0 +1,3 @@
+---
+python_pkgs_download_dir: /tmp/download/python-pkg
+PythonPipStat: "{{ stat_dir }}/python-pip-stat"

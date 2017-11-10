@@ -1,0 +1,28 @@
+---
+
+# Check python and its version
+- name: Get the python version
+  command: python --version
+  register: python_cur_version_result
+
+- name: Verify if python is already latest or upto date
+  command: echo {{ python_cur_version_result.stderr | replace('Python ', '') }}
+  register: python_cur_version_value
+
+- block:
+  - name: Create Python Download location
+    file:
+      path: "{{ python_local_dir }}"
+      state: directory
+      mode: 0755
+
+  - debug: msg="Requested Python package is not available locally. Will download {{ python_archive }}"
+
+  - name: Downloading Python please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ python_local_path }} {{ python_mirror_download }}"
+    #get_url:
+    #  url: "{{ python_mirror_download }}"
+    #  dest: "{{ python_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: "{{ python_cur_version_value.stdout | version_compare('2.6.5', '<=') }}"

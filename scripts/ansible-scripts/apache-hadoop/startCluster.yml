@@ -1,0 +1,37 @@
+---
+- name: Gathering Facts
+  hosts: all
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - block:
+    - name: Setting proxy
+      set_fact:
+        download_proxy_env: {
+                   "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+                 }
+
+    - name: Setting download proxy
+      set_fact:
+        download_proxy_env: {
+                   "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+                 }
+    when: proxy_optional
+
+#  - name: Removing proxy info
+#    set_fact: proxy_env={}
+#    when: not proxy_optional
+
+- name: Setup Hadoop prerequesite
+  hosts: hadoop_namenode
+  become: yes
+  become_method: sudo
+  roles:
+  - startHadoopService
+
+
+

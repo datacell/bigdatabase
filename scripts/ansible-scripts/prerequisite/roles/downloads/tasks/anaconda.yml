@@ -1,0 +1,26 @@
+---
+- name: Create Anaconda Download location
+  file:
+    path: "{{ anaconda_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Anaconda is available locally
+  stat: path="{{ anaconda_local_path }}"
+  register: conda_stat
+
+- block:
+  - debug: msg="Requested Anaconda package is not available locally. Will download {{ anaconda_installer_sh }}"
+
+  - name: Downloading Anaconda please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ anaconda_local_path }} {{ anaconda_installer_url }}"
+    environment:
+      "{{ proxy_env }}"
+
+  - name: Change the permission of Anaconda script
+    file:
+      path: "{{ anaconda_local_path }}"
+      state: touch
+      mode: 0755
+  when: not conda_stat.stat.exists
+

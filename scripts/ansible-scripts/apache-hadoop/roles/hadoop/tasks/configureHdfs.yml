@@ -1,0 +1,37 @@
+---
+####################Creating namenode and datanode directory#########################
+- name: Delete Datanode if present
+  file:
+    path: "{{ hadoop_dir }}/volume/datanode"
+    state: absent
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
+
+- name: Create Datanode directory
+  file:
+    path: "{{ hadoop_dir }}/volume/datanode"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
+
+  
+
+- name: Create Namenode directory
+  file:
+    path: "{{ hadoop_dir }}/volume/namenode"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+
+
+
+#######################Formatting Namenode#############################################
+- name: Formating namenode
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hdfs namenode -format -force cluster"
+  args:
+     executable: /bin/bash
+

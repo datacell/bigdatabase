@@ -1,0 +1,14 @@
+---
+#update local variables
+- name: Create Download location
+  file:
+    path: "{{ python_pkgs_download_dir }}"
+    state: directory
+    mode: 0755
+
+- include: check-pip.yml
+
+- block:
+  - include: install.yml
+  - file: path={{ pipstats }} state=touch
+  when: "not pipstatsFlag.stat.exists and not setup_anaconda"

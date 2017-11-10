@@ -1,0 +1,22 @@
+---
+- name: Create Hadoop Download location
+  file:
+    path: "{{ hadoop_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Hadoop is available locally
+  stat: path="{{ hadoop_local_path }}"
+  register: hadoop_stat
+
+- block:
+  - debug: msg="Requested Hadoop package is not available locally. Will download {{ hadoop_archive }}"
+
+  - name: Downloading Hadoop please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ hadoop_local_path }} {{ hadoop_mirror_download }}"
+    #get_url:
+    #  url: "{{ hadoop_mirror_download }}"
+    #  dest: "{{ hadoop_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not hadoop_stat.stat.exists

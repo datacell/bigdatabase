@@ -1,0 +1,23 @@
+---
+- name: Create NodeJs Download location
+  file:
+    path: "{{ node_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if NodeJs is available locally
+  stat: path="{{ node_local_path }}"
+  register: nodejs_stat
+
+- block:
+  - debug: msg="Requested NodeJs package is not available locally. Will download {{ node_archive }}"
+
+  - name: Downloading NodeJs please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ node_local_path }} {{ node_mirror_download }}"
+    #get_url:
+    #  url: "{{ node_mirror_download }}"
+    #  dest: "{{ node_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not nodejs_stat.stat.exists
+

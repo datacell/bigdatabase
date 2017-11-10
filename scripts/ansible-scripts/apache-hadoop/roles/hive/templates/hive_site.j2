@@ -1,0 +1,60 @@
+<configuration>
+ <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:postgresql://{{hostvars[groups["hive"][0]].ansible_fqdn}}/{{ hive_database_name }}</value>
+  </property>
+
+{% if hive_with_postgresql %}
+ <property>
+     <name>javax.jdo.option.ConnectionDriverName</name>
+     <value>org.postgresql.Driver</value>
+ </property>
+
+ <property>
+     <name>javax.jdo.option.ConnectionUserName</name>
+     <value>{{ hive_user }}</value>
+ </property>
+
+ <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>{{ hive_password }}</value>
+ </property>
+{%- endif %}
+
+ <property>
+    <name>datanucleus.autoCreateSchema</name>
+    <value>true</value>
+ </property>
+
+ <property>
+    <name>hive.metastore.uris</name>
+{%- for host in groups['all'] -%}{# Loop all hosts. Outer loop #}
+{% if custom_ip_check %}{# Condition for private network #}
+{% for ip in hostvars[host]['ansible_all_ipv4_addresses'] %}{# Loop all private IP addreaa #}
+{%- if ip|search(custom_ip_map_start) -%}{# Condition to find custom private IP assigned to VM #}
+    <value>thrift://{{ ip }}:9083</value>
+{%- endif %}{# End of custom IP #}
+{% endfor %}{# End of inner for loop #}
+{% else %}{# Go for default IP #}
+    <value>thrift://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:9083</value>
+{% endif %}{# End of default IP #}
+{%- endfor %}{# End of outer for loop #}
+    <description>IP address (or fully-qualified domain name) and port of the metastore host</description>
+  </property>
+
+ <property>
+   <name>hive.metastore.schema.verification</name>
+   <value>false</value>
+ </property>
+
+ <property>
+   <name>hive.metastore.warehouse.dir</name>
+   <value>/usr/hive/warehouse </value>
+   <description>location of the warehouse directory</description>
+ </property>
+
+ <property>
+      <name>hive.server2.enable.doAs</name>
+      <value>false</value>
+ </property>
+</configuration>

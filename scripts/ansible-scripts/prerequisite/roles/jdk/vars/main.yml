@@ -1,0 +1,2 @@
+jdkstat: "{{ stat_dir }}/jdk-stat"
+jdk_profile_path: /etc/profile.d/jdk.sh

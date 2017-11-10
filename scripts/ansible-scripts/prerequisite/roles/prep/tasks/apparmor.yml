@@ -1,0 +1,21 @@
+---
+- name: Check apparmor service existence for Debain family
+  stat:
+    path: /etc/init.d/apparmor
+  register: apparmor_service
+  tags: [configuration, apparmor]
+
+- name: Stop apprarmor service for Debain family
+  service:
+    name: apparmor
+    state: stopped
+    enabled: false
+  when: apparmor_service.stat.exists
+  tags: [configuration, apparmor]
+
+- name: Remove apparmor for Debain family
+  apt:
+    name: apparmor
+    state: absent
+    purge: true
+  tags: [configuration, apparmor]

@@ -1,0 +1,11 @@
+---
+
+- name: Extract Scala
+  unarchive: src={{ scala_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
+
+
+- name: Copy Scala vars
+  template:
+    src: scala.j2
+    dest: "{{ scala_profile_path }}"
+    mode: 0755

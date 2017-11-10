@@ -1,0 +1,18 @@
+---
+# Install Pip packages
+
+- name: Extract python packages
+  unarchive: src={{ python_pkg_local_dir }}/{{item}} dest={{python_pkgs_download_dir}} remote_src=yes
+  with_items:
+    - distribute-0.6.14.tar.gz
+    - pip-1.5.6.tar.gz
+
+- name: Installing PIP
+  shell: cd {{python_pkgs_download_dir}}/{{item}} ; python setup.py install
+  with_items:
+    - distribute-0.6.14
+    - pip-1.5.6
+
+
+
+

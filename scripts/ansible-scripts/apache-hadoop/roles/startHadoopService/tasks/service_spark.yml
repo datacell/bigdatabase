@@ -1,0 +1,22 @@
+---
+- name: Start Spark Master service
+  shell: "{{ hadoop_services_dir }}/service-spark-master.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['spark_master'] }}"
+
+- name: Start Spark History Server service
+  shell: "{{ hadoop_services_dir }}/service-spark-history-server.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['spark_master'] }}"
+
+- name: Start Spark Slaves service
+  shell: "{{ hadoop_services_dir }}/service-spark-slave.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['spark_slaves'] }}"
+

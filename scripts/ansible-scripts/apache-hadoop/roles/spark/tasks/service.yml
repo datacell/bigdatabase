@@ -1,0 +1,51 @@
+---
+- name: Copy Spark Master service script
+  template:
+    src: service-spark-master.j2
+    dest: "{{ spark_services_dir }}/service-spark-master.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+- name: Start Spark Master service
+  shell: "{{ spark_services_dir }}/service-spark-master.sh"
+  args:
+    executable: /bin/bash
+
+- name: Copy Spark History Server service script
+  template:
+    src: service-spark-history-server.j2
+    dest: "{{ spark_services_dir }}/service-spark-history-server.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+- name: Start Spark History Server service
+  shell: "{{ spark_services_dir }}/service-spark-history-server.sh"
+  args:
+    executable: /bin/bash
+
+- name: Copy Spark Slave service script
+  template:
+    src: service-spark-slave.j2
+    dest: "{{ spark_services_dir }}/service-spark-slave.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['spark_slaves'] }}"
+
+- name: Start Spark Slaves service
+  shell: "{{ spark_services_dir }}/service-spark-slave.sh"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['spark_slaves'] }}"
+
+- name: Copy service to start all Spark services
+  template:
+    src: service-all-spark.j2
+    dest: "{{ spark_services_dir }}/service-all-spark.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"

@@ -1,0 +1,9 @@
+---
+##################Setting path in /etc/profile.d #####################################
+- name: Setting Java and Hadoop Path in /etc/profile.d
+  template:
+     src: hive_path.j2
+     dest: "{{ hive_profile_path }}"
+     mode: 0755
+#######################################################################################
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+# Purpose: This script will start the Spark History Server services
+
+
+su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-history-server.sh"
+sleep 2s
+

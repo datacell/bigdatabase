@@ -1,0 +1,41 @@
+---
+- name: Create Python Package Download location
+  file:
+    path: "{{ python_pkg_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if PIP 1.5.6 is available locally
+  stat: path="{{ pip_local_path }}"
+  register: pip_pkg_stat
+
+- block:
+  - debug: msg="Requested PIP package is not available locally. Will download {{ pip_archive }}"
+
+  - name: Downloading PIP please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ pip_local_path }} {{ pip_mirror_download }}"
+    #get_url:
+    #  url: "{{ pip_mirror_download }}"
+    #  dest: "{{ pip_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not pip_pkg_stat.stat.exists
+
+- name: Check if Distribute 0.6.14 is available locally
+  stat: path="{{ dist_local_path }}"
+  register: dist_pkg_stat
+
+- block:
+  - debug: msg="Requested Distribute package is not available locally. Will download {{ dist_archive }}"
+
+  - name: Downloading Distribute please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ dist_local_path }} {{ dist_mirror_download }}"
+    #get_url:
+    #  url: "{{ dist_local_path }}"
+    #  dest: "{{ dist_mirror_download }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not dist_pkg_stat.stat.exists
+
+
+

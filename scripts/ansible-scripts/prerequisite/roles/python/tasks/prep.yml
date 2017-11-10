@@ -1,0 +1,14 @@
+---
+# Check Python packages download directory
+- stat: path={{ python_pkgs_download_dir }}
+  register: python_pkgs_path
+
+- name: Remove temporary loaction for downloading Python
+  file: path={{ python_pkgs_download_dir }} state=absent
+  when: python_pkgs_path.stat.exists == True
+
+- name: Create temporary loaction for downloading Python
+  file: path={{ python_pkgs_download_dir }} state=directory mode=0777 recurse=no
+
+- name: Create status Directory for checking common
+  file: path={{ stat_dir }} state=directory

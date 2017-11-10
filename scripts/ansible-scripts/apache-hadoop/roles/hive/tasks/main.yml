@@ -1,0 +1,35 @@
+---
+- block:
+  - name: FInd the version of postgresql
+    shell: 'apt-cache search postgresql- | grep postgresql- | grep "relational SQL database" | head -1 | cut -d " " -f1 | cut -d "-" -f2'
+    register: postgresql_version_out
+
+  - set_fact: postgresql_version="{{ postgresql_version_out.stdout }}"
+  - include_vars: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include_vars: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: hive.yml
+  become: true
+  become_user: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: installPsqlDriver.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+  when: hive_with_postgresql
+
+- include: psqlConfig.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['postgresql'][0] }}"
+  when: hive_with_postgresql
+
+- include: configureVars.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: service.yml
+

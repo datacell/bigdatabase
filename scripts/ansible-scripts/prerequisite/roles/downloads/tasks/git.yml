@@ -1,0 +1,22 @@
+---
+- name: Create Git Download location
+  file:
+    path: "{{ git_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Git is available locally
+  stat: path="{{ git_local_path }}"
+  register: git_stat
+
+- block:
+  - debug: msg="Requested Git package is not available locally. Will download {{ git_archive }}"
+
+  - name: Downloading Git please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ git_local_path }} {{ git_mirror_download }}"
+    #get_url:
+    #  url: "{{ git_mirror_download }}"
+    #  dest: "{{ git_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not git_stat.stat.exists

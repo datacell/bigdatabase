@@ -1,0 +1,7 @@
+---
+- name: Setting up firewall rules
+  security: portlist="{{ports}}"
+  notify: 
+    - Restart iptables
+    - Restart firewalld
+    - Restart iptables-persistent

@@ -1,0 +1,35 @@
+---
+- name: Check for installation of Anaconda
+  stat:
+    path: '{{ anaconda_conda_bin }}'
+  changed_when: false
+  register: anaconda_conda_binary
+
+- when: not anaconda_conda_binary.stat.exists
+  block:
+    - name: Install Anaconda...
+      shell: "{{ anaconda_local_path }} -b -p {{ anaconda_install_dir }}"
+      args:
+        executable: /bin/bash
+        creates: '{{ anaconda_install_dir }}'
+
+- name: link anaconda...
+  file:
+    src: '{{ anaconda_install_dir }}'
+    dest: '{{ anaconda_link_dir }}'
+    state: link
+
+- name: Remove conda-curl since it conflicts with the system curl
+  command: '{{ anaconda_conda_bin }} remove -y curl'
+  args:
+    removes: '{{ anaconda_link_dir }}/lib/libcurl.a'
+  
+- name: Make system default python etc...
+  when: anaconda_make_sys_default
+  with_items:
+    - f: anaconda.sh
+      d: /etc/profile.d
+  template:
+    src: '{{ item.f }}.j2'
+    dest: '{{ item.d}}/{{item.f }}'
+    mode: '{{ item.m|default("0755") }}'

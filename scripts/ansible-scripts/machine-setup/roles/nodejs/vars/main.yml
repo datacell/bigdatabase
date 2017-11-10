@@ -1,0 +1,9 @@
+---
+nodestat: "{{ stat_dir }}/node-stat"
+node_profile_path: /etc/profile.d/nodejs.sh
+node_install_path: /opt/nodejs
+node_expanded_version: "node-v{{ node_version }}-linux-x64"
+node_archive: "{{ node_expanded_version }}.tar.gz"
+node_local_dir: "{{ package_download_dir }}/node"
+node_local_path: "{{ node_local_dir }}/{{ node_archive }}"
+node_mirror_download: "https://nodejs.org/dist/v{{ node_version }}/{{ node_archive }}"

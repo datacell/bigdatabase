@@ -1,0 +1,6 @@
+---
+- name: Post configuration linking Python
+  file: src={{ python_2_6_path }} dest={{ bin_path }}/python state=link force=yes
+
+- name: Set python home and path
+  template: src=python_path.j2 dest={{ python_profile_path }} mode=0755 

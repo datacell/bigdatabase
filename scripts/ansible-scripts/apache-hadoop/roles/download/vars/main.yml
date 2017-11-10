@@ -1,0 +1,33 @@
+---
+hadoop_local_dir: "{{ package_download_dir }}/hadoop"
+hive_local_dir: "{{ package_download_dir }}/hive"
+spark_local_dir: "{{ package_download_dir }}/spark"
+scala_local_dir: "{{ package_download_dir }}/scala"
+
+
+#Hadoop
+hadoop_expended_version: "hadoop-{{ hadoop_version }}"
+hadoop_archive: "{{ hadoop_expended_version }}.tar.gz"
+hadoop_mirror_download: "http://archive.apache.org/dist/hadoop/core/{{ hadoop_expended_version }}/{{ hadoop_archive }}"
+hadoop_local_path: "{{ hadoop_local_dir }}/{{ hadoop_archive }}"
+
+
+#Hive
+hive_expended_version: "apache-hive-{{ hive_version }}-bin"
+hive_archive: "apache-hive-{{ hive_version }}-bin.tar.gz"
+hive_mirror_download: "http://archive.apache.org/dist/hive/hive-{{ hive_version }}/{{ hive_archive }}"
+hive_local_path: "{{ hive_local_dir }}/{{ hive_archive }}"
+
+
+#Scala
+scala_expended_version: "scala-{{ scala_version }}"
+scala_archive: "{{ scala_expended_version }}.tgz"
+scala_mirror_download: "https://downloads.lightbend.com/scala/{{ scala_version }}/{{ scala_archive }}"
+scala_local_path: "{{ scala_local_dir }}/{{ scala_archive }}"
+
+
+#Spark
+spark_expended_version: "spark-{{ spark_version }}-bin-hadoop{{ spark_hadoop_verson }}"
+spark_archive: "{{ spark_expended_version }}.tgz"
+spark_mirror_download: "http://archive.apache.org/dist/spark/spark-{{ spark_version }}/{{ spark_archive }}"
+spark_local_path: "{{ spark_local_dir }}/{{ spark_archive }}"

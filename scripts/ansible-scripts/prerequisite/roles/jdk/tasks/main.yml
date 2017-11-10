@@ -1,0 +1,13 @@
+---
+
+- name: Check if JDK module executed
+  stat: path={{ jdkstat }}
+  register: jdkstatflag
+
+- block:
+  - name: Install Java kit
+    include: java.yml
+  - file: path={{ jdkstat }} state=touch
+  when: not jdkstatflag.stat.exists
+
+

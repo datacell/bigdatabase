@@ -1,0 +1,7 @@
+#!/bin/bash
+# file: service-secondary-namenode.sh
+# Purpose: This script will start the Hadoop services
+
+
+su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh start secondarynamenode"
+sleep 2s

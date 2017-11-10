@@ -1,0 +1,44 @@
+---
+#Git
+git_expanded_version: "git-{{ git_version }}"
+git_archive: "{{ git_expanded_version }}.tar.gz"
+git_local_dir: "{{ package_download_dir }}/git"
+git_local_path: "{{ git_local_dir }}/{{ git_archive }}"
+git_mirror_download: "https://www.kernel.org/pub/software/scm/git/{{ git_archive }}"
+
+#Python 2.6.6
+python_2_6_6_version: 2.6.6
+python_expanded_version: "Python-{{ python_2_6_6_version }}"
+python_archive: "{{ python_expanded_version }}.tgz"
+python_local_dir: "{{ package_download_dir }}/python"
+python_local_path: "{{ python_local_dir }}/{{ python_archive }}"
+python_mirror_download: "https://www.python.org/download/releases/{{ python_2_6_6_version }}/{{ python_archive }}"
+
+
+#Anaconda
+anaconda_platform : '{{ ansible_system }}-{{ ansible_machine }}'
+anaconda_name : 'Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-{{anaconda_platform}}'
+anaconda_installer_sh : '{{ anaconda_name }}.sh'
+anaconda_mirror: "https://repo.continuum.io/archive"
+anaconda_installer_url : '{{ anaconda_mirror }}/{{ anaconda_installer_sh }}'
+anaconda_local_dir: "{{ package_download_dir }}/anaconda"
+anaconda_local_path: "{{ anaconda_local_dir }}/{{ anaconda_installer_sh }}"
+anaconda_link_dir: '{{ anaconda_parent_dir }}/{{ anaconda_link_subdir }}'
+anaconda_conda_bin: '{{ anaconda_link_dir }}/bin/conda'
+
+
+python_pkg_local_dir: "{{ package_download_dir }}/python-pkg"
+
+#Pip--1.5.6
+pip_version: 1.5.6
+pip_expanded_version: "pip-{{ pip_version }}"
+pip_archive: "{{ pip_expanded_version }}.tar.gz"
+pip_local_path: "{{ python_pkg_local_dir }}/{{ pip_archive }}"
+pip_mirror_download: "https://pypi.python.org/packages/45/db/4fb9a456b4ec4d3b701456ef562b9d72d76b6358e0c1463d17db18c5b772/pip-1.5.6.tar.gz#md5=01026f87978932060cc86c1dc527903e"
+
+#Distribute-0.6.14
+dist_version: 0.6.14
+dist_expanded_path: "distribute-{{ dist_version }}"
+dist_archive: "{{ dist_expanded_path }}.tar.gz"
+dist_local_path: "{{ python_pkg_local_dir }}/{{ dist_archive }}"
+dist_mirror_download: "https://pypi.python.org/packages/95/f1/6128255a94f3d57e0f7ec2767c1893d1ab769bef48e847173f923d977e1d/distribute-0.6.14.tar.gz#md5=83ada58a83d99b28c806703597323b80"

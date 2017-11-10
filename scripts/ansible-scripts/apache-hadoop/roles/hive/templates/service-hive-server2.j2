@@ -1,0 +1,6 @@
+#!/bin/bash
+# Purpose: This script will start the Hive services
+
+
+su - {{ hadoop_user }} -c "source /etc/profile && nohup /bin/bash {{ hadoop_dir }}/{{ hive_expended_version }}/bin/hive --service hiveserver2 > {{ hive_log_dir }}/hiveserver2.log 2>&1 &"
+sleep 2s

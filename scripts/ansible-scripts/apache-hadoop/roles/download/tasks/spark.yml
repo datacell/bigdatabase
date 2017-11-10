@@ -1,0 +1,22 @@
+---
+- name: Create Spark Download location
+  file:
+    path: "{{ spark_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Spark is available locally
+  stat: path="{{ spark_local_path }}"
+  register: spark_stat
+
+- block:
+  - debug: msg="Requested Spark package is not available locally. Will download {{ spark_archive }}"
+
+  - name: Downloading Spark please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ spark_local_path }} {{ spark_mirror_download }}"
+    #get_url:
+    #  url: "{{ spark_mirror_download }}"
+    #  dest: "{{ spark_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not spark_stat.stat.exists

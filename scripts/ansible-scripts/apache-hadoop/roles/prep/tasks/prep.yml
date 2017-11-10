@@ -1,0 +1,67 @@
+---
+- name: Kill all previous hadoop services if any
+  shell: "jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
+  ignore_errors: yes
+
+- name: Creating User 
+  user:
+    name: "{{ hadoop_user }}"
+    state: present
+    generate_ssh_key: yes
+    shell: /bin/bash
+
+- name: Remove previous Vars
+  lineinfile:    
+    dest: "/home/{{ hadoop_user }}/.bashrc"
+    line: source /etc/profile
+    state: absent
+
+- name: Add env Vars
+  lineinfile:
+    dest: "/home/{{ hadoop_user }}/.bashrc"
+    line: source /etc/profile
+    state: present
+    
+- name: Create Hadoop deployment directory
+  file:
+    path: "{{ hadoop_dir }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+
+
+- name: Create Hadoop tmp directory
+  file:
+    path: "{{ hadoop_dir }}/tmp"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0777
+
+
+
+#######Setup for Passwordless ssh for hadoop deployment user from appserver to itself#######
+- name: Relaxing StrictHostKeyChecking
+  lineinfile:
+    dest: /etc/ssh/ssh_config
+    regexp: .*Strict.*
+    line: StrictHostKeyChecking no
+
+- name: Get contents of id_rsa.pub
+  shell: cat /home/{{ hadoop_user }}/.ssh/id_rsa.pub
+  register: idrsapub
+  become: true
+  become_user: "{{ hadoop_user }}"
+
+- name: Add id_rsa.pub in authorized_keys on remote machine
+  authorized_key:
+    key: "{{ idrsapub.stdout }}"
+    user: "{{ hadoop_user }}"
+  become: true
+  become_user: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+
+

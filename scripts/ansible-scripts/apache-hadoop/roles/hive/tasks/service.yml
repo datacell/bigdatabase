@@ -1,0 +1,34 @@
+---
+- name: Copy Hive Metastore service script
+  template:
+    src: service-metastore.j2
+    dest: "{{ hive_services_dir }}/service-metastore.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+- name: Start Metastore service
+  shell: "{{ hive_services_dir }}/service-metastore.sh"
+  args:
+    executable: /bin/bash
+
+- name: Copy Hive Server2 service script
+  template:
+    src: service-hive-server2.j2
+    dest: "{{ hive_services_dir }}/service-hive-server2.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+- name: Start Hive Server2 service
+  shell: "{{ hive_services_dir }}/service-hive-server2.sh"
+  args:
+    executable: /bin/bash
+
+- name: Copy service to start all Hive services
+  template:
+    src: service-all-hive.j2
+    dest: "{{ hive_services_dir }}/service-all-hive.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"

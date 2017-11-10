@@ -1,0 +1,15 @@
+---
+# Check python and its version
+- name: Get the python version
+  command: python --version
+  register: python_version_result
+
+- name: Verify if python is already latest or upto date
+  command: echo {{python_version_result.stderr | replace('Python ', '')}}
+  register: python_version_value
+
+# Check python and its components
+- name: Check if python module executed
+  stat: path={{ PythonStat }}
+  register: pythonFlag
+

@@ -1,0 +1,37 @@
+---
+- name: Install python-psycopg2
+  package:
+    name: python-psycopg2
+    state: latest
+
+#################### Check if locale supports UTF8 characters ####################
+- block:
+  - name: Check if locale supports UTF8 characters in RedHat 6
+    find: path=/etc/sysconfig file_type=file  pattern="i18n" contains="LANG=.*\.UTF-8.*"
+    register: pgsql_locale
+
+  - name: Stop execution if locale does not support UTF8 characters
+    fail: msg="Please update locale settings to support UTF8 characters"
+    when: "{{pgsql_locale.matched}} == 0"
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+
+- block:
+   - name: Check if locale supports UTF8 characters in RedHat 7
+     find: path=/etc file_type=file  pattern="locale.conf" contains="LANG=.*\.UTF-8.*"
+     register: pgsql_locale
+
+   - name: Stop execution if locale does not support UTF8 characters
+     fail: msg="Please update locale settings to support UTF8 characters"
+     when: "{{pgsql_locale.matched}} == 0"
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- block:
+   - name: Check if locale supports UTF8 characters in Debian
+     find: path=/etc/default file_type=file  pattern="locale" contains="LANG=.*\.UTF-8.*"
+     register: pgsql_locale
+
+   - name: Stop execution if locale does not support UTF8 characters
+     fail: msg="Please update locale settings to support UTF8 characters"
+     when: "{{pgsql_locale.matched}} == 0"
+  when: ansible_os_family == 'Debian'
+##################################################################################

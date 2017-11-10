@@ -1,0 +1,105 @@
+---
+
+##################Setting SPARK################################################################
+- name: Extract Spark
+  unarchive: src={{ spark_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
+
+
+- name: Create Event log directory directory
+  file:
+    path: "{{ hadoop_dir }}/{{ spark_expended_version }}/spark/spark-events"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755
+
+- name: Create data directory directory
+  file:
+    path: "{{ hadoop_dir }}/{{ spark_expended_version }}/spark/data"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0777
+
+
+
+- name: Copy Spark Vars
+  template:
+    src: spark_profile.j2
+    dest: "{{ spark_profile_path }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Copy spark env
+  template:
+    src: spark_conf.j2
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/spark-env.sh"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Copy Spark slaves
+  template:
+    src: slaves.j2
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/slaves"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Copy Spark History Server configuration
+  template:
+    src: spark-defaults.conf.j2
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/spark-defaults.conf"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+####################Creating symlink in spark directory################################################
+
+- name: Create link of core-site.xml in spark directory
+  file:
+    src: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/core-site.xml"
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/core-site.xml"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Create link of hdfs-site.xml in spark directory
+  file:
+    src: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/hdfs-site.xml"
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/hdfs-site.xml"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Create link of yarn-site.xml in spark directory
+  file:
+    src: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/yarn-site.xml"
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/yarn-site.xml"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Create link of hive-site.xml in spark directory
+  file:
+    src: "{{ hadoop_dir }}/{{ hive_expended_version }}/conf/hive-site.xml"
+    dest: "{{ hadoop_dir }}/{{ spark_expended_version }}/conf/hive-site.xml"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+- name: Create link to support Spark shuffle with Yarn 
+  file:
+    src: "{{ hadoop_dir }}/{{ spark_expended_version }}/lib/{{ spark_suffle_jar }}"
+    dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/yarn/lib/{{ spark_suffle_jar }}"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+
+
+
+

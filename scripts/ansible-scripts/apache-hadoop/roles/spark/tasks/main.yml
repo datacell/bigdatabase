@@ -1,0 +1,6 @@
+---
+- include: spark.yml
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- include: service.yml

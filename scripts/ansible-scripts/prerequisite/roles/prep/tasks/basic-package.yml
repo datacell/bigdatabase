@@ -1,0 +1,69 @@
+---
+
+- name: Update yum cache for RedHat family
+  shell: yum repolist all
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Basic common packages
+  package: name={{item}} state=latest update_cache=yes
+  with_items:
+    - gcc
+    - sshpass
+    - gettext
+    - unzip
+
+- name: Install Basic packages for RedHat family
+  package: name={{item}} state=latest
+  with_items:
+    - gcc-c++
+    - python-devel
+    - cyrus-sasl-md5
+    - cyrus-sasl-plain
+    - cyrus-sasl-gssapi
+    - libxml2-devel
+    - libxslt-devel
+    - python-lxml
+    - perl-devel
+    - curl-devel
+    - expat-devel
+    - openssl-devel
+    - libtool-ltdl-devel
+    - epel-release
+  when: ansible_os_family == 'RedHat'
+
+- name: Install packages on RedHat family for version 6.x
+  package: name={{item}} state=present
+  with_items:
+  - perl-ExtUtils-MakeMaker
+  when: (ansible_os_family=="RedHat" and ansible_distribution_major_version == "6")
+
+- name: Clean repository for RedHat family
+  shell: yum clean all
+  when: ansible_os_family == 'RedHat'
+
+- name: Update yum cache for RedHat family
+  shell: yum repolist all
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Basic packages for Debian family
+  package: name={{item}} state=latest force=yes
+  with_items:
+    - python-dev
+    - openssl
+    - libsasl2-2
+    - libgsasl7
+    - libsasl2-dev
+    - libsasl2-modules
+    - libxml2-dev
+    - libxslt1-dev
+    - libtool
+    - libcurl4-gnutls-dev
+    - libcurl4-nss-dev
+    - libcurl4-openssl-dev
+    - libexpat1-dev
+    - libssl-dev
+    - libtool
+    - libpq-dev
+    - libx11-dev
+    - build-essential
+  when: ansible_os_family == 'Debian'

@@ -1,0 +1,27 @@
+---
+#To install postgresql on Debian based system we need to first find out the postgresql version available
+- block:
+  - name: FInd the version of postgresql
+    shell: 'apt-cache search postgresql- | grep postgresql- | grep "relational SQL database" | head -1 | cut -d " " -f1 | cut -d "-" -f2'
+    register: postgresql_version_out
+
+  - set_fact: postgresql_version="{{ postgresql_version_out.stdout }}"
+  - include_vars: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include_vars: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Create content of pg_hba
+  template:
+     src: pg_hba.j2
+     dest: /tmp/pg_hba
+
+- name: Get all pivate ip
+  template:
+    src: allips.j2
+    dest: /tmp/allips
+
+- include: prep.yml
+- include: install.yml
+- include: configure.yml

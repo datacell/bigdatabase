@@ -1,0 +1,22 @@
+---
+- name: Create Scala Download location
+  file:
+    path: "{{ scala_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Scala is available locally
+  stat: path="{{ scala_local_path }}"
+  register: scala_stat
+
+- block:
+  - debug: msg="Requested Scala package is not available locally. Will download {{ scala_archive }}"
+
+  - name: Downloading Scala please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ scala_local_path }} {{ scala_mirror_download }}"
+    #get_url:
+    #  url: "{{ scala_mirror_download }}"
+    #  dest: "{{ scala_local_path }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not scala_stat.stat.exists

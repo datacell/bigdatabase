@@ -1,0 +1,2 @@
+---
+webserver_user: "{{ ansible_user }}"

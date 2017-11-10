@@ -1,0 +1,6 @@
+---
+postgresql_config_path: "/etc/postgresql/{{ postgresql_version }}/main"
+ph_hba_conf: "{{ postgresql_config_path }}/pg_hba.conf"
+postresql_jdbc_jar_path: /usr/share/java
+postresql_jdbc_jar: postgresql-jdbc4.jar
+postgresql_daemon: postgresql
