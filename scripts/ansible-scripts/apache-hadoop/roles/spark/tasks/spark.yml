@@ -92,14 +92,30 @@
     group: "{{ hadoop_user }}"
 
 
-- name: Create link to support Spark shuffle with Yarn 
+
+- name: Check if Spark shuffle directory
+  stat: path="{{ hadoop_dir }}/{{ spark_expended_version }}/lib/{{ spark_suffle_jar }}"
+  register: spark_shuffle_stat
+
+
+
+- name: Create link to support Spark shuffle with Yarn (lib dir)
   file:
     src: "{{ hadoop_dir }}/{{ spark_expended_version }}/lib/{{ spark_suffle_jar }}"
     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/yarn/lib/{{ spark_suffle_jar }}"
     state: link
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
+  when: spark_shuffle_stat.stat.exists
 
 
 
+- name: Create link to support Spark shuffle with Yarn (yarn dir)
+  file:
+    src: "{{ hadoop_dir }}/{{ spark_expended_version }}/yarn/{{ spark_suffle_jar }}"
+    dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/yarn/lib/{{ spark_suffle_jar }}"
+    state: link
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+  when: not spark_shuffle_stat.stat.exists
 

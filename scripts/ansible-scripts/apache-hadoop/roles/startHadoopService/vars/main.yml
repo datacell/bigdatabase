@@ -1,3 +1,3 @@
 ---
 hadoop_services_dir: "{{ hadoop_dir }}/services"
-
+startup_script_init: /etc/init.d/service-start-cluster.sh

@@ -50,7 +50,7 @@
 
 
 - name: Verifying Tables exist in Image
-  shell: 'psql -U {{ hive_user }} -h {{ inventory_hostname }} -d {{ hive_database_name }} -c
+  shell: 'psql -U {{ hive_user }} -h {{ ansible_fqdn }} -d {{ hive_database_name }} -c
            "\i {{ hadoop_dir }}/{{ hive_expended_version }}/scripts/metastore/upgrade/postgres/{{ hive_schema }}"'
 
 
