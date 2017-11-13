@@ -20,6 +20,5 @@
  <property>
   <name>fs.defaultFS</name>
   <value>hdfs://{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8020/</value>
-  <!-- <value>hdfs://172.28.128.3:8020/</value> -->
  </property>
 </configuration>

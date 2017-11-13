@@ -8,7 +8,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     i = 1
     #This will consume in computing last fraction of IP as well
     ip_last_fraction_address = 206
-
     plays = [ { :play => "prerequisite" },
               { :play => "machine-setup" },
               { :play => "apache-hadoop" },
@@ -33,12 +32,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
-    config.vm.define  "node#{i}" do |node|
-        node.vm.hostname="node#{i}"
+    config.vm.define  "albus#{i}" do |node|
+        node.vm.hostname="albus#{i}"
         node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "node#{i}"
+          v.name =  "albus#{i}"
           v.memory = 8192
           v.cpus = 2
         end

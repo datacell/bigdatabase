@@ -1,9 +1,4 @@
 ---
-#- include: known_host.yml
-#  delegate_to: "{{ item }}"
-#  with_items: "{{ groups['hadoop_namenode'] }}"
-
-
 - include: hadoop.yml
   become: true
   become_user: "{{ hadoop_user }}"

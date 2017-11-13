@@ -9,9 +9,6 @@
     src: service-start-cluster.j2
     dest: "{{ startup_script_init }}"
     mode: 0755
-  args:
-    creates: '{{ startup_script_init }}'
-  ignore_errors: True
 
 
 - include: service_hadoop.yml
