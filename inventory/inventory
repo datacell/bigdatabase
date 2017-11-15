@@ -1,37 +1,37 @@
 [webserver]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [git]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [postgresql]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_namenode]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_seconday_namenode]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_datanodes]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hive]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_master]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_slaves]
-albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_cluster:children]

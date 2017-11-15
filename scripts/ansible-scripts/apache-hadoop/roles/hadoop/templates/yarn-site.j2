@@ -30,15 +30,16 @@
     <value>org.apache.spark.network.yarn.YarnShuffleService</value>
   </property>
 
-<!-- <property>
-   <name>yarn.nodemanager.resource.memory-mb</name>
-   <value>12288</value>
- </property>
+{% if ram_60_prc is defined %}
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>{{ ram_60_prc.stdout }}</value>
+  </property>
 
- <property>
-   <name>yarn.scheduler.maximum-allocation-mb</name>
-   <value>12288</value>
- </property> -->
-
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value>{{ ansible_processor_vcpus }}</value>
+  </property>
+{% endif %}
 </configuration>
 

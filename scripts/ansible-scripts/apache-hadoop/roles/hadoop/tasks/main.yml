@@ -1,4 +1,11 @@
 ---
+- name: Get the 60% of total ram for Yarn
+  shell: "echo $((60*{{ ansible_memtotal_mb }}/100))"
+  register: ram_60_prc
+  when:  "{{ groups['hadoop_cluster']|length }} == 1"
+
+
+
 - include: hadoop.yml
   become: true
   become_user: "{{ hadoop_user }}"
