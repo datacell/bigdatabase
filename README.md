@@ -1,5 +1,5 @@
 Vagrant for Hadoop, Spark and Hive on top of Postgresql
-Anaconda Python 2 v 5.0.1
+Python Anaconda2 5.0.1
 =======================================================
 
 # Introduction
@@ -41,27 +41,10 @@ download and extract the latest source of this project.
 Here are some useful links to navigate to various UI's:
 
 * YARN resource manager:  (http://localhost:8088)
-* Job history:  (http://10.211.55.101:19888/jobhistory/)
 * HDFS: (http://localhost:50070/dfshealth.html)
 * Spark history server: (http://localhost:18080)
 * Spark context UI (if a Spark context is running): (http://localhost:4040)
 [Spark context server port is open from 4040 to 4044]
-
-
-# Apache Zeppelin notebook server
-
-Apache Zeppelin together with spark, md, file and JDBC interpreters is installed by default but not
-started. To manually start the zeppelin daemon run: -
-
-```
-vagrant ssh
-zeppelin-daemon.sh start
-```
-
-as `ubuntu` user from the command line.
-
-
-Notebook server can then be accessed via `http://10.211.55.101:8080`.
 
 
 # Shared Folder
@@ -69,12 +52,6 @@ Notebook server can then be accessed via `http://10.211.55.101:8080`.
 Vagrant automatically mounts the folder containing the Vagrant file from the
 host machine into the guest machine as `/vagrant` inside the guest.
 
-
-
-# Validating your virtual machine setup
-
-To test out the virtual machine setup, and for examples of how to run
-MapReduce, Hive and Spark, head on over to [VALIDATING.md](VALIDATING.md).
 
 
 # Managment of Vagrant VM
@@ -119,22 +96,12 @@ $ jps | grep -v Jps | awk '{print $1}' | xargs kill -9
 $ /bin/bash /opt/service-start-cluster.sh
 ```
 
-# Swapspace - Memory
-
-Spark in particular needs quite a bit of memory to run - to work around this a `swapspace` daemon is also configured and
-started that uses normal disk to dynamically allocate swapspace when memory is low.
-
-
-# More advanced setup
-
-If you'd like to learn more about working and optimizing Vagrant then
-take a look at [ADVANCED.md](ADVANCED.md).
-
-# For developers
-
-The file [DEVELOP.md](DEVELOP.md) contains some tips for developers.
 
 # Credits
 
-Thanks to Alex Holmes for the great work at
-(https://github.com/alexholmes/vagrant-hadoop-spark-hive)
+Thanks to Andrew Rothstein for the great work at
+(https://github.com/andrewrothstein/ansible-anaconda)
+
+Thanks to Martin Robson and xiaomei-data for great work at
+(https://github.com/martinprobson/vagrant-hadoop-hive-spark)
+(https://github.com/xiaomei-data/ansible-hadoop-spark)
