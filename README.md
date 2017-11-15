@@ -1,5 +1,5 @@
 Vagrant for Hadoop, Spark and Hive on top of Postgresql
-Anaconda Python 2 v 5.0.1
+Python Anaconda2 5.0.1
 =======================================================
 
 # Introduction
