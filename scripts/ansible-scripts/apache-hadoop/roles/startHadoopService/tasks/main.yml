@@ -4,6 +4,13 @@
   ignore_errors: yes
 
 
+- name: Copy startup script
+  template:
+    src: service-start-cluster.j2
+    dest: "{{ startup_script_init }}"
+    mode: 0755
+
+
 - include: service_hadoop.yml
 - include: service_hive.yml
 - include: service_spark.yml

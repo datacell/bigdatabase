@@ -1,0 +1,9 @@
+#!/bin/bash
+# file: Service-start-cluster.sh
+# Purpose: This script will start the entire Hadoop cluster
+
+source /etc/profile
+
+/bin/bash "{{ hadoop_services_dir }}/service-all-hadoop.sh"
+/bin/bash "{{ hadoop_services_dir }}/service-all-hive.sh"
+/bin/bash "{{ hadoop_services_dir }}/service-all-spark.sh"

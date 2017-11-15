@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.require_version ">= 1.4.3"
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    ###Define the starting node number.
+
+    #Yarn scheduler                         8088
+    #Spark History Server                   18088
+    #Spark Master Web UI Port server        18080
+    #Spark worker Web UI Port               18081
+    #Spark Job ports                        4040..4044
+    #Unassigned ports for external feature  5800..5803
+    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 4040, 4041, 4042, 4044 ]
+
+    ### Define which linux box need to be used###
+    config.vm.box = "shareinsights/albus"
+    config.vm.box_version = "1.0.0"
+
+    #Define port forwarding
+    ports.each do |port|
+        config.vm.network :forwarded_port, guest: port, host: port
+    end
+
+    #Define box information
+    config.vm.box_download_insecure = true
+    config.vm.define  "albus" do |node|
+        node.vm.hostname="albus1"
+        node.vm.network :private_network, ip: "205.28.128.206"
+
+        node.vm.provider "virtualbox" do |v|
+          v.name =  "albus"
+          v.memory = 8192
+          v.cpus = 2
+        end
+    end
+
+    #Start the Hadoop service for every time vagrant command executed.
+    config.vm.provision "shell", run: "always", inline: "sudo jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
+    config.vm.provision "shell", run: 'always', inline: "/bin/bash /opt/service-start-cluster.sh"
+end

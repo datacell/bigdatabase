@@ -1,0 +1,12 @@
+# Front load the includes
+Vagrant.configure("2") do |config|
+  config.vm.base_mac = "0251174123CB"
+  config.ssh.username = "ubuntu"
+  config.ssh.password = "e8bb3725de7d875df8a31f40"
+
+  config.vm.provider "virtualbox" do |vb|
+     vb.customize [ "modifyvm", :id, "--uart1", "0x3F8", "4" ]
+     vb.customize [ "modifyvm", :id, "--uartmode1", "file", File.join(Dir.pwd, "ubuntu-xenial-16.04-cloudimg-console.log") ]
+  end
+end
+

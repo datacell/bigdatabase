@@ -1,40 +1,37 @@
-#node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/home/ankit/gitrepo/vagrant-ci-cd$
-#node1 ansible_ssh_host=172.28.128.1 ansible_ssh_port=2222 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/home/ankit/gitrepo/vagrant-ci$
-
 [webserver]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [git]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [postgresql]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_namenode]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_seconday_namenode]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_datanodes]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hive]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_master]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_slaves]
-node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+albus1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_cluster:children]
@@ -49,4 +46,3 @@ spark_slaves
 [hadoop_clients:children]
 hadoop_cluster
 webserver
-
