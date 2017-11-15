@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Define box information
     config.vm.box_download_insecure = true
     config.vm.define  "albus" do |node|
-        node.vm.hostname="albus1"
+        node.vm.hostname="albus"
         node.vm.network :private_network, ip: "205.28.128.206"
 
         node.vm.provider "virtualbox" do |v|
