@@ -3,7 +3,7 @@
   shell: "jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
   ignore_errors: yes
 
-- name: Creating User 
+- name: Creating User
   user:
     name: "{{ hadoop_user }}"
     state: present
@@ -11,7 +11,7 @@
     shell: /bin/bash
 
 - name: Remove previous Vars
-  lineinfile:    
+  lineinfile:
     dest: "/home/{{ hadoop_user }}/.bashrc"
     line: source /etc/profile
     state: absent
@@ -21,7 +21,7 @@
     dest: "/home/{{ hadoop_user }}/.bashrc"
     line: source /etc/profile
     state: present
-    
+
 - name: Create Hadoop deployment directory
   file:
     path: "{{ hadoop_dir }}"
@@ -63,5 +63,10 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
 
-
-
+- name: Create service directory
+  file:
+    path: "{{ hadoop_dir }}/services"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: 0755

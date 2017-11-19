@@ -1,9 +1,33 @@
 ---
-- name: Get the 60% of total ram for Yarn
-  shell: "echo $((60*{{ ansible_memtotal_mb }}/100))"
-  register: ram_60_prc
-  when:  "{{ groups['hadoop_cluster']|length }} == 1"
+- name: Collect Memory of all servers
+  set_fact: indivisual_ram="{{ hostvars[item]['ansible_memtotal_mb'] }}"
+  with_items: "{{ groups['hdfscluster'] }}"
+  register: ram_result
 
+- name: Make a list of collected memory
+  set_fact: memory_list="{{ ram_result.results | map(attribute='ansible_facts.indivisual_ram') | list }}"
+
+- name: Compute total memmory of server
+  set_fact: total_ram="{{ memory_list  | map('int') | sum(start=0) }}"
+
+#  - debug: var=total_ram
+
+- name: Collect CPU of all servers
+  set_fact: indivisual_cpu_count="{{ hostvars[item]['ansible_processor_vcpus'] }}"
+  with_items: "{{ groups['hdfscluster'] }}"
+  register: cpu_result
+
+- name: Make a list of collected cpu count
+  set_fact: cpu_list="{{ cpu_result.results | map(attribute='ansible_facts.indivisual_cpu_count') | list }}"
+
+- name: Compute total cpu count
+  set_fact: total_cpu_count="{{ cpu_list | map('int') | sum(start=0) }}"
+
+#  - debug: var=total_cpu_count
+
+- name: Get the 60% of total ram for Yarn
+  shell: "echo $((60*{{ total_ram }}/100))"
+  register: ram_60_prc
 
 
 - include: hadoop.yml

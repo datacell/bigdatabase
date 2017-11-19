@@ -1,5 +1,4 @@
 ---
-- debug: msg={{ webserver_user }}
 - name: Create webserver HDFS user directory
   shell: "source /etc/profile && hadoop fs -mkdir -p /usr/{{ webserver_user }}"
   args:
@@ -29,4 +28,3 @@
   shell: "source /etc/profile && hadoop fs -chown {{ webserver_user }}:{{ webserver_user }} {{ webserver_hdfs_path }}"
   args:
      executable: /bin/bash
-

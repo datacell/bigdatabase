@@ -14,12 +14,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               { :play => "webserver" } ]
 
     #Yarn scheduler                         8088
+    #Map Reduce Job History Server          19888
     #Spark History Server                   18088
     #Spark Master Web UI Port server        18080
     #Spark worker Web UI Port               18081
     #Spark Job ports                        4040..4044
     #Unassigned ports for external feature  5800..5803
-    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 4040, 4041, 4042, 4044 ]
+    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044 ]
 
     ### Define which linux box need to be used###
     #config.vm.box = "centos/7"
@@ -32,12 +33,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
-    config.vm.define  "albus#{i}" do |node|
-        node.vm.hostname="albus#{i}"
+    config.vm.define  "albus" do |node|
+        node.vm.hostname="albus"
         node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "albus#{i}"
+          v.name =  "albus"
           v.memory = 8192
           v.cpus = 2
         end

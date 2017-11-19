@@ -1,3 +1,5 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
 {% for host in groups['hadoop_cluster'] %}
 {{ hostvars[host]['ansible_fqdn'] }}
+
 {% endfor %}
