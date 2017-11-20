@@ -1,3 +1,3 @@
 export SPARK_HOME={{ hadoop_dir }}/{{ spark_expended_version }}
 export PATH=$SPARK_HOME/bin:$PATH
-export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-*-src.zip:$SPARK_HOME/python/lib/pyspark.zip:$PYTHONPATH
+export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/{{ Py4J_src_file.stdout }}:$SPARK_HOME/python/lib/pyspark.zip:$PYTHONPATH
