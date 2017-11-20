@@ -1,0 +1,10 @@
+---
+phantomjsstat: "{{ stat_dir }}/phantomjs-stat"
+phantomjs_profile_path: /etc/profile.d/phantomjs.sh
+phantomjs_install_path: /opt/phantomjs
+phantomjs_version: 1.9.8
+phantomjs_expanded_version: "phantomjs-{{ phantomjs_version }}-linux-x86_64"
+phantomjs_archive: "{{ phantomjs_expanded_version }}.tar.bz2"
+phantomjs_local_dir: "{{ package_download_dir }}/phantomjs"
+phantomjs_local_path: "{{ phantomjs_local_dir }}/{{ phantomjs_archive }}"
+phantomjs_mirror_download: "https://bitbucket.org/ariya/phantomjs/downloads/{{ phantomjs_archive }}"

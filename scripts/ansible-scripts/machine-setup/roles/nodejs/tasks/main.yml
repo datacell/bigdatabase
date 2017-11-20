@@ -52,9 +52,14 @@
     with_items:
       - { name: 'stylus' }
 
-    
+  - name: Remove NPM http proxy
+    shell: "source /etc/profile && npm config delete http-proxy -g"
+    args:
+     executable: /bin/bash
 
+  - name: Remove NPM https proxy
+    shell: "source /etc/profile && npm config delete https-proxy -g"
+    args:
+     executable: /bin/bash
   - file: path={{ nodestat }} state=touch
   when: not nodestatflag.stat.exists
-
-

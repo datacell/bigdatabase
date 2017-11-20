@@ -47,3 +47,10 @@
   become_method: sudo
   roles:
   - nodejs
+
+- name: Install PhantomJS module
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - phantomjs
