@@ -14,9 +14,6 @@
 
   - name: Downloading Hive please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ hive_local_path }} {{ hive_mirror_download }}"
-    #get_url:
-    #  url: "{{ hive_mirror_download }}"
-    #  dest: "{{ hive_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not hive_stat.stat.exists

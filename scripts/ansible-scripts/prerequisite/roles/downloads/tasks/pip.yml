@@ -14,9 +14,6 @@
 
   - name: Downloading PIP please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ pip_local_path }} {{ pip_mirror_download }}"
-    #get_url:
-    #  url: "{{ pip_mirror_download }}"
-    #  dest: "{{ pip_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not pip_pkg_stat.stat.exists
@@ -30,12 +27,6 @@
 
   - name: Downloading Distribute please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ dist_local_path }} {{ dist_mirror_download }}"
-    #get_url:
-    #  url: "{{ dist_local_path }}"
-    #  dest: "{{ dist_mirror_download }}"
   environment:
      "{{ proxy_env }}"
   when: not dist_pkg_stat.stat.exists
-
-
-

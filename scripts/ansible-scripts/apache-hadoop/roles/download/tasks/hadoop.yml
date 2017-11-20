@@ -14,9 +14,6 @@
 
   - name: Downloading Hadoop please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ hadoop_local_path }} {{ hadoop_mirror_download }}"
-    #get_url:
-    #  url: "{{ hadoop_mirror_download }}"
-    #  dest: "{{ hadoop_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not hadoop_stat.stat.exists

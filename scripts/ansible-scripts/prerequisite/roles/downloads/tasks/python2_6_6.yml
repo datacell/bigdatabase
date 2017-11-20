@@ -20,9 +20,6 @@
 
   - name: Downloading Python please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ python_local_path }} {{ python_mirror_download }}"
-    #get_url:
-    #  url: "{{ python_mirror_download }}"
-    #  dest: "{{ python_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: "{{ python_cur_version_value.stdout | version_compare('2.6.5', '<=') }}"

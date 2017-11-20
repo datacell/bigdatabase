@@ -22,16 +22,9 @@
                  }
     when: proxy_optional
 
-#  - name: Removing proxy info
-#    set_fact: proxy_env={}
-#    when: not proxy_optional
-
 - name: Setup Hadoop prerequesite
   hosts: hadoop_namenode
   become: yes
   become_method: sudo
   roles:
   - startHadoopService
-
-
-

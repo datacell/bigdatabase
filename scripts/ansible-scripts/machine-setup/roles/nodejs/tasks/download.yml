@@ -14,10 +14,6 @@
 
   - name: Downloading NodeJs please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ node_local_path }} {{ node_mirror_download }}"
-    #get_url:
-    #  url: "{{ node_mirror_download }}"
-    #  dest: "{{ node_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not nodejs_stat.stat.exists
-
