@@ -14,9 +14,6 @@
 
   - name: Downloading Git please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ git_local_path }} {{ git_mirror_download }}"
-    #get_url:
-    #  url: "{{ git_mirror_download }}"
-    #  dest: "{{ git_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not git_stat.stat.exists

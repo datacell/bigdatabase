@@ -14,9 +14,6 @@
 
   - name: Downloading Spark please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ spark_local_path }} {{ spark_mirror_download }}"
-    #get_url:
-    #  url: "{{ spark_mirror_download }}"
-    #  dest: "{{ spark_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not spark_stat.stat.exists

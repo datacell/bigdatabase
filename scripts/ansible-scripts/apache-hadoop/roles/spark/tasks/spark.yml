@@ -4,6 +4,9 @@
 - name: Extract Spark
   unarchive: src={{ spark_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
 
+- name: Get Py4J file name
+  shell: "ls {{ hadoop_dir }}/{{ spark_expended_version }}/python/lib/ | grep py4j | grep src.zip"
+  register: Py4J_src_file
 
 - name: Create Event log directory directory
   file:
@@ -118,4 +121,3 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   when: not spark_shuffle_stat.stat.exists
-

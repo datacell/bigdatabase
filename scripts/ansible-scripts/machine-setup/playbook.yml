@@ -14,12 +14,6 @@
                  }
     when: proxy_optional
 
-  - name: Removing proxy info
-    set_fact: proxy_env={}
-    when: not proxy_optional
-
-
-
 - name: Gathering Facts
   hosts: all
   gather_facts: yes
@@ -32,7 +26,7 @@
   become_method: sudo
   roles:
   - { role: postgresql, when: psql_optional }
-  environment: 
+  environment:
     "{{ proxy_env }}"
 
 
@@ -54,4 +48,9 @@
   roles:
   - nodejs
 
-
+- name: Install PhantomJS module
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - phantomjs

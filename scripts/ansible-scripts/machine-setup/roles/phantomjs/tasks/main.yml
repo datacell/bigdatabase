@@ -1,0 +1,23 @@
+---
+
+- name: Check if PhantomJs module executed
+  stat: path={{ phantomjsstat }}
+  register: phantomjsstatflag
+
+
+- block:
+  - include: download.yml
+    environment:
+      "{{ proxy_env }}"
+
+  - name: Create PhantomJs Dir
+    file: path={{ phantomjs_install_path }} state=directory
+
+  - name: Extract PhantomJS
+    unarchive: src={{ phantomjs_local_path }} dest={{ phantomjs_install_path }} remote_src=yes
+
+  - name: Set PhantomJS Vars
+    template: src=phantomjs_path.j2 dest={{ phantomjs_profile_path }} mode=0755
+
+  - file: path={{ phantomjsstat }} state=touch
+  when: not phantomjsstatflag.stat.exists

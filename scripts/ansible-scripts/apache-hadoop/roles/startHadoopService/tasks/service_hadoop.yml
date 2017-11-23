@@ -13,12 +13,6 @@
   with_items: "{{ groups['hadoop_seconday_namenode'] }}"
 
 
-- name: Start resource manager service
-  shell: "{{ hadoop_services_dir }}/service-resource-manager.sh"
-  args:
-    executable: /bin/bash
-
-
 - name: Start datanode service
   shell: "{{ hadoop_services_dir }}/service-datanode.sh"
   args:
@@ -27,9 +21,20 @@
   with_items: "{{ groups['hadoop_datanodes'] }}"
 
 
+- name: Start resource manager service
+  shell: "{{ hadoop_services_dir }}/service-resource-manager.sh"
+  args:
+    executable: /bin/bash
+
+
 - name: Start node manager service
   shell: "{{ hadoop_services_dir }}/service-nodemanager.sh"
   args:
     executable: /bin/bash
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_datanodes'] }}"
+
+- name: Start Job History service
+  shell: "{{ hadoop_services_dir }}/service-mr-job-history.sh"
+  args:
+    executable: /bin/bash

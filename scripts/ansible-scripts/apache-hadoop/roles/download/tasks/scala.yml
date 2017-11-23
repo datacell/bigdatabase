@@ -14,9 +14,6 @@
 
   - name: Downloading Scala please wait it may take several minutes depending upon bandwidth
     shell: "wget -O {{ scala_local_path }} {{ scala_mirror_download }}"
-    #get_url:
-    #  url: "{{ scala_mirror_download }}"
-    #  dest: "{{ scala_local_path }}"
   environment:
      "{{ proxy_env }}"
   when: not scala_stat.stat.exists

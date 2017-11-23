@@ -6,6 +6,8 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start namenode service
   shell: "{{ hadoop_services_dir }}/service-namenode.sh"
@@ -20,7 +22,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_seconday_namenode'] }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start secondary namenode service
   shell: "{{ hadoop_services_dir }}/service-secondary-namenode.sh"
@@ -28,20 +30,6 @@
     executable: /bin/bash
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_seconday_namenode'] }}"
-
-- name: Copy resource manager service script
-  template:
-    src: service-resource-manager.j2
-    dest: "{{ hadoop_services_dir }}/service-resource-manager.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-
-- name: Start resource manager service
-  shell: "{{ hadoop_services_dir }}/service-resource-manager.sh"
-  args:
-    executable: /bin/bash
-
 
 - name: Copy datanode service
   template:
@@ -51,7 +39,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_datanodes'] }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start datanode service
   shell: "{{ hadoop_services_dir }}/service-datanode.sh"
@@ -59,6 +47,22 @@
     executable: /bin/bash
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_datanodes'] }}"
+
+
+- name: Copy resource manager service script
+  template:
+    src: service-resource-manager.j2
+    dest: "{{ hadoop_services_dir }}/service-resource-manager.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- name: Start resource manager service
+  shell: "{{ hadoop_services_dir }}/service-resource-manager.sh"
+  args:
+    executable: /bin/bash
 
 - name: Copy node manager service
   template:
@@ -68,7 +72,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_datanodes'] }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start node manager service
   shell: "{{ hadoop_services_dir }}/service-nodemanager.sh"
@@ -77,6 +81,22 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_datanodes'] }}"
 
+- name: Copy Job History service
+  template:
+    src: service-mr-job-history.j2
+    dest: "{{ hadoop_services_dir }}/service-mr-job-history.sh"
+    mode: 0755
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
+
+- name: Start Job History service
+  shell: "{{ hadoop_services_dir }}/service-mr-job-history.sh"
+  args:
+    executable: /bin/bash
+
+
 - name: Copy service to start all Hadoop services
   template:
     src: service-all-hadoop.j2
@@ -84,5 +104,7 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hadoop_clients'] }}"
 
 ######################################################################################

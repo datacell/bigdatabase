@@ -1,0 +1,19 @@
+---
+- name: Create PhantomJs Download location
+  file:
+    path: "{{ phantomjs_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if PhantomJs is available locally
+  stat: path="{{ phantomjs_local_path }}"
+  register: phantomjs_stat
+
+- block:
+  - debug: msg="Requested PhantomJs package is not available locally. Will download {{ phantomjs_archive }}"
+
+  - name: Downloading PhantomJs please wait it may take several minutes depending upon bandwidth
+    shell: "wget -O {{ phantomjs_local_path }} {{ phantomjs_mirror_download }}"
+  environment:
+     "{{ proxy_env }}"
+  when: not phantomjs_stat.stat.exists

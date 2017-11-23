@@ -33,6 +33,11 @@ albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 [spark_slaves]
 albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
+[hdfscluster:children]
+hadoop_namenode
+hadoop_seconday_namenode
+hadoop_datanodes
+
 
 [hadoop_cluster:children]
 hadoop_namenode

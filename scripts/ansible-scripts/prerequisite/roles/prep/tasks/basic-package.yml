@@ -11,6 +11,8 @@
     - sshpass
     - gettext
     - unzip
+    - fontconfig
+    - bzip2
 
 - name: Install Basic packages for RedHat family
   package: name={{item}} state=latest
@@ -29,6 +31,7 @@
     - openssl-devel
     - libtool-ltdl-devel
     - epel-release
+    - freetype
   when: ansible_os_family == 'RedHat'
 
 - name: Install packages on RedHat family for version 6.x
@@ -66,4 +69,5 @@
     - libpq-dev
     - libx11-dev
     - build-essential
+    - libfreetype6-dev
   when: ansible_os_family == 'Debian'
