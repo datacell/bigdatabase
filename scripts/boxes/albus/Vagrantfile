@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ### Define which linux box need to be used###
     config.vm.box = "shareinsights/albus"
-    config.vm.box_version = "1.0.0"
+    config.vm.box_version = "1.0.1"
 
     #Define port forwarding
     ports.each do |port|
