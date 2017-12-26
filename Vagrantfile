@@ -45,11 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.disksize.size = "#{root_disk_size}GB"
 
     config.vm.define  "#{server_initials}-#{current_version}" do |node|
-        node.vm.hostname="#{server_initials}-#{current_version}"
+        node.vm.hostname="#{server_initials}"
         node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "#{server_initials}-#{current_version}"
+          v.name =  "#{server_initials}"
           v.memory = 8192
           v.cpus = 2
         end
