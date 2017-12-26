@@ -15,6 +15,8 @@ get_url_proxy_env:
 custom_ip_check: True
 custom_ip_map_start: 205.28.128
 
+build_name_: albus
+build_version_: 1.0.2
 
 package_download_dir: /vagrant/resources
 #Status file dir
@@ -27,10 +29,10 @@ webserver_hdfs_path: /vagrant
 
 #Python
 setup_anaconda: True                             #Options True|False
-anaconda_python_version : 2                      #Options 2|3
+anaconda_python_version: 2                       #Options 2|3
 anaconda_version: 5.0.1
 anaconda_parent_dir: /opt
-anaconda_make_sys_default : True                 #Options True|False
+anaconda_make_sys_default: True                  #Options True|False
 
 
 #NodeJs
@@ -40,7 +42,13 @@ node_version: 8.9.0
 postgresql_port: 5432
 psqlUser: root
 psqlPassword: root
-psql_optional: True
+setup_psql: True                                 #Options True
+
+
+#redis
+redis_port: 6379
+setup_redis: True                                #Options True|False
+
 
 #Hadoop Cluster Deployment
 # Hadoop Deployment user

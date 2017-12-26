@@ -10,7 +10,7 @@
 ############ pg_hba.conf STARTS ############
 - name: Configure 0.0.0.0 to md5 auth-method in pg_hba.conf
   lineinfile:
-    dest: "{{ph_hba_conf}}"
+    dest: "{{ ph_hba_conf }}"
     insertbefore: "^# IPv6 local connections:"
     line: "host\tall\t\tall\t\t0.0.0.0/0\t\tmd5"
     state: present
@@ -20,15 +20,15 @@
   register: allips
 
 - name: Remove previous entry of all-ipaddr in pg_hba.conf
-  shell: 'sed -i "s/^host.*.{{ item }}.*.trust$//g" {{ph_hba_conf}}'
+  shell: 'sed -i "s/^host.*.{{ item }}.*.trust$//g" {{ ph_hba_conf }}'
   with_items: "{{ allips.stdout_lines }}"
 
 - name: Remove local host from pg_hba.conf
-  shell: 'sed -i "s/^host.*.{{ item }}.*//g" {{ph_hba_conf}}'
+  shell: 'sed -i "s/^host.*.{{ item }}.*//g" {{ ph_hba_conf }}'
   with_items: "127.0.0.1"
 
 - name: Remove empty lines from pg_hba.conf
-  shell: 'sed -i "/^\s*$/d" {{ph_hba_conf}}'
+  shell: 'sed -i "/^\s*$/d" {{ ph_hba_conf }}'
 
 - name: Fetch pg_hba entries
   shell: cat /tmp/pg_hba
@@ -36,14 +36,14 @@
 
 - name: Configure local host in pg_hba.conf
   lineinfile:
-    dest: "{{ph_hba_conf}}"
+    dest: "{{ ph_hba_conf }}"
     insertafter: "^# IPv4 local connections:"
     line: "host      all        all      127.0.0.1/32     trust"
     state: present
 
 - name: Configure all-ipaddr to trust auth-method in pg_hba.conf
   lineinfile:
-    dest: "{{ph_hba_conf}}"
+    dest: "{{ ph_hba_conf }}"
     insertafter: "^# IPv4 local connections:"
     line: "{{ pg_hba_entry.stdout }}"
     state: present
@@ -83,7 +83,7 @@
 
 - name: Configure log_rotation_age in postgresql.conf
   lineinfile:
-    dest: "{{postgresql_conf}}"
+    dest: "{{ postgresql_conf }}"
     regexp: ^#?log_rotation_age =.*
     line: "log_rotation_age = 60"
 

@@ -13,6 +13,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               { :play => "apache-hadoop" },
               { :play => "webserver" } ]
 
+    #Define root disk drive size in GB. Please check any limitations at https://github.com/sprotheroe/vagrant-disksize
+    root_disk_size = 150
+
+    #Define machine name initials. This will compromise in hostname as well
+    server_initials = "albus"
+
+    #Current version
+    current_version = "1-0-2"
+
     #Yarn scheduler                         8088
     #Map Reduce Job History Server          19888
     #Spark History Server                   18088
@@ -33,12 +42,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
-    config.vm.define  "albus" do |node|
-        node.vm.hostname="albus"
+    config.disksize.size = "#{root_disk_size}GB"
+
+    config.vm.define  "#{server_initials}-#{current_version}" do |node|
+        node.vm.hostname="#{server_initials}"
         node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "albus"
+          v.name =  "#{server_initials}"
           v.memory = 8192
           v.cpus = 2
         end

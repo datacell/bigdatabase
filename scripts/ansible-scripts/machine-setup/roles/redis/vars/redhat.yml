@@ -1,0 +1,6 @@
+---
+redis_config_path: /etc
+redis_conf_file: "{{ redis_config_path }}/{{ redis_conf_file_name }}"
+redis_packages:
+  - redis
+redis_daemon: redis

@@ -1,6 +1,6 @@
 # Front load the includes
 Vagrant.configure("2") do |config|
-  config.vm.base_mac = "0251174123CB"
+  config.vm.base_mac = "0293061CA64F"
   config.ssh.username = "ubuntu"
-  config.ssh.password = "e8bb3725de7d875df8a31f40"
+  config.ssh.password = "379a8188cba8c5e64b9a429f"
 end
