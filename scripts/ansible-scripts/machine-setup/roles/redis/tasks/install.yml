@@ -1,0 +1,5 @@
+---
+
+- name: Install Redis
+  package: name={{ item }} state=latest
+  with_items: "{{ redis_packages }}"
