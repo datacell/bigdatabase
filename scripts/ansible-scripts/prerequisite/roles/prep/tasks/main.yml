@@ -1,4 +1,21 @@
 
+---
+- name: Place the build version file
+  template:
+    src: build_version.j2
+    dest: /var/.box.build.version
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Place the script file to get the box version
+  template:
+    src: get_box_build_version.j2
+    dest: /var/box.version.sh
+    mode: 0755
+    owner: root
+    group: root
+
 - include: check-prep.yml
 
 - block:
@@ -23,5 +40,3 @@
     include: apparmor.yml
   - file: path={{ selinuxstat }} state=touch
   when: (not selinuxflag.stat.exists) and (ansible_os_family=="Debian")
-
-
