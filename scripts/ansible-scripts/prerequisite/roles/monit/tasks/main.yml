@@ -1,0 +1,12 @@
+---
+
+- name: Check if Monit module executed
+  stat: path={{ monitstat }}
+  register: monitstatflag
+
+- block:
+  - name: Install monitstat
+    include: monit.yml
+
+  - file: path={{ monitstat }} state=touch
+  when: not monitstatflag.stat.exists

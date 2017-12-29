@@ -4,7 +4,14 @@ Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    ###Define the starting node number.
+    #This will consume in computing last fraction of IP as well
+    ip_last_fraction_address = 206
+
+    #Define machine name initials. This will compromise in hostname as well
+    server_initials = "albus"
+
+    #Current version
+    current_version = "1-0-2"
 
     #Yarn scheduler                         8088
     #Map Reduce Job History Server          19888
@@ -17,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ### Define which linux box need to be used###
     config.vm.box = "shareinsights/albus"
-    config.vm.box_version = "1.0.1"
+    config.vm.box_version = "1.0.2"
 
     #Define port forwarding
     ports.each do |port|
@@ -26,12 +33,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
-    config.vm.define  "albus" do |node|
-        node.vm.hostname="albus"
-        node.vm.network :private_network, ip: "205.28.128.206"
+    config.vm.define  "#{server_initials}-#{current_version}" do |node|
+        node.vm.hostname="#{server_initials}"
+        node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "albus"
+          v.name =  "#{server_initials}-#{current_version}"
           v.memory = 8192
           v.cpus = 2
           v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
@@ -41,4 +48,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Start the Hadoop service for every time vagrant command executed.
     config.vm.provision "shell", run: "always", inline: "sudo jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
     config.vm.provision "shell", run: 'always', inline: "/bin/bash /opt/service-start-cluster.sh"
+    #Show box version
+    config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
 end

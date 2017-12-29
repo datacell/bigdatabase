@@ -4,8 +4,7 @@ Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    ###Define the starting node number.
-    i = 1
+
     #This will consume in computing last fraction of IP as well
     ip_last_fraction_address = 206
     plays = [ { :play => "prerequisite" },
@@ -49,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
 
         node.vm.provider "virtualbox" do |v|
-          v.name =  "#{server_initials}"
+          v.name =  "#{server_initials}-#{current_version}"
           v.memory = 8192
           v.cpus = 2
         end
@@ -88,4 +87,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
         startService.inventory_path = "inventory/inventory"
     end
+    #Show box version
+    config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
 end
