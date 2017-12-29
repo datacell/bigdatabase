@@ -98,9 +98,9 @@
   roles:
   - jdk
 
-
 - name: Install Monit
   hosts: webserver
   become: yes
   become_method: sudo
-  - { role: monit, when: setup_monit }
+  roles:
+    - { role: monit, when: setup_monit }
