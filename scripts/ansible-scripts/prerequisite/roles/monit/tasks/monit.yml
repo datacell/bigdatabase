@@ -34,5 +34,9 @@
   file: path=/etc/monit.d state=directory owner=root group=root mode=0755
   when: ansible_os_family == 'Debian'
 
+- name: Create log directory
+  file: path={{ logDir }}/monit state=directory owner=root group=root mode=0755
+
+
 - name: Starting Monit and Enable to start on reboot
   service: name=monit state=started enabled=yes
