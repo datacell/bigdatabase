@@ -3,8 +3,11 @@
 Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+require 'yaml'
+vars_file = "vars/vars.yml"
+ansible_config = YAML::load_file("#{File.dirname(File.expand_path(__FILE__))}/#{vars_file}")
 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #This will consume in computing last fraction of IP as well
     ip_last_fraction_address = 206
     plays = [ { :play => "prerequisite" },
@@ -16,10 +19,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     root_disk_size = 150
 
     #Define machine name initials. This will compromise in hostname as well
-    server_initials = "albus"
+    server_initials = ansible_config["build_name_"]
 
     #Current version
-    current_version = "1-0-2"
+    current_version = ansible_config["build_version_"]
 
     #Yarn scheduler                         8088
     #Map Reduce Job History Server          19888
