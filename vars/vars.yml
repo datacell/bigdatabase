@@ -35,6 +35,10 @@ anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
 
+#monit
+setup_monit: False                               #Options True|False
+
+
 #NodeJs
 node_version: 8.9.0
 

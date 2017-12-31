@@ -1,0 +1,42 @@
+---
+- name: Install monit
+  package: name=monit state=latest
+
+- name: Configure monit service on RedHat familiy Version 7
+  file: path=/etc/monitrc state=absent
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- name: Copy monit config file for RedHat familiy Version 7
+  template: src=monitrc_config.j2 dest=/etc/monitrc backup=yes mode=0700
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- name: Configure monit service on RedHat familiy Version 6
+  file: path=/etc/monit.conf state=absent
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+
+- name: Copy monit config file for RedHat familiy Version 6
+  template: src=monitrc_config.j2 dest=/etc/monit.conf backup=yes mode=0700
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+
+- name: Removing default files in /etc/monit.d/ dir
+  shell: rm -f /etc/monit.d/*
+  when: "ansible_os_family == 'RedHat'"
+
+- name: Remove /etc/monit/monitrc from Debian based system
+  file: path=/etc/monit/monitrc state=absent
+  when: ansible_os_family == 'Debian'
+
+- name: Copy monitrc on Debian based system
+  template: src=monitrc_config.j2 dest=/etc/monit/monitrc owner=root group=root mode=0700
+  when: ansible_os_family == 'Debian'
+
+- name: Create /etc/monit.d
+  file: path=/etc/monit.d state=directory owner=root group=root mode=0755
+  when: ansible_os_family == 'Debian'
+
+- name: Create log directory
+  file: path={{ logDir }}/monit state=directory owner=root group=root mode=0755
+
+
+- name: Starting Monit and Enable to start on reboot
+  service: name=monit state=started enabled=yes
