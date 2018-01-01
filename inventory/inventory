@@ -2,6 +2,10 @@
 albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
+[redis]
+albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+
+
 [git]
 albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
