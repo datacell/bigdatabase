@@ -1,2 +1,2 @@
 ---
-monitstat: "{{ stat_dir }}/git-stat"
+monitstat: "{{ stat_dir }}/monit-stat"
