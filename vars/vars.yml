@@ -15,8 +15,8 @@ get_url_proxy_env:
 custom_ip_check: True
 custom_ip_map_start: 205.28.128
 
-build_name_: albus
-build_version_: 1.0.2
+build_name_: barty
+build_version_: 1.0.0
 
 package_download_dir: /vagrant/resources
 #Status file dir
@@ -60,10 +60,10 @@ hadoop_user: hadoop
 hadoop_dir: /opt/hadoop
 
 #Hadoop
-hadoop_version: 2.7.4
+hadoop_version: 2.7.2
 
 #Hive
-hive_version: 1.2.2
+hive_version: 1.2.1
 hive_database_name: hive
 hive_user: root
 hive_password: root
@@ -77,7 +77,7 @@ scala_version: 2.11.6
 
 
 #Spark
-spark_version: 2.1.1
+spark_version: 1.6.0
 spark_hadoop_verson: 2.7
 #Verify the avalable version file at
 #http://archive.apache.org/dist/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop{{ spark_hadoop_verson }}.tgz

@@ -85,7 +85,7 @@
 
 
 - name: Install Git
-  hosts: git
+  hosts: git_client
   become: yes
   become_method: sudo
   roles:
