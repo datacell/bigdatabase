@@ -1,41 +1,47 @@
 [webserver]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [redis]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [git]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [postgresql]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_namenode]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_seconday_namenode]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hadoop_datanodes]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [hive]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_master]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 
 [spark_slaves]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+
+
+[git_client:children]
+git
+webserver
+
 
 [hdfscluster:children]
 hadoop_namenode

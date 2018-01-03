@@ -2,3 +2,4 @@
 resources
 *.retry
 ubuntu-xenial*.log
+vboxhdds
