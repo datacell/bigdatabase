@@ -54,6 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           v.name =  "#{server_initials}-#{current_version}"
           v.memory = 8192
           v.cpus = 2
+          v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
         end
     end
 
