@@ -12,7 +12,7 @@
 
   - name: Stop execution if locale does not support UTF8 characters
     fail: msg="Please update locale settings to support UTF8 characters"
-    when: "{{ pgsql_locale.matched }} == 0"
+    when: "{{pgsql_locale.matched}} == 0"
   when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
 
 - block:
@@ -22,7 +22,7 @@
 
    - name: Stop execution if locale does not support UTF8 characters
      fail: msg="Please update locale settings to support UTF8 characters"
-     when: "{{ pgsql_locale.matched }} == 0"
+     when: "{{pgsql_locale.matched}} == 0"
   when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
 
 - block:
@@ -32,6 +32,6 @@
 
    - name: Stop execution if locale does not support UTF8 characters
      fail: msg="Please update locale settings to support UTF8 characters"
-     when: "{{ pgsql_locale.matched }} == 0"
+     when: "{{pgsql_locale.matched}} == 0"
   when: ansible_os_family == 'Debian'
 ##################################################################################

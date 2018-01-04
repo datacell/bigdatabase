@@ -1,5 +1,5 @@
 ---
-- name: Collect Memory of all servers
+- name: Collect Memory of all HDFS servers
   set_fact: indivisual_ram="{{ hostvars[item]['ansible_memtotal_mb'] }}"
   with_items: "{{ groups['hdfscluster'] }}"
   register: ram_result

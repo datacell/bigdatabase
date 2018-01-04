@@ -25,11 +25,19 @@
   become: yes
   become_method: sudo
   roles:
-  - { role: postgresql, when: psql_optional }
+  - { role: postgresql, when: setup_psql }
   environment:
     "{{ proxy_env }}"
 
 
+- name: Install Redis
+  hosts: redis
+  become: yes
+  become_method: sudo
+  roles:
+  - { role: redis, when: setup_redis }
+  environment:
+    "{{ proxy_env }}"
 
 - name: Install Python packages
   hosts: webserver

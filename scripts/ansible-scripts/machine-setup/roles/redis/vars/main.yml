@@ -1,0 +1,5 @@
+---
+ports: "{{ redis_port }}"
+redis_conf_file_name: redis.conf
+redis_pid_path: /var/run/redis
+redis_pid: "{{ redis_pid_path }}/redis.pid"

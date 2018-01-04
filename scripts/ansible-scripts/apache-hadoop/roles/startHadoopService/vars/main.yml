@@ -1,3 +1,4 @@
 ---
 hadoop_services_dir: "{{ hadoop_dir }}/services"
 startup_script_init: /opt/service-start-cluster.sh
+num_nodes: "{{ groups['hadoop_cluster']|length }}"

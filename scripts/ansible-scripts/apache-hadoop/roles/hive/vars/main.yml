@@ -7,4 +7,4 @@ hadoop_expended_version: "hadoop-{{ hadoop_version }}"
 hive_log_dir: "{{ hadoop_dir }}/{{ hive_expended_version }}/log"
 hive_local_dir: "{{ package_download_dir }}/hive"
 hive_local_path: "{{ hive_local_dir }}/{{ hive_archive }}"
-
+num_nodes: "{{ groups['hadoop_cluster']|length }}"

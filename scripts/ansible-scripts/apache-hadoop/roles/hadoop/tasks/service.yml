@@ -6,8 +6,8 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start namenode service
   shell: "{{ hadoop_services_dir }}/service-namenode.sh"
@@ -22,7 +22,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+  with_items: "{{ groups['hadoop_seconday_namenode'] }}"
 
 - name: Start secondary namenode service
   shell: "{{ hadoop_services_dir }}/service-secondary-namenode.sh"
@@ -39,7 +39,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
 
 - name: Start datanode service
   shell: "{{ hadoop_services_dir }}/service-datanode.sh"
@@ -56,8 +56,8 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start resource manager service
   shell: "{{ hadoop_services_dir }}/service-resource-manager.sh"
@@ -72,7 +72,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
 
 - name: Start node manager service
   shell: "{{ hadoop_services_dir }}/service-nodemanager.sh"
@@ -88,8 +88,8 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Job History service
   shell: "{{ hadoop_services_dir }}/service-mr-job-history.sh"
@@ -106,5 +106,6 @@
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
+  when: num_nodes|int == 1
 
 ######################################################################################

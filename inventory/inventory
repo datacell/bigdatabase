@@ -1,43 +1,49 @@
 [webserver]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty1-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2226 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty1-2-0-0.barty.dev/virtualbox/private_key
 
 
 [git]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty1-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2226 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty1-2-0-0.barty.dev/virtualbox/private_key
 
 
 [postgresql]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty1-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2226 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty1-2-0-0.barty.dev/virtualbox/private_key
+
+
+[redis]
+barty1-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2226 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty1-2-0-0.barty.dev/virtualbox/private_key
 
 
 [hadoop_namenode]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty2-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2227 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty2-2-0-0.barty.dev/virtualbox/private_key
 
 
 [hadoop_seconday_namenode]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty3-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2228 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty3-2-0-0.barty.dev/virtualbox/private_key
 
 
 [hadoop_datanodes]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty2-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2227 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty2-2-0-0.barty.dev/virtualbox/private_key
+barty3-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2228 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty3-2-0-0.barty.dev/virtualbox/private_key
 
 
 [hive]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty2-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2227 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty2-2-0-0.barty.dev/virtualbox/private_key
 
 
 [spark_master]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty3-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2228 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty3-2-0-0.barty.dev/virtualbox/private_key
 
 
 [spark_slaves]
-albus ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+barty2-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2227 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty2-2-0-0.barty.dev/virtualbox/private_key
+barty3-2-0-0.barty.dev ansible_ssh_host=127.0.0.1 ansible_ssh_port=2228 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=.vagrant/machines/barty3-2-0-0.barty.dev/virtualbox/private_key
+
 
 [hdfscluster:children]
 hadoop_namenode
 hadoop_seconday_namenode
 hadoop_datanodes
-
 
 [hadoop_cluster:children]
 hadoop_namenode

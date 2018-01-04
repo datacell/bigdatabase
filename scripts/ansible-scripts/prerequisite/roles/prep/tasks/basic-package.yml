@@ -70,4 +70,5 @@
     - libx11-dev
     - build-essential
     - libfreetype6-dev
+    - libglu1
   when: ansible_os_family == 'Debian'

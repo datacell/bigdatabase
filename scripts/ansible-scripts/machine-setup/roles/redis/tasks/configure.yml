@@ -1,0 +1,56 @@
+---
+- name: Creating redis log directory
+  file:
+    path: "{{ logDir }}/redis/"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755
+
+- name: Modify log path for redis component in redis.conf file
+  replace:
+    dest: "{{ redis_conf_file }}"
+    regexp: 'logfile /var/log/redis/redis.log'
+    replace: 'logfile {{ logDir }}/redis/redis.log'
+
+- name: Modify binding IP address for redis component in redis.conf file
+  replace:
+    dest: "{{ redis_conf_file }}"
+    regexp: 'bind 127.0.0.1'
+    replace: 'bind 0.0.0.0'
+
+- name: Accept connections port to listen on a TCP socket for redis component in redis.conf file
+  replace:
+    dest: "{{ redis_conf_file }}"
+    regexp: 'port 6379'
+    replace: 'port {{ ports }}'
+
+- name: Set stop-writes-on-bgsave-error to no in redis.conf file
+  replace:
+    dest: "{{ redis_conf_file }}"
+    regexp: 'stop-writes-on-bgsave-error yes'
+    replace: 'stop-writes-on-bgsave-error no'
+
+- name: Set persistent off for parameters in redis.conf file
+  replace:
+    dest: "{{ redis_conf_file }}"
+    regexp: '^save '
+    replace: '#save '
+
+- name: Create pid directory
+  file: path={{ redis_pid_path }} state=directory owner=redis group=redis mode=0755
+
+#Hack for generating PID in CentOS 7 (Redis - CentOS 7 PID file known bug)
+- block:
+  - name: Configure Redis service to Create pid file on start
+    lineinfile:
+      dest: /usr/lib/systemd/system/redis.service
+      insertafter: "^ExecStart="
+      line: 'ExecStartPost=/usr/bin/sh -c "pgrep redis > {{ redis_pid }}"'
+
+  - name: Configure Redis service to Delete pid file on stop
+    lineinfile:
+      dest: /usr/lib/systemd/system/redis.service
+      insertafter: "^ExecStop="
+      line: 'ExecStopPost=/usr/bin/rm -f {{ redis_pid }}'
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"

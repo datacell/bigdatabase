@@ -1,4 +1,0 @@
----
-- name: Setting up service monitoring for postgresql
-  monit: name=postgresql path="{{ pid_postgresql_path }}"
-  notify: Restart monit
