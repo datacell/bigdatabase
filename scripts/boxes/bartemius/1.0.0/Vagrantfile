@@ -41,5 +41,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Start the Hadoop service for every time vagrant command executed.
     config.vm.provision "shell", run: "always", inline: "sudo jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
     config.vm.provision "shell", run: "always", inline: "/bin/bash /opt/service-start-cluster.sh"
+    
+    #Show box version
+    config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
 end
 
