@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
-    config.vm.define  "bartemius-1.0.0" do |node|
+    config.vm.define  "bartemius" do |node|
         node.vm.hostname="bartemius"
         node.vm.network :private_network, ip: "205.28.128.206", virtualbox__intnet: true
 
