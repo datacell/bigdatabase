@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box = "shareinsights/bartemius"
     config.vm.box_version = "1.0.0"
     config.vm.box_download_insecure = true
+    config.vm.box_url = "https://app.vagrantup.com/shareinsights/boxes/bartemius"
 
     #Define port forwarding
     ports.each do |port|
@@ -26,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     
-    config.vm.define  "bartemius" do |node|
+    config.vm.define  "bartemius-1.0.0" do |node|
         node.vm.hostname="bartemius"
         node.vm.network :private_network, ip: "205.28.128.206", virtualbox__intnet: true
 
