@@ -13,6 +13,7 @@
     - unzip
     - fontconfig
     - bzip2
+    - wget
 
 - name: Install Basic packages for RedHat family
   package: name={{item}} state=latest
