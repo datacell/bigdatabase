@@ -56,6 +56,7 @@
   with_items:
     - pyjnius-master
   environment:
+    JAVA_HOME: "{{ java_home.stdout }}"
     JDK_HOME: "{{ java_home.stdout }}"
   
 - name: Execute ldconfig

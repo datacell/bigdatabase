@@ -19,13 +19,6 @@
                    "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
                    "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
                  }
-
-    - name: Setting download proxy
-      set_fact:
-        get_url_proxy_env: {
-                   "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
-                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
-                 }
     when: proxy_optional
 
 
@@ -57,10 +50,10 @@
   become: yes
   become_method: sudo
   remote_user: root
-  roles:
-  - pip
   environment:
     "{{ proxy_env }}"
+  roles:
+  - pip
 
 
 - name: Download Python prerequisites on hadoop cluster

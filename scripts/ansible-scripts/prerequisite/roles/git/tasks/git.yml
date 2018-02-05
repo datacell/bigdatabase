@@ -9,13 +9,13 @@
   unarchive: src={{ git_local_path }} dest={{ git_install_path }} remote_src=yes
 
 - name: Compile Git for CentOS 7
-  shell: cd {{ git_install_path }}/git-2.0.4 ; ./configure  all
+  shell: cd {{ git_install_path }}/git-2.0.4 ; make prefix={{ git_install_path }} all
 
 - name: Make Git binary
-  shell: cd {{ git_install_path }}/git-2.0.4 ; make all
+  shell: cd {{ git_install_path }}/git-2.0.4 ; make prefix={{ git_install_path }} install
 
-- name: Copy the git to GIT_HOME bin
-  copy: remote_src=True src={{ git_install_path }}/git-2.0.4/git dest={{ git_install_path }}/bin mode=0755
+#- name: Copy the git to GIT_HOME bin
+#  copy: remote_src=True src={{ git_install_path }}/git-2.0.4/git dest={{ git_install_path }}/bin mode=0755
 
 - name: Cleanup post git build
   file: path={{ git_install_path }}/git-2.0.4 state=absent

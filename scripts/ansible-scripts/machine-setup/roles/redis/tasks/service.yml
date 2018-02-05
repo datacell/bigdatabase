@@ -4,3 +4,8 @@
 
 - name: Ensure redis is started and enabled to start at boot time.
   service: name={{ redis_daemon }} state=started enabled=yes
+  retries: 3
+  delay: 3
+  register: result
+  until: result.state == "started"
+

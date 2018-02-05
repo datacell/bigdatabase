@@ -1,0 +1,63 @@
+[webserver]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[redis]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[git]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[postgresql]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[hadoop_namenode]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[hadoop_seconday_namenode]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[hadoop_datanodes]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[hive]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[spark_master]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[spark_slaves]
+#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
+172.30.3.172
+
+[git_client:children]
+git
+webserver
+
+
+[hdfscluster:children]
+hadoop_namenode
+hadoop_seconday_namenode
+hadoop_datanodes
+
+
+[hadoop_cluster:children]
+hadoop_namenode
+hadoop_seconday_namenode
+hadoop_datanodes
+hive
+spark_master
+spark_slaves
+
+
+[hadoop_clients:children]
+hadoop_cluster
+webserver
