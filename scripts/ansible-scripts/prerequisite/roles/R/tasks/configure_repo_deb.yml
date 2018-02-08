@@ -1,0 +1,16 @@
+---
+- include_vars: "gpgkey_{{ ansible_distribution_release }}.yml"
+
+- block:
+  - name: Add an apt key by id from a keyserver
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "{{ gpg_key }}"
+      state: present
+
+  - name: Set repo
+    template: src=deb_repo.j2 dest={{ r_repo_dest }} 
+
+  - name: Update the Ubunty Repo
+    command: apt-get update
+#  when: ansible_distribution_release == 'xenial'

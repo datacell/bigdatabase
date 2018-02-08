@@ -1,0 +1,2 @@
+export R_HOME=/usr/lib64/R
+export PATH=$R_HOME/bin:$PATH

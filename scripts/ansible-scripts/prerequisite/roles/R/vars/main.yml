@@ -1,0 +1,5 @@
+---
+# vars file for R
+RStat: "{{ stat_dir }}/R-stat"
+r_repo: http://cran.rstudio.com/
+r_repo_dest: /etc/apt/sources.list.d/r.list

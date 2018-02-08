@@ -98,3 +98,12 @@
   become_method: sudo
   roles:
     - { role: monit, when: setup_monit }
+
+- name: Install R
+  hosts: all
+  become: yes
+  become_method: sudo
+  environment:
+    "{{ proxy_env }}"
+  roles:
+    - { role: R, when: setup_r }

@@ -1,0 +1,5 @@
+---
+# Check python and its components
+- name: check if R module executed
+  stat: path={{ RStat }}
+  register: RFlag

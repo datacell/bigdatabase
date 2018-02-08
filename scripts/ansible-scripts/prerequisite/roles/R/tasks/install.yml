@@ -1,0 +1,62 @@
+---
+- name: Install R on RedHat systems
+  package: name={{item}} state=latest
+  with_items:
+    - R
+    - readline-devel
+  when: ansible_os_family == 'RedHat'
+
+- name: Install R on Debian Systems
+  package: name={{item}} state=latest force=yes
+  with_items:
+    - r-base
+    - r-base-core
+    - r-base-dev
+    - lib32readline6-dev
+  when: ansible_os_family == 'Debian'
+
+- name: Update java path for Debian and RHEL Systems
+  command: R CMD javareconf
+
+- name: Install R packages
+  shell: "source /etc/profile && R -e 'install.packages(\"{{ item }}\", dependencies = TRUE, repos = \"{{ r_repo }}\")'"
+  #shell: "source /etc/profile && R -e \"install.packages('{{ item }}', dependencies = TRUE, repos = '{{ r_repo }}')\""
+  args:
+    executable: /bin/bash
+  with_items:
+    - Rcpp
+    - plyr
+    - magrittr
+    - digest
+    - memoise
+    - stringi
+    - stringr
+    - lubridate
+    - rJava
+    - kmodR
+    - reshape2
+    - Matrix
+    - cluster
+
+- name: Removing unwanted JDKs get installed by R on Redhat system Version 6.x
+  package:
+    name: 'java-1.6*'
+    state: absent
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+
+- name: Check if python is already latest
+  shell: "source /etc/profile && python --version"
+  args:
+    executable: /bin/bash
+  register: python_version
+
+- name: Check if python is already latest
+  command: echo {{python_version.stderr | replace('Python ', '')}}
+  register: version_value
+
+- debug: msg={{version_value.stdout}}
+- name: Installing RPY2 package
+  shell: "source /etc/profile && pip install rpy2==2.6.1"
+  args:
+    executable: /bin/bash
+  when: "{{ version_value.stdout | version_compare('2.7.0', '>=') }}"
