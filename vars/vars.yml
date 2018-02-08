@@ -15,7 +15,7 @@ get_url_proxy_env:
 custom_ip_check: True
 custom_ip_map_start: 205.28.128
 
-build_name_: bartemius
+build_name_: cedric
 build_version_: 1.0.0
 
 package_download_dir: /vagrant/resources
@@ -38,6 +38,8 @@ anaconda_make_sys_default: True                  #Options True|False
 #monit
 setup_monit: False                               #Options True|False
 
+#R
+setup_r: True                                    #Options True|False
 
 #NodeJs
 node_version: 8.9.0
