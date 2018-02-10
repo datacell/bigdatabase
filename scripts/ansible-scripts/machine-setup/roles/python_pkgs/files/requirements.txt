@@ -88,3 +88,5 @@ pytest-flask==0.10.0
 pytest-xdist==1.15.0
 PyAthenaJDBC==1.2.0
 pytest-mock==1.6.3
+funcsigs==1.0.2
+cx_Oracle==6.0.3
