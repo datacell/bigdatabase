@@ -41,6 +41,13 @@ setup_monit: False                               #Options True|False
 #R
 setup_r: True                                    #Options True|False
 
+#Google Chrome
+setup_google_chrome: True                        #Options True|False
+
+
+#Git
+setup_git: True                                  #Options True|False
+
 #NodeJs
 node_version: 8.9.0
 

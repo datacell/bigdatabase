@@ -82,7 +82,7 @@
   become: yes
   become_method: sudo
   roles:
-  - git
+    - { role: git, when: setup_git }
 
 
 - name: Install JDK
@@ -107,3 +107,13 @@
     "{{ proxy_env }}"
   roles:
     - { role: R, when: setup_r }
+
+- name: Install Google Chrome
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  remote_user: root
+  environment:
+    "{{ proxy_env }}"
+  roles:
+    - { role: google-chrome, when: setup_google_chrome }

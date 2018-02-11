@@ -30,8 +30,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Spark Master Web UI Port server        18080
     #Spark worker Web UI Port               18081
     #Spark Job ports                        4040..4044
+    #HDFS host port                         8020
+    #Yarn Resourcemanager Scheduler Address 8030
+    #Redis server cache                     6379
     #Unassigned ports for external feature  5800..5803
-    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044 ]
+    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044, 8020, 8030, 6379 ]
 
     ### Define which linux box need to be used###
     #config.vm.box = "centos/7"

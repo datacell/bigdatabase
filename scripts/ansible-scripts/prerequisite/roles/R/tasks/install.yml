@@ -1,13 +1,13 @@
 ---
 - name: Install R on RedHat systems
-  package: name={{item}} state=latest
+  package: name={{ item }} state=latest
   with_items:
     - R
     - readline-devel
   when: ansible_os_family == 'RedHat'
 
 - name: Install R on Debian Systems
-  package: name={{item}} state=latest force=yes
+  package: name={{ item }} state=latest force=yes
   with_items:
     - r-base
     - r-base-core
@@ -51,10 +51,10 @@
   register: python_version
 
 - name: Check if python is already latest
-  command: echo {{python_version.stderr | replace('Python ', '')}}
+  command: echo {{ python_version.stderr | replace('Python ', '') }}
   register: version_value
 
-- debug: msg={{version_value.stdout}}
+- debug: msg={{ version_value.stdout }}
 - name: Installing RPY2 package
   shell: "source /etc/profile && pip install rpy2==2.6.1"
   args:
