@@ -1,8 +1,18 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 <configuration>
  <property>
     <name>javax.jdo.option.ConnectionURL</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
     <value>jdbc:postgresql://{{hostvars[groups["hive"][0]].ansible_fqdn}}/{{ hive_database_name }}</value>
-  </property>
+{{''}}
+{% else %}
+{{''}}
+    <value>jdbc:postgresql://localhost/{{ hive_database_name }}</value>
+{{''}}
+{%- endif %}
+ </property>
 
 {% if hive_with_postgresql %}
  <property>
@@ -19,6 +29,7 @@
     <name>javax.jdo.option.ConnectionPassword</name>
     <value>{{ hive_password }}</value>
  </property>
+{{''}}
 {%- endif %}
 
  <property>
@@ -32,11 +43,25 @@
 {% if custom_ip_check %}{# Condition for private network #}
 {% for ip in hostvars[host]['ansible_all_ipv4_addresses'] %}{# Loop all private IP addreaa #}
 {%- if ip|search(custom_ip_map_start) -%}{# Condition to find custom private IP assigned to VM #}
-    <value>thrift://{{ ip }}:9083</value>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>thrift://{{ hostvars[host]['ansible_fqdn'] }}:9083</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>thrift://localhost:9083</value>
+{{''}}
+{%- endif %}
 {%- endif %}{# End of custom IP #}
 {% endfor %}{# End of inner for loop #}
 {% else %}{# Go for default IP #}
-    <value>thrift://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:9083</value>
+{{''}}
+{%- if num_nodes_local > 2 | int %}
+    <value>thrift://{{ hostvars[host]['ansible_fqdn'] }}:9083</value>
+{% else %}
+    <value>thrift://localhost:9083</value>
+{%- endif %}
+{{''}}
 {% endif %}{# End of default IP #}
 {%- endfor %}{# End of outer for loop #}
     <description>IP address (or fully-qualified domain name) and port of the metastore host</description>

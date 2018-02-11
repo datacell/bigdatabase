@@ -1,3 +1,5 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 <?xml version="1.0"?>
 <!--
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +33,32 @@
   </property>
 
   <property>
+    <name>yarn.resourcemanager.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8050</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:8050</value>
+{{''}}
+    {%- endif %}
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.scheduler.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8030</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:8030</value>
+{{''}}
+{%- endif %}
+  </property>
+
+  <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
     <value>{{ ram_60_prc.stdout }}</value>
   </property>
@@ -39,5 +67,5 @@
     <name>yarn.nodemanager.resource.cpu-vcores</name>
     <value>{{ total_cpu_count }}</value>
   </property>
-  
+
 </configuration>

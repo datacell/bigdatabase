@@ -1,3 +1,5 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
@@ -7,11 +9,27 @@
  </property>
  <property>
   <name>mapreduce.jobhistory.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
   <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:10020</value>
+{{''}}
+{% else %}
+{{''}}
+  <value>localhost:10020</value>
+{{''}}
+{%- endif %}
  </property>
  <property>
   <name>mapreduce.jobhistory.webapp.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
   <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:19888</value>
+{{''}}
+{% else %}
+{{''}}
+  <value>localhost:19888</value>
+{{''}}
+{%- endif %}
  </property>
  <property>
   <name>mapreduce.jobhistory.intermediate-done-dir</name>

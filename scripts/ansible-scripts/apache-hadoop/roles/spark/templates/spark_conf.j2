@@ -1,10 +1,20 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 #!/usr/bin/env bash
 export SPARK_MASTER_WEBUI_PORT={{ spark_master_web_ui_port }}
 export SPARK_WORKER_WEBUI_PORT={{ spark_worker_web_ui_port }}
 export SPARK_PID_DIR=${SPARK_HOME}
 export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
 export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+{%- if num_nodes_local > 2 | int %}
+{{''}}
 export HDFS_URL=hdfs://{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8020
+{{''}}
+{% else %}
+{{''}}
+export HDFS_URL=hdfs://localhost:8020
+{{''}}
+{%- endif %}
 export SPARK_LOG_DIR="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/log"
 export SPARK_WORKER_DIR="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/work"
 export SPARK_LOCAL_DIRS="{{ hadoop_dir }}/{{ spark_expended_version }}/spark/data"
