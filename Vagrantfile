@@ -101,6 +101,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #ansible.verbose = "v"
         ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
         ansible.inventory_path = "inventory/inventory"
+        ansible.extra_vars = {
+          "setup_google_chrome" => "True",
+          "setup_r" => "True",
+          "setup_git" => "True",
+          "custom_ip_check" => "True"
+        }
       end
     end
 
