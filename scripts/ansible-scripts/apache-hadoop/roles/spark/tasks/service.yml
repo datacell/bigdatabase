@@ -6,8 +6,6 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Spark Master service
   shell: "{{ spark_services_dir }}/service-spark-master.sh"
@@ -21,8 +19,6 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Spark History Server service
   shell: "{{ spark_services_dir }}/service-spark-history-server.sh"
@@ -37,7 +33,7 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
+  with_items: "{{ groups['spark_slaves'] }}"
 
 - name: Start Spark Slaves service
   shell: "{{ spark_services_dir }}/service-spark-slave.sh"
@@ -55,3 +51,4 @@
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
+  when: num_nodes|int == 1

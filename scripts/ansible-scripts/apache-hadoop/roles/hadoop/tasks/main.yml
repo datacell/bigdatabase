@@ -1,7 +1,7 @@
 ---
-- name: Collect Memory of all servers
+- name: Collect Memory of HDFS servers
   set_fact: indivisual_ram="{{ hostvars[item]['ansible_memtotal_mb'] }}"
-  with_items: "{{ groups['hdfscluster'] }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
   register: ram_result
 
 - name: Make a list of collected memory
@@ -12,9 +12,9 @@
 
 #  - debug: var=total_ram
 
-- name: Collect CPU of all servers
+- name: Collect CPU of HDFS servers
   set_fact: indivisual_cpu_count="{{ hostvars[item]['ansible_processor_vcpus'] }}"
-  with_items: "{{ groups['hdfscluster'] }}"
+  with_items: "{{ groups['hadoop_datanodes'] }}"
   register: cpu_result
 
 - name: Make a list of collected cpu count

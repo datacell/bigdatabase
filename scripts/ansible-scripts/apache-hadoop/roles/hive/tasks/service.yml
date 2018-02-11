@@ -6,8 +6,6 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Metastore service
   shell: "{{ hive_services_dir }}/service-metastore.sh"
@@ -21,8 +19,6 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Hive Server2 service
   shell: "{{ hive_services_dir }}/service-hive-server2.sh"
@@ -38,3 +34,4 @@
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
+  when: num_nodes|int == 1

@@ -4,6 +4,24 @@ Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 
 require 'yaml'
+require 'getoptlong'
+
+# Parse CLI arguments.
+opts = GetoptLong.new(
+  [ '--provider',     GetoptLong::OPTIONAL_ARGUMENT ],
+)
+
+provider='virtualbox'
+begin
+  opts.each do |opt, arg|
+    case opt
+      when '--provider'
+        provider=arg
+    end # case
+  end # each
+  rescue
+end
+
 vars_file = "vars/vars.yml"
 ansible_config = YAML::load_file("#{File.dirname(File.expand_path(__FILE__))}/#{vars_file}")
 

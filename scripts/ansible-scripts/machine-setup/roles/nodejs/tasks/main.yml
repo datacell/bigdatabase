@@ -59,6 +59,7 @@
       - { name: 'karma-chrome-launcher', version: '2.2.0' }
       - { name: 'karma-coverage', version: '1.1.1' }
       - { name: 'karma-requirejs', version: '1.1.0' }
+      - { name: 'codeceptjs', version: '1.1.4' }
 
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
