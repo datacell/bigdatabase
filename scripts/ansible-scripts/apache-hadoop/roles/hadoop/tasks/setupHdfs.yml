@@ -8,3 +8,13 @@
   shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0777 /tmp"
   args:
      executable: /bin/bash
+
+- name: Changing permission of /tmp/hadoop-yarn HDFS directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0755 /tmp/hadoop-yarn"
+  args:
+     executable: /bin/bash  
+
+- name: Changing permission of /tmp/hadoop-yarn/staging HDFS directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0755 /tmp/hadoop-yarn/staging"
+  args:
+     executable: /bin/bash  

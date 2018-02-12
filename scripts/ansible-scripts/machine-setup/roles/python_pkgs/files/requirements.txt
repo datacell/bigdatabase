@@ -55,7 +55,7 @@ cython==0.22
 paramiko==1.15.2
 networkx==1.9.1
 psycopg2==2.6.1
-numpy==1.9.2
+#numpy==1.9.2
 nltk==3.0.2
 logutils==0.3.3
 Authomatic==0.0.13
@@ -89,4 +89,4 @@ pytest-xdist==1.15.0
 PyAthenaJDBC==1.2.0
 pytest-mock==1.6.3
 funcsigs==1.0.2
-cx_Oracle==6.0.3
+cx_Oracle==6.1
