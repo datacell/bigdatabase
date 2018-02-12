@@ -39,14 +39,14 @@ anaconda_make_sys_default: True                  #Options True|False
 setup_monit: False                               #Options True|False
 
 #R
-setup_r: False                                   #Options True|False
+setup_r: True                                   #Options True|False
 
 #Google Chrome
-setup_google_chrome: False                       #Options True|False
+setup_google_chrome: True                       #Options True|False
 
 
 #Git
-setup_git: False                                 #Options True|False
+setup_git: True                                 #Options True|False
 
 #NodeJs
 node_version: 8.9.0
