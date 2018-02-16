@@ -69,11 +69,6 @@
     args:
      executable: /bin/bash
 
-  - name: Start selenium
-    shell: "source /etc/profile && nohup selenium-standalone start &"
-    args:
-     executable: /bin/bash
-
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
     args:
