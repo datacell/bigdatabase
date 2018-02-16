@@ -1,6 +1,6 @@
 ---
 
-- name: Check if NodeJs module executed
+- name: Check if NodeJs module is executed
   stat: path={{ nodestat }}
   register: nodestatflag
 
@@ -11,10 +11,10 @@
       "{{ proxy_env }}"
 
   - name: Create Node Dir
-    file: path={{ node_install_path }} state=directory
+    file: path={{ node_install_path }} state=directory owner=root group=root mode=0755
 
   - name: Extract NodeJs
-    unarchive: src={{ node_local_path }} dest={{ node_install_path }} remote_src=yes
+    unarchive: src={{ node_local_path }} dest={{ node_install_path }} remote_src=yes owner=root group=root mode=0755
 
   - name: Set Node Vars
     template: src=node_path.j2 dest={{ node_profile_path }} mode=0755
@@ -44,22 +44,41 @@
     when: not proxy_optional
 
 
-  - name: Install NPM module
-    shell: "source /etc/profile && npm install {{ item.name }}@{{ item.version }} -g"
+  - name: Install NPM modules
+    shell: "source /etc/profile && npm install {{ item.name }}{{ item.version }} -g"
     args:
      chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
      executable: /bin/bash
     with_items:
-      - { name: 'stylus', version: '0.54.5' }
-      - { name: 'karma', version: '1.4.1' }
-      - { name: 'karma-jasmine', version: '1.1.0' }
-      - { name: 'karma-chrome-launcher', version: '2.2.0' }
-      - { name: 'jasmine-core', version: '2.5.2' }
-      - { name: 'karma-cli', version: '1.0.1' }
-      - { name: 'karma-chrome-launcher', version: '2.2.0' }
-      - { name: 'karma-coverage', version: '1.1.1' }
-      - { name: 'karma-requirejs', version: '1.1.0' }
-      - { name: 'codeceptjs', version: '1.1.4' }
+      - { name: 'stylus', version: '@0.54.5' }
+      - { name: 'karma', version: '@1.4.1' }
+      - { name: 'karma-jasmine', version: '@1.1.0' }
+      - { name: 'karma-chrome-launcher', version: '@2.2.0' }
+      - { name: 'jasmine-core', version: '@2.5.2' }
+      - { name: 'karma-cli', version: '@1.0.1' }
+      - { name: 'karma-chrome-launcher', version: '@2.2.0' }
+      - { name: 'karma-coverage', version: '@1.1.1' }
+      - { name: 'requirejs', version: '@2.3.5' }
+      - { name: 'karma-requirejs', version: '@1.1.0' }
+      - { name: 'selenium-standalone', version: ''}
+      - { name: 'webdriverio', version: '@4.9.11'}
+      #- { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: ''}
+      - { name: 'request', version: ''}
+      - { name: 'js-yaml', version: ''}
+      - { name: 'fs', version: ''}
+
+
+  - name: Install selenium
+    shell: "source /etc/profile && selenium-standalone install"
+    args:
+     executable: /bin/bash
+
+
+  - name: Start selenium
+    shell: "source /etc/profile && nohup selenium-standalone start &"
+    args:
+     executable: /bin/bash
+
 
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
