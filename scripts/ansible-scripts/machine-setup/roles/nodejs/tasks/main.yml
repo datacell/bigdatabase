@@ -19,6 +19,16 @@
   - name: Set Node Vars
     template: src=node_path.j2 dest={{ node_profile_path }} mode=0755
 
+  - name: Cleaning any previous NPM http proxy
+    shell: "source /etc/profile && npm config delete http-proxy -g"
+    args:
+     executable: /bin/bash
+
+  - name: Cleaning any previous NPM https proxy
+    shell: "source /etc/profile && npm config delete https-proxy -g"
+    args:
+     executable: /bin/bash
+
   - name: Set NPM http proxy
     shell: "source /etc/profile && npm config set http-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g"
     args:
@@ -31,21 +41,8 @@
      executable: /bin/bash
     when: proxy_optional
 
-  - name: Remove NPM http proxy
-    shell: "source /etc/profile && npm config delete http-proxy -g"
-    args:
-     executable: /bin/bash
-    when: not proxy_optional
-
-  - name: Remove NPM https proxy
-    shell: "source /etc/profile && npm config delete https-proxy -g"
-    args:
-     executable: /bin/bash
-    when: not proxy_optional
-
-
   - name: Install NPM modules
-    shell: "source /etc/profile && npm install {{ item.name }}{{ item.version }} -g"
+    shell: "sudo su - root -c 'npm install {{ item.name }}{{ item.version }} -g'"
     args:
      chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
      executable: /bin/bash
@@ -58,27 +55,24 @@
       - { name: 'karma-cli', version: '@1.0.1' }
       - { name: 'karma-chrome-launcher', version: '@2.2.0' }
       - { name: 'karma-coverage', version: '@1.1.1' }
-      - { name: 'requirejs', version: '@2.3.5' }
       - { name: 'karma-requirejs', version: '@1.1.0' }
-      - { name: 'selenium-standalone', version: ''}
-      - { name: 'webdriverio', version: '@4.9.11'}
-      #- { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: ''}
-      - { name: 'request', version: ''}
-      - { name: 'js-yaml', version: ''}
-      - { name: 'fs', version: ''}
-
+      - { name: 'requirejs', version: '@2.3.5' }
+      - { name: 'webdriverio', version: '@4.9.11' }
+      - { name: 'selenium-standalone', version: '@latest' }
+      - { name: 'request', version: '@latest' }
+      - { name: 'js-yaml', version: '@latest' }
+      - { name: 'fs', version: '@latest' }
+      - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
 
   - name: Install selenium
     shell: "source /etc/profile && selenium-standalone install"
     args:
      executable: /bin/bash
 
-
   - name: Start selenium
     shell: "source /etc/profile && nohup selenium-standalone start &"
     args:
      executable: /bin/bash
-
 
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
