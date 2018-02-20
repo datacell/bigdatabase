@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "----------------------Triggering the prerequisite playbook.----------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/prerequisite/playbook.yml 
+ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml 
 if [ $? -ne 0 ];
 then 
     exit_code=$?
@@ -11,7 +11,7 @@ fi
 echo "----------------------Successfully completed prerequisites playbook.-------------------"
 
 echo "----------------------Triggering the machine-setup playbook.---------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/machine-setup/playbook.yml 
+ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml 
 if [ $? -ne 0 ];
 then 
     exit_code=$?
@@ -21,7 +21,7 @@ fi
 echo "----------------------Successfully completed machine-setup playbook.-------------------"
 
 echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/playbook.yml 
+ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml 
 if [ $? -ne 0 ];
 then 
     exit_code=$?
@@ -31,7 +31,7 @@ fi
 echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
 
 echo "----------------------Triggering the webserver playbook.-------------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/webserver/playbook.yml 
+ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml 
 if [ $? -ne 0 ];
 then 
     exit_code=$?
@@ -41,7 +41,7 @@ fi
 echo "----------------------Successfully completed webserver playbook.------------------------"
 
 echo "----------------------Triggering the start-cluster playbook.----------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/startCluster.yml
+ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml
 if [ $? -ne 0 ];
 then 
     exit_code=$?
