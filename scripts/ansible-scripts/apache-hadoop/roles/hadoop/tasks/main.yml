@@ -25,8 +25,8 @@
 
 #  - debug: var=total_cpu_count
 
-- name: Get the 60% of total ram for Yarn
-  shell: "echo $((60*{{ total_ram }}/100))"
+- name: Get the 80% of total ram for Yarn
+  shell: "echo $((80*{{ total_ram }}/100))"
   register: ram_60_prc
 
 
