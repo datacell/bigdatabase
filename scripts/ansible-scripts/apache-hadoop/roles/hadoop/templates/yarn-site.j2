@@ -62,6 +62,11 @@
     <name>yarn.nodemanager.resource.memory-mb</name>
     <value>{{ ram_60_prc.stdout }}</value>
   </property>
+  
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>{{ ram_60_prc.stdout }}</value>
+  </property>
 
   <property>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
