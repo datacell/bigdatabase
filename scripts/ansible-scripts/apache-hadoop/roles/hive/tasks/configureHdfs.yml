@@ -17,7 +17,7 @@
 
 
 - name: Changing permission to /usr/hive/warehouse directory
-  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod g+w /usr/hive/warehouse"
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0777 /usr/hive/warehouse"
   args:
      executable: /bin/bash
 #  environment:
