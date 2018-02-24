@@ -64,3 +64,4 @@ pytest-mock==1.6.3
 funcsigs
 cx_Oracle==6.1
 pytest-timeout==1.2.0
+pyjnius==1.1.1
