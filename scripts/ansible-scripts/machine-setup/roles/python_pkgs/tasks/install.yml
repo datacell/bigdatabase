@@ -25,39 +25,5 @@
   args:
     executable: /bin/bash
 
-- shell: source /etc/profile && echo $JAVA_HOME
-  register: java_home
-  args:
-    executable: /bin/bash
-
-
-- name: Check if Pyjnius is available locally
-  stat: path="{{ python_pkgs_download_dir }}/pyjnius-master.zip"
-  register: pyjnius_stat
-
-- block:
-  - debug: msg="Requested Pyjnius package is not available locally. Will download it"
-
-  - name: Downloading Pyjnius please wait it may take several minutes depending upon bandwidth
-    shell: "wget -O {{ python_pkgs_download_dir }}/pyjnius-master.zip https://s3.amazonaws.com/awsbigdatapsl/SI-devops/tar/Pyjinus/pyjnius-master.zip"
-  environment:
-     "{{ proxy_env }}"
-  when: not pyjnius_stat.stat.exists
-
-
-- name: Extract Pyjnius
-  unarchive: src={{ python_pkgs_download_dir }}/pyjnius-master.zip dest={{ python_pkgs_download_dir }} remote_src=yes
-
-- name: Installing Pyjnius
-  shell: "source /etc/profile && python setup.py install"
-  args:
-    chdir: "{{ python_pkgs_download_dir }}/{{ item }}"
-    executable: /bin/bash
-  with_items:
-    - pyjnius-master
-  environment:
-    JAVA_HOME: "{{ java_home.stdout }}"
-    JDK_HOME: "{{ java_home.stdout }}"
-  
 - name: Execute ldconfig
   shell: ldconfig
