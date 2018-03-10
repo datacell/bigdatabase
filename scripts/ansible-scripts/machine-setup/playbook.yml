@@ -61,3 +61,5 @@
   become_method: sudo
   roles:
   - nodejs
+  environment:
+    "{{ proxy_env }}"
