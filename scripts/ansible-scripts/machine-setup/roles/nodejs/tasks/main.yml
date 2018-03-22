@@ -58,7 +58,7 @@
       - { name: 'karma-requirejs', version: '@1.1.0' }
       - { name: 'requirejs', version: '@2.3.5' }
       - { name: 'webdriverio', version: '@4.9.11' }
-      - { name: 'mocha', version: '@5.0.1' }
+      - { name: 'mocha', version: '@3.5.3' }
       - { name: 'mocha-multi', version: '@1.0.1' }
       - { name: 'mochawesome', version: '@3.0.2' }
       - { name: 'selenium-standalone', version: '@latest' }
