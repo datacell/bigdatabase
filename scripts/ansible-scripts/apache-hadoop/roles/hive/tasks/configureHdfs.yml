@@ -5,8 +5,6 @@
      executable: /bin/bash
   register: java_home
 
-- debug: msg="{{java_home}}"
-
 ######################## Creating warehouse directory for hive ############################################
 - name: create /usr/hive/warehouse directory
   shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -mkdir -p /usr/hive/warehouse"
