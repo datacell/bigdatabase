@@ -19,6 +19,13 @@
                    "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
                    "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
                  }
+
+    - name: Setting Download proxy
+      set_fact:
+      get_url_proxy_env: {
+                 "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                 "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+               }
     when: proxy_optional
 
 
@@ -114,6 +121,6 @@
   become_method: sudo
   remote_user: root
   environment:
-    "{{ proxy_env }}"
+    "{{ get_url_proxy_env }}"
   roles:
     - { role: google-chrome, when: setup_google_chrome }

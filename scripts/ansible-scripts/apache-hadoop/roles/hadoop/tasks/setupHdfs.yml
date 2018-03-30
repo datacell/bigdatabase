@@ -19,22 +19,18 @@
   args:
      executable: /bin/bash
 
-- name: Create mr-history temporary directory HDFS directory
-  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -mkdir -p {{ maperd_dir }}/tmp"
+- name: Get the mr-history root location
+  shell: "echo {{ maperd_dir }} | cut -d '/' -f2"
+  args:
+     executable: /bin/bash
+  register: base_dir
+
+- name: Changing permission of mr-history root HDFS directory
+  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod -R 0775 /{{ base_dir.stdout }}"
   args:
      executable: /bin/bash
 
 - name: Changing permission of mr-history temporary HDFS directory
   shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0777 {{ maperd_dir }}/tmp"
-  args:
-     executable: /bin/bash
-
-- name: Create mr-history done directory HDFS directory
-  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -mkdir -p {{ maperd_dir }}/done"
-  args:
-     executable: /bin/bash
-
-- name: Changing permission of mr-history done HDFS directory
-  shell: "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/bin/hadoop fs -chmod 0775 {{ maperd_dir }}/done"
   args:
      executable: /bin/bash

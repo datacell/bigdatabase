@@ -71,6 +71,8 @@
     shell: "source /etc/profile && selenium-standalone install"
     args:
      executable: /bin/bash
+    environment:
+      "{{ proxy_env }}"
 
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
