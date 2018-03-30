@@ -66,14 +66,7 @@
       - { name: 'js-yaml', version: '@latest' }
       - { name: 'fs', version: '@latest' }
       - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
-
-  - name: Install selenium
-    shell: "source /etc/profile && selenium-standalone install"
-    args:
-     executable: /bin/bash
-    environment:
-      "{{ proxy_env }}"
-
+      
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
     args:
@@ -83,5 +76,14 @@
     shell: "source /etc/profile && npm config delete https-proxy -g"
     args:
      executable: /bin/bash
+
+  - name: Install selenium
+    shell: "sudo su - root -c 'selenium-standalone install'"
+    args:
+     executable: /bin/bash
+    environment:
+      "{{ proxy_env }}"
+
+
   - file: path={{ nodestat }} state=touch
   when: not nodestatflag.stat.exists
