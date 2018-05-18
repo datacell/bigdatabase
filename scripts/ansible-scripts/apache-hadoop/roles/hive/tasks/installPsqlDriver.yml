@@ -6,6 +6,8 @@
 
 - name: Install postgresql driver for hive on Debian family
   package: name=libpostgresql-jdbc-java state=latest
+  environment:
+    "{{ proxy_env }}"
   when: "ansible_os_family == 'Debian'"
 
 
