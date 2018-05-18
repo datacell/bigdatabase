@@ -68,6 +68,8 @@
   serial: 1
   become: yes
   become_method: sudo
+  environment:
+    "{{ proxy_env }}"
   roles:
   - downloads
   vars:
