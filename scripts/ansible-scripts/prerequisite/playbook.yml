@@ -78,6 +78,8 @@
   hosts: hadoop_cluster
   become: yes
   become_method: sudo
+  environment:
+    "{{ proxy_env }}"
   roles:
   - python
   vars:
