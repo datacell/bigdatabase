@@ -65,7 +65,7 @@
       - { name: 'request', version: '@latest' }
       - { name: 'js-yaml', version: '@latest' }
       - { name: 'fs', version: '@latest' }
-      - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
+      #- { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
       
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
