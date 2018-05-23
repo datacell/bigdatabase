@@ -31,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     NumVm = 3
 
     #This will consume in computing last fraction of IP as well
-    ip_last_fraction_address = 206
+    ip_last_fraction_address = 201
     plays = [ { :play => "prerequisite" },
               { :play => "machine-setup" },
               { :play => "apache-hadoop" },
@@ -59,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Unassigned ports for external feature  5800..5803
     ports1 = [ 6379 ]
     ports2 = [ 8088, 8020, 8030, 5800, 5801, 5802, 5803 ]
-    ports3 = [ 18088, 18080, 18081, 4040, 4042, 4043, 4044  ]
+    ports3 = [ 18088, 18080, 18081, 4040, 4042, 4043, 4044 ]
     #ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044, 8020, 8030, 6379 ]
 
     ### Define which linux box need to be used###
@@ -73,10 +73,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #Create 3 virtual machines and map host ansible ssh port to internal port
     #Map application specific ports to host ports
     (1..NumVm).each do |j|
+        adder = ip_last_fraction_address + j
         ssh_adder = 2221 + j
         config.vm.define  "#{server_initials}-#{current_version}-#{j}" do |node|
             node.vm.hostname="#{server_initials}#{j}"
-            node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
+            node.vm.network :private_network, ip: "205.28.128.#{adder}"
             node.vm.network :forwarded_port, guest: 22, host: ssh_adder, id: "ssh"
             node.vm.provider "virtualbox" do |v|
                 v.name =  "#{server_initials}-#{current_version}-#{j}"
@@ -103,44 +104,45 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
 
 
+            #Run Ansible prerequisite roles on all deployed nodes
             if j == NumVm
-                #Install python on each node
                 if config.vm.box.include? 'ubuntu'
-                    node.vm.provision :ansible do |preps|
-                        preps.limit = "all"
-                        #preps.verbose = "v"
-                        preps.playbook = "scripts/ansible-scripts/prerequisite/python.yml"
-                        preps.inventory_path = "inventory/inventory"
+                   node.vm.provision :ansible do |preps|
+                       preps.verbose = "vv"
+                       preps.limit = "all"
+                       preps.playbook = "scripts/ansible-scripts/prerequisite/python.yml"
+                      preps.inventory_path = "inventory/inventory"
                    end
-               end
+                end
 
-               #Install prerequisites on each node
-               #Run Ansible plays [machine-setup,apache-hadoop,webserver] on designated nodes
-               plays.each do |name|
-                   node.vm.provision :ansible do |ansible|
-                       ansible.limit = "all"
-                       #ansible.verbose = "v"
-                       ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
-                       ansible.inventory_path = "inventory/inventory"
-                       ansible.extra_vars = {
-                           "setup_google_chrome" => "False",
-                           "setup_r" => "False",
-                           "setup_git" => "True",
-                           "custom_ip_check" => "True"
-                      }
-                   end
-               end
+                #Run Ansible roles to configure hadoop on all deployed nodes
+                plays.each do |name|
+                    node.vm.provision :ansible do |ansible|
+                        ansible.limit = "all"
+                        ansible.verbose = "vv"
+                        ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
+                        ansible.inventory_path = "inventory/inventory"
+                        ansible.extra_vars = {
+                            "setup_google_chrome" => "False",
+                            "setup_r" => "True",
+                            "setup_git" => "True",
+                            "custom_ip_check" => "True"
+                       }
+                    end
+                end
 
-                #Start Hadoop service everytime when invoked by vagrant
+                #Run Ansible roles to start service on all deployed nodes
                 node.vm.provision :ansible, run: 'always' do |startService|
                     startService.limit = "all"
                     #startService.verbose = "v"
                     startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
                     startService.inventory_path = "inventory/inventory"
                 end
-                #Show box version
+
+
+                #Show box version, do we need to?
                 #config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
             end
         end
-    end        
+    end
 end
