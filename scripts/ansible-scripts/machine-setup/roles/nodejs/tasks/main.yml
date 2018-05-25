@@ -65,7 +65,7 @@
       - { name: 'request', version: '@latest' }
       - { name: 'js-yaml', version: '@latest' }
       - { name: 'fs', version: '@latest' }
-      - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
+      #- { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
       
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
@@ -77,12 +77,13 @@
     args:
      executable: /bin/bash
 
-  - name: Install selenium
+  - name: Install selenium (Bypassing since failures are persistent)
     shell: "sudo su - root -c 'selenium-standalone install'"
     args:
      executable: /bin/bash
     environment:
       "{{ proxy_env }}"
+    ignore_errors: yes
 
 
   - file: path={{ nodestat }} state=touch

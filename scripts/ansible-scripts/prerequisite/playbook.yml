@@ -60,7 +60,7 @@
   environment:
     "{{ proxy_env }}"
   roles:
-  - pip
+    - pip
 
 
 - name: Download Python prerequisites on hadoop cluster
@@ -68,6 +68,8 @@
   serial: 1
   become: yes
   become_method: sudo
+  environment:
+    "{{ proxy_env }}"
   roles:
   - downloads
   vars:
@@ -78,6 +80,8 @@
   hosts: hadoop_cluster
   become: yes
   become_method: sudo
+  environment:
+    "{{ proxy_env }}"
   roles:
   - python
   vars:

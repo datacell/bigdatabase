@@ -10,9 +10,8 @@ proxy_env:
 get_url_proxy_env:
   none: false
 
-
 #Enable custom IP check. This is required only for Virtualbox and Handle through Vagrantfile
-custom_ip_check: False                           #Options True|False
+custom_ip_check: True                           #Options True|False
 custom_ip_map_start: 205.28.128
 
 build_name_: cedric

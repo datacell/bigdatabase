@@ -44,7 +44,7 @@
   become: yes
   become_method: sudo
   roles:
-  - python_pkgs
+    - python_pkgs
   environment:
     "{{ proxy_env }}"
 
@@ -60,6 +60,6 @@
   become: yes
   become_method: sudo
   roles:
-  - nodejs
+    - nodejs
   environment:
     "{{ proxy_env }}"
