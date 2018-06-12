@@ -1,14 +1,6 @@
-#jinja2: trim_blocks: "true", lstrip_blocks: "false"
-{%- for host in groups['all'] -%}{# Loop all hosts. Outer loop #}
-{% if custom_ip_check %}{# Condition for private network #}
-{% for ip in hostvars[host]['ansible_all_ipv4_addresses'] %}{# Loop all private IP addreaa #}
-{%- if ip|search(custom_ip_map_start) -%}{# Condition to find custom private IP assigned to VM #}
-{{ ip }}     {{ hostvars[host]['ansible_fqdn'] }}     {{ hostvars[host]['ansible_hostname'] }}
+{%- for host in groups['all'] -%}
+
+{{ hostvars[host]['ansible_default_ipv4']['address'] }}     {{ hostvars[host]['ansible_fqdn']}}     {{ hostvars[host]['ansible_fqdn'] }}
 {{''}}
-{%- endif %}{# End of custom IP #}
-{% endfor %}{# End of inner for loop #}
-{% else %}{# Go for default IP #}
-{{ hostvars[host]['ansible_default_ipv4']['address'] }}     {{ hostvars[host]['ansible_fqdn']}}     {{ hostvars[host]['ansible_hostname'] }}
-{{''}}
-{% endif %}{# End of default IP #}
-{%- endfor %}{# End of outer for loop #}
+
+{%- endfor %}

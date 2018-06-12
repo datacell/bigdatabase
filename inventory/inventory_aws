@@ -1,53 +1,35 @@
 [webserver]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
-[redis]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
+52.203.77.229 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
 [git]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
-[postgresql]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
+52.203.77.229 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+[redis]
+52.203.77.229 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
 
 [hadoop_namenode]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
+18.206.190.87 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+[hive]
+18.206.190.87 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+[postgresql]
+18.206.190.87 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+[spark_master]
+18.206.190.87 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+
 
 [hadoop_seconday_namenode]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
-[hadoop_datanodes]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
-[hive]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
-[spark_master]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
-
+34.203.220.21 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
 [spark_slaves]
-#172.30.3.172 ansible_ssh_private_key_file=private_key.pem ansible_ssh_user=centos
-172.30.3.172
+34.203.220.21 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
+[hadoop_datanodes]
+34.203.220.21 ansible_ssh_private_key_file=/home/leander/Documents/si-bod.pem ansible_ssh_user=centos
 
 [git_client:children]
 git
 webserver
 
-
 [hdfscluster:children]
 hadoop_namenode
 hadoop_seconday_namenode
 hadoop_datanodes
-
 
 [hadoop_cluster:children]
 hadoop_namenode
