@@ -1,0 +1,4 @@
+---
+- name: check if Google Chrome module executed
+  stat: path={{ chrome_Stat }}
+  register: chrome_Flag

@@ -1,96 +1,114 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+
+# Require the AWS provider plugin
+require 'vagrant-aws'
+# Require the host shell plugin
+require 'vagrant-host-shell'
+
 Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 
-require 'yaml'
-vars_file = "vars/vars.yml"
-ansible_config = YAML::load_file("#{File.dirname(File.expand_path(__FILE__))}/#{vars_file}")
+DUMMY_BOX_URL = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+NAME_VAGRANT = "dummy.box" #"vagrant-aws-ansible-bod"
+
+# NOTE: The following variables must be set according your aws configuration:
+# export AWS_ACCESS_KEY='????????????????????'
+# export AWS_SECRET_KEY='????????????????????????????????????????'
+# export AWS_PRIVATE_KEY_PATH='~/.ssh/vagrant.pem'
+# export AWS_DEFAULT_REGION='us-east-1'
+# export AWS_EC2_KEY_NAME='vagrant'
+# export AWS_SECURITY_GROUP_NAME='vagrant'
+
+# AMI Data
+HOSTS = {
+  'cedric-1.0.0-1' => {
+    :amazon_image  => 'ami-061e5979',     #BOD-Cedric-Node-1
+    :amazon_availability_zone => 'a',     #a,b,c,d,e
+    :shh_username  => 'centos',
+    :instance_type => 'r4.large',
+    :device_name => '/dev/sda1',
+    :device_size_gb  => 50,
+    :device_delete_on_termination => true,
+    :device_type => 'gp2'
+  },
+  'cedric-1.0.0-2' => {
+    :amazon_image  => 'ami-bdb9fcc2',     #BOD-Cedric-Node-2
+    :amazon_availability_zone => 'a',     #a,b,c,d,e
+    :shh_username  => 'centos',
+    :instance_type => 'r4.large',
+    :device_name => '/dev/sda1',
+    :device_size_gb  => 50,
+    :device_delete_on_termination => true,
+    :device_type => 'gp2'
+  },
+  'cedric-1.0.0-3' => {
+    :amazon_image  => 'ami-54c7822b',     #BOD-Cedric-Node-3
+    :amazon_availability_zone => 'a',     #a,b,c,d,e
+    :shh_username  => 'centos',
+    :instance_type => 'r4.large',
+    :device_name => '/dev/sda1',
+    :device_size_gb  => 50,
+    :device_delete_on_termination => true,
+    :device_type => 'gp2'
+  }
+  }
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    #This will consume in computing last fraction of IP as well
-    ip_last_fraction_address = 206
-    plays = [ { :play => "prerequisite" },
-              { :play => "machine-setup" },
-              { :play => "apache-hadoop" },
-              { :play => "webserver" } ]
+# Create and configure the AWS instance(s)
 
-    #Define root disk drive size in GB. Please check any limitations at https://github.com/sprotheroe/vagrant-disksize
-    root_disk_size = 150
+  HOSTS.each do | name, info |
 
-    #Define machine name initials. This will compromise in hostname as well
-    server_initials = ansible_config["build_name_"]
-
-    #Current version
-    current_version = ansible_config["build_version_"]
-
-    #Yarn scheduler                         8088
-    #Map Reduce Job History Server          19888
-    #Spark History Server                   18088
-    #Spark Master Web UI Port server        18080
-    #Spark worker Web UI Port               18081
-    #Spark Job ports                        4040..4044
-    #Unassigned ports for external feature  5800..5803
-    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044 ]
-
-    ### Define which linux box need to be used###
-    #config.vm.box = "centos/7"
-    config.vm.box = "ubuntu/xenial64"
-
-    #Define port forwarding
-    ports.each do |port|
-      config.vm.network :forwarded_port, guest: port, host: port
-    end
-
-    #Define box information
+    # Use dummy AWS box
+    config.vm.box = NAME_VAGRANT
+    ##--config.vm.box = "ubuntu/xenial64"
     config.vm.box_download_insecure = true
-    config.disksize.size = "#{root_disk_size}GB"
+    config.vm.box_url = DUMMY_BOX_URL
+    #config.vm.provider = 'aws'
 
-    config.vm.define  "#{server_initials}-#{current_version}" do |node|
-        node.vm.hostname="#{server_initials}"
-        node.vm.network :private_network, ip: "205.28.128.#{ip_last_fraction_address}"
+    availability_zone = ENV['AWS_DEFAULT_REGION'] + info[:amazon_availability_zone]
+    config.ssh.insert_key = false
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    #config.vm.synced_folder ".", "/vagrant"
 
-        node.vm.provider "virtualbox" do |v|
-          v.name =  "#{server_initials}-#{current_version}"
-          v.memory = 8192
-          v.cpus = 2
-          v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+    config.vm.define name do |vm_name|
+      vm_name.vm.provider :aws do |aws, override|
+        aws.access_key_id        = ENV['AWS_ACCESS_KEY']
+        aws.secret_access_key    = ENV['AWS_SECRET_KEY']
+        aws.region               = ENV['AWS_DEFAULT_REGION']
+        aws.availability_zone    = availability_zone
+        aws.keypair_name         = ENV['AWS_EC2_KEY_NAME']
+        aws.security_groups      = ENV['AWS_SECURITY_GROUP_NAME']
+        aws.subnet_id            = ENV['AWS_SUBNET_ID_VPC']
+        aws.ami                  = info[:amazon_image]
+        aws.instance_type        = info[:instance_type]
+        aws.block_device_mapping = [{
+          'DeviceName'              => info[:device_name],
+          'Ebs.VolumeSize'          => info[:device_size_gb],
+          'Ebs.DeleteOnTermination' => info[:device_delete_on_termination],
+          'Ebs.VolumeType'          => info[:device_type]
+        }]
+        aws.tags = {
+          'Name'        => name,
+        }
+
+        # SSH:
+        override.ssh.username = info[:shh_username]
+        override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+        override.vm.provision :shell do |sh|
+               sh.inline = "sudo hostnamectl set-hostname #{name}.shareinsights.com
+                            sudo hostnamectl set-hostname #{name}.shareinsights.com --pretty
+                            sudo hostnamectl set-hostname #{name}.shareinsights.com --static
+                            sudo hostnamectl set-hostname #{name}.shareinsights.com --transient"
         end
-    end
-
-
-    #config.vm.synced_folder ".", "/vagrant", create: true, type: "nfs"
-    #Check if Ububtu then install Python. Ubuntu boxes are not pre-configured
-    # with Python.
-    if config.vm.box.include? 'ubuntu'
-        config.vm.provision :ansible do |preps|
-            preps.limit = "all"
-            #preps.verbose = "v"
-            preps.playbook = "scripts/ansible-scripts/prerequisite/python.yml"
-            preps.inventory_path = "inventory/inventory"
-       end
-    end
-
-
-    # Execute all plays using ansible script to setup single node Hadoop Cluster
-    plays.each do |name|
-      config.vm.provision :ansible do |ansible|
-        # Disable default limit to connect to all the machines
-        ansible.limit = "all"
-        #ansible.verbose = "v"
-        ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
-        ansible.inventory_path = "inventory/inventory"
+      end #End of AWS
+      #  Execute Ansible Shell script
+      vm_name.trigger.after [:up, :halt] do |trigger|
+          if name == "cedric-1.0.0-3" # Invoke after 3rd node is deployed
+             trigger.info = "All instances up, setting host mapping"
+             trigger.run = {path: "./ansible_wrapper.sh"}
+          end
       end
-    end
-
-    #Start the Hadoop service for every time vagrant command executed.
-    config.vm.provision :ansible, run: 'always' do |startService|
-        #Disable default limit to connect to all the machines
-        startService.limit = "all"
-        #startService.verbose = "v"
-        startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
-        startService.inventory_path = "inventory/inventory"
-    end
-    #Show box version
-    config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
-end
+    end #End of config name
+  end #End of Hosts
+end #End of Vagrant configure

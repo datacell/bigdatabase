@@ -13,6 +13,7 @@
     - unzip
     - fontconfig
     - bzip2
+    - wget
 
 - name: Install Basic packages for RedHat family
   package: name={{item}} state=latest
@@ -22,6 +23,7 @@
     - cyrus-sasl-md5
     - cyrus-sasl-plain
     - cyrus-sasl-gssapi
+    - cyrus-sasl-devel
     - libxml2-devel
     - libxslt-devel
     - python-lxml
@@ -32,6 +34,8 @@
     - libtool-ltdl-devel
     - epel-release
     - freetype
+    - libXt-devel
+    - postgresql-devel
   when: ansible_os_family == 'RedHat'
 
 - name: Install packages on RedHat family for version 6.x

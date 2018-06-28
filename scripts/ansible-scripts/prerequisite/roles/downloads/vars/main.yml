@@ -1,5 +1,6 @@
 ---
 #Git
+git_version: 2.0.4
 git_expanded_version: "git-{{ git_version }}"
 git_archive: "{{ git_expanded_version }}.tar.gz"
 git_local_dir: "{{ package_download_dir }}/git"
