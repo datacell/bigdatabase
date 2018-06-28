@@ -7,11 +7,12 @@
 - name: Create status Directory for checking common
   file: path={{ stat_dir }} state=directory
 
-- name: Remove loacl host from host file
-  shell: 'sed -i "s/^127.0.0.1.*{{ item }}.*//g" /etc/hosts'
+- name: Remove localhost from host file
+  shell: 'sed -i "s/127.0.0.1/#127.0.0.1/g" /etc/hosts'
   with_items: "{{ ansible_hostname }}"
 
 - name: Get all pivate ip
+  hosts: all
   template:
     src: host_file.j2
     dest: /tmp/host_file
@@ -26,3 +27,7 @@
     insertafter: EOF
     line: "{{ hosts_entry.stdout }}"
     state: present
+
+- name: Remove 127.0.1.1 entries if exist from host file
+  shell: 'sed -i "s/127.0.1.1/#127.0.1.1/g" /etc/hosts'
+  with_items: "{{ ansible_hostname }}"

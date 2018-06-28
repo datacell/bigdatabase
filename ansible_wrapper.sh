@@ -1,55 +1,72 @@
 #!/bin/sh
 
-echo "----------------------Triggering the prerequisite playbook.----------------------------"
-ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml 
+echo "----------------------Writing Inventory File for AWS.----------------------------"
+cp inventory/inventory_aws_template inventory/inventory_aws
+key=$AWS_PRIVATE_KEY_PATH
+if [ -z "$key" ];
+then
+  echo "Please set path to private key.."
+  exit $?
+fi
+key=$(echo ${key} | sed 's:/:\\\/:g')
+hosts=$(vagrant ssh-config | grep HostName)
+each_host=$(echo $hosts | tr "HostName " "\n")
+j=0
+for host in $each_host
+do
+    j=$((j + 1))
+    echo "Replacing cedric-1.0.0-${j} with ${host} into ansible inventory.."
+    sed -i "s/cedric-1.0.0-${j}/${host}/g" inventory/inventory_aws
+done
+echo "Replacing AWS private key.."
+sed -i "s/si-bod.pem/${key}/g" inventory/inventory_aws
 if [ $? -ne 0 ];
-then 
+then
     exit_code=$?
-    echo "failed while deploying prerequisites.."
+    echo "failed while writing AWS Inventory File.."
     exit $exit_code
 fi
-echo "----------------------Successfully completed prerequisites playbook.-------------------"
+echo "----------------------Successfully wrote Inventory File for AWS.-------------------"
 
-echo "----------------------Triggering the machine-setup playbook.---------------------------"
-ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml 
+echo "----------------------Editing Hostfile per instance----------------------------"
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/prerequisite/playbook.yml
 if [ $? -ne 0 ];
-then 
+then
     exit_code=$?
-    echo "failed while deploying machine-setup.."
+    echo "failed while trying to set host mapping"
     exit $exit_code
 fi
-echo "----------------------Successfully completed machine-setup playbook.-------------------"
+echo "----------------------Successfully Set Hostfile mappings-------------------"
 
-echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
-ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml 
+echo "----------------------Editing postgresql config file----------------------------"
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/machine-setup/playbook.yml
 if [ $? -ne 0 ];
-then 
+then
     exit_code=$?
-    echo "failed while deploying apache-hadoop.."
+    echo "failed while trying to reconfigure postgresql"
     exit $exit_code
 fi
-echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
+echo "----------------------Successfully edited postgresql config file-------------------"
 
-echo "----------------------Triggering the webserver playbook.-------------------------------"
-ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml 
+echo "----------------------Editing Hive-site config file----------------------------"
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/reconfigureHive.yml
 if [ $? -ne 0 ];
-then 
+then
     exit_code=$?
-    echo "failed while deploying webserver.."
+    echo "failed while trying add entries to hive site."
     exit $exit_code
 fi
-echo "----------------------Successfully completed webserver playbook.------------------------"
+echo "----------------------Successfully Hive-site config file-------------------"
 
 echo "----------------------Triggering the start-cluster playbook.----------------------------"
-ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/startCluster.yml
 if [ $? -ne 0 ];
-then 
+then
     exit_code=$?
     echo "failed while starting hadoop cluster.."
     exit $exit_code
-fi 
+fi
 echo "----------------------Successfully completed start-cluster playbook.--------------------"
 
-echo "Successfully prepared the managed machine for SI deployment. Please proceed with SI context deployment."
+echo "Successfully prepared the managed instances for SI deployment. Please proceed with SI context deployment."
 exit 0
-
