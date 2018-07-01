@@ -27,8 +27,10 @@ ansible_config = YAML::load_file("#{File.dirname(File.expand_path(__FILE__))}/#{
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-    ###Define the starting node number.
-    NumVm = 3
+    ###Define the starting node number
+    ###Can be 1 for Single node deployment or 3 for multinode deployments
+    ###Currently supports only 3 in a multinode deployment
+    NumVm = 1
 
     #This will consume in computing last fraction of IP as well
     ip_last_fraction_address = 201
@@ -36,7 +38,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               { :play => "machine-setup" },
               { :play => "apache-hadoop" },
               { :play => "webserver" } ]
-
 
     #Define root disk drive size in GB. Please check any limitations at https://github.com/sprotheroe/vagrant-disksize
     root_disk_size = 150
@@ -60,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ports1 = [ 5800, 5801, 5802, 5803, 6379 ]
     ports2 = [ 8088, 8020, 8030 ]
     ports3 = [ 18088, 18080, 18081, 4040, 4042, 4043, 4044 ]
-    #ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044, 8020, 8030, 6379 ]
+    ports = [ 5800, 5801, 5802, 5803, 50070, 8088, 18088, 18080, 18081, 19888, 4040, 4041, 4042, 4044, 8020, 8030, 6379 ]
 
     ### Define which linux box need to be used###
     #config.vm.box = "centos/7"
@@ -76,7 +77,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         adder = ip_last_fraction_address + j
         ssh_adder = 2221 + j
         config.vm.define  "#{server_initials}-#{current_version}-#{j}" do |node|
-            node.vm.hostname="#{server_initials}#{j}"
+            node.vm.hostname="#{server_initials}-#{current_version}-#{j}"
+            name="#{server_initials}-#{current_version}-#{j}"
             node.vm.network :private_network, ip: "205.28.128.#{adder}"
             node.vm.network :forwarded_port, guest: 22, host: ssh_adder, id: "ssh"
             node.vm.provider "virtualbox" do |v|
@@ -88,8 +90,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             #Define port forwarding per VM deployed
             if j == 1
-                ports1.each do |port|
-                    node.vm.network :forwarded_port, guest: port, host: port
+                if NumVm == 1
+                    ports.each do |port|
+                        node.vm.network :forwarded_port, guest: port, host: port
+                    end
+                else
+                    ports1.each do |port|
+                        node.vm.network :forwarded_port, guest: port, host: port
+                    end
                 end
             end
             if j == 2
@@ -106,12 +114,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             #Run Ansible prerequisite roles on all deployed nodes
             if j == NumVm
+                if NumVm == 3
+                   inventory_file='inventory_3node'
+                else
+                   inventory_file='inventory'
+                end
+                #config.vm.provision :shell do |sh|
+                #     sh.inline = "sudo hostnamectl set-hostname #{name}.si.local
+                #                  sudo hostnamectl set-hostname #{name}.si.local --pretty
+                #                  sudo hostnamectl set-hostname #{name}.si.local --static
+                #                  sudo hostnamectl set-hostname #{name}.si.local --transient"
+                #end
                 if config.vm.box.include? 'ubuntu'
                    node.vm.provision :ansible do |preps|
-                       #preps.verbose = "vv"
-                       preps.limit = "all"
+                       preps.verbose = "vv"
+                       #preps.limit = "all"
                        preps.playbook = "scripts/ansible-scripts/prerequisite/python.yml"
-                      preps.inventory_path = "inventory/inventory"
+                      preps.inventory_path = "inventory/#{inventory_file}"
                    end
                 end
 
@@ -122,9 +141,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                         ansible.limit = "all"
                         #ansible.verbose = "vv"
                         ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
-                        ansible.inventory_path = "inventory/inventory"
+                        ansible.inventory_path = "inventory/#{inventory_file}"
                         ansible.extra_vars = {
-                            "setup_google_chrome" => "False",
+                            "setup_google_chrome" => "True",
                             "setup_r" => "True",
                             "setup_git" => "True",
                             "custom_ip_check" => "True"
@@ -137,9 +156,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                     startService.limit = "all"
                     #startService.verbose = "vv"
                     startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
-                    startService.inventory_path = "inventory/inventory"
+                    startService.inventory_path = "inventory/#{inventory_file}"
                 end
-
 
                 #Show box version, do we need to?
                 #config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"

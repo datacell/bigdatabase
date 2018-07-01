@@ -1,17 +1,17 @@
 ---
 #Enable proxy
 proxy_optional: False
-proxy_server: <your company proxy server>
-proxy_port: <your company proxy port>
-proxy_user: <your user name>
-proxy_passwd: <your password with scape charaters if any>
+proxy_server:
+proxy_port: 8080
+proxy_user: leander_raveendran
+proxy_passwd: Zxcvbn!23
 proxy_env:
   none: false
 get_url_proxy_env:
   none: false
 
 #Enable custom IP check. This is required only for Virtualbox and Handle through Vagrantfile
-custom_ip_check: False                           #Options True|False
+#custom_ip_check: False                           #Options True|False
 custom_ip_map_start: 205.28.128
 
 build_name_: cedric
@@ -35,17 +35,18 @@ anaconda_make_sys_default: True                  #Options True|False
 
 
 #monit
-setup_monit: True                               #Options True|False
+setup_monit: False                               #Options True|False
 
 #R
-setup_r: True                                   #Options True|False
+setup_r: False                                   #Options True|False
 
 #Google Chrome
 setup_google_chrome: True                       #Options True|False
 
 
 #Git
-setup_git: True                                 #Options True|False
+setup_git: False                                 #Options True|False
+git_base_version: 1.8.2.3
 
 #NodeJs
 node_version: 8.9.0
@@ -54,12 +55,12 @@ node_version: 8.9.0
 postgresql_port: 5432
 psqlUser: root
 psqlPassword: root
-setup_psql: True                                 #Options True
+setup_psql: False                                 #Options True
 
 
 #redis
 redis_port: 6379
-setup_redis: True                                #Options True|False
+setup_redis: False                                #Options True|False
 
 
 #Hadoop Cluster Deployment
@@ -77,7 +78,7 @@ hive_user: root
 hive_password: root
 hive_schema: "hive-schema-1.2.0.postgres.sql"
 #Currently supported only with Postgresql. Setting False will result in hive failure.
-hive_with_postgresql: True                       #Options: True
+hive_with_postgresql: False                       #Options: True
 num_nodes: 3
 
 #Scala

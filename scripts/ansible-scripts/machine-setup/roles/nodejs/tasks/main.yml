@@ -30,13 +30,13 @@
      executable: /bin/bash
 
   - name: Set NPM http proxy
-    shell: "source /etc/profile && npm config set http-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g"
+    shell: "sudo su - root -c 'source /etc/profile && npm config set http-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g'"
     args:
       executable: /bin/bash
     when: proxy_optional
 
   - name: Set NPM https proxy
-    shell: "source /etc/profile && npm config set https-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g"
+    shell: "sudo su - root -c 'source /etc/profile && npm config set https-proxy http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }} -g'"
     args:
      executable: /bin/bash
     when: proxy_optional
@@ -65,8 +65,8 @@
       - { name: 'request', version: '@latest' }
       - { name: 'js-yaml', version: '@latest' }
       - { name: 'fs', version: '@latest' }
-      #- { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
-      
+      - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
+
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
     args:
@@ -84,7 +84,6 @@
     environment:
       "{{ proxy_env }}"
     ignore_errors: yes
-
 
   - file: path={{ nodestat }} state=touch
   when: not nodestatflag.stat.exists

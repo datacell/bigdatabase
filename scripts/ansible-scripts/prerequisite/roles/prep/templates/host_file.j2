@@ -1,6 +1,14 @@
 {%- for host in groups['all'] -%}
-
-{{ hostvars[host]['ansible_default_ipv4']['address'] }}     {{ hostvars[host]['ansible_fqdn']}}     {{ hostvars[host]['ansible_fqdn'] }}
+{%- if hostvars[host]['ansible_virtualization_type'] == 'virtualbox'  -%}
+{%- for ip in hostvars[host]['ansible_all_ipv4_addresses'] -%}
+{%- if hostvars[host]['ansible_default_ipv4']['address'] == ip -%}
 {{''}}
-
+{%- else -%}
+{{ ip }} {{ hostvars[host]['ansible_fqdn']}} {{ hostvars[host]['ansible_fqdn'] }}
+{{''}}
+{%- endif %}
+{%- endfor %}
+{% else %}
+{{ hostvars[host]['ansible_default_ipv4']['address'] }} {{ hostvars[host]['ansible_fqdn']}} {{ hostvars[host]['ansible_fqdn'] }}
+{%- endif %}
 {%- endfor %}
