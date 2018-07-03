@@ -1,0 +1,4 @@
+check process datanode with pidfile /opt/hadoop/hadoop-2.7.2/hadoop-hadoop-datanode.pid
+start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start datanode"
+stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop datanode"
+depends on namenode

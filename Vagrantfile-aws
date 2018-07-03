@@ -94,10 +94,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         override.ssh.username = info[:shh_username]
         override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
         override.vm.provision :shell do |sh|
-               sh.inline = "sudo hostnamectl set-hostname #{name}.shareinsights.com
-                            sudo hostnamectl set-hostname #{name}.shareinsights.com --pretty
-                            sudo hostnamectl set-hostname #{name}.shareinsights.com --static
-                            sudo hostnamectl set-hostname #{name}.shareinsights.com --transient"
+               sh.inline = "sudo hostnamectl set-hostname #{name}.bd.local
+                            sudo hostnamectl set-hostname #{name}.bd.local --pretty
+                            sudo hostnamectl set-hostname #{name}.bd.local --static
+                            sudo hostnamectl set-hostname #{name}.bd.local --transient"
         end
       end #End of AWS
       #  Execute Ansible Shell script

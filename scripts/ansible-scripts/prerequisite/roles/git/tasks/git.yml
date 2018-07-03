@@ -1,15 +1,9 @@
 ---
-- name: Uninstall git if present
-  package: name=git state=absent
+- name: Remove git if present
+  file: path={{ git_install_path }}s state=absent
 
 - name: Create Git Dir
-  file: path={{ git_install_path }}/bin state=directory
-
-- name: Create Git local Path
-  file: path={{ git_local_dir }} state=directory
-
-- name: Download Git
-  shell: "wget {{ git_mirror_download }} -P {{ git_local_dir }} --no-check-certificate"
+  file: path={{ git_install_path }}s state=directory
 
 - name: Extract Git
   shell: "tar -zxvf {{ git_local_path }} -C {{ git_install_path }}"

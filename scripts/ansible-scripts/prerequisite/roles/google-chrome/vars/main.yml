@@ -1,5 +1,5 @@
 ---
-chrome_key_url: https://dl.google.com/linux/linux_signing_key.pub
+chrome_key_url: http://dl.google.com/linux/linux_signing_key.pub
 chrome_Stat: "{{ stat_dir }}/google-chrome-stat"
 Debian_chrome_repo_dest: /etc/apt/sources.list.d/google_chrome.list
 RedHat_chrome_repo_dest: /etc/yum.repos.d/google_chrome.repo

@@ -3,6 +3,12 @@
 - include: check_chrome.yml
 
 - block:
+  - name: Remove R repo before installing chrome
+    hosts: all
+    become: yes
+    become_method: sudo
+    file: path='/etc/apt/sources.list.d/r.list' state=absent
+
   - name: Does the Google Chrome repo exist?
     stat: path="{{ ansible_os_family }}_chrome_repo_dest"
     register: chromeRepoFlag
@@ -10,9 +16,5 @@
   - include: "{{ ansible_os_family }}_install.yml"
     when: not chromeRepoFlag.stat.exists
 
-#    when: ansible_os_family == 'Debian'
-
-#  - include: configure.yml
-#  - include: install.yml
   - file: path="{{ chrome_Stat}}" state=touch
-  when: not chrome_Flag.stat.exists
+    when: not chrome_Flag.stat.exists

@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ###Define the starting node number
     ###Can be 1 for Single node deployment or 3 for multinode deployments
-    ###Currently supports only 3 in a multinode deployment
+    ###Currently supports only 3 nodes in a multinode deployment
     NumVm = 1
 
     #This will consume in computing last fraction of IP as well
@@ -39,14 +39,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               { :play => "apache-hadoop" },
               { :play => "webserver" } ]
 
+
     #Define root disk drive size in GB. Please check any limitations at https://github.com/sprotheroe/vagrant-disksize
     root_disk_size = 150
+
 
     #Define machine name initials. This will compromise in hostname as well
     server_initials = ansible_config["build_name_"]
 
     #Current version
     current_version = ansible_config["build_version_"]
+    current_version = current_version.tr('.', '')
 
     #Yarn scheduler                         8088
     #Map Reduce Job History Server          19888
@@ -76,14 +79,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     (1..NumVm).each do |j|
         adder = ip_last_fraction_address + j
         ssh_adder = 2221 + j
-        config.vm.define  "#{server_initials}-#{current_version}-#{j}" do |node|
-            node.vm.hostname="#{server_initials}-#{current_version}-#{j}"
-            name="#{server_initials}-#{current_version}-#{j}"
+        name="#{server_initials}#{current_version}-#{j}"
+        config.vm.define  "#{name}" do |node|
+            node.vm.hostname="#{name}"
             node.vm.network :private_network, ip: "205.28.128.#{adder}"
             node.vm.network :forwarded_port, guest: 22, host: ssh_adder, id: "ssh"
             node.vm.provider "virtualbox" do |v|
-                v.name =  "#{server_initials}-#{current_version}-#{j}"
-                v.memory = 4048
+                v.name =  "#{name}"
+                if NumVm == 1
+                  v.memory = 8192
+                else
+                  v.memory = 4028
+                end
                 v.cpus = 2
                 v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
             end
@@ -110,27 +117,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                     node.vm.network :forwarded_port, guest: port, host: port
                 end
             end
-
+            node.vm.provision :shell do |sh|
+              sh.inline = "sudo hostnamectl set-hostname #{name}
+                sudo hostnamectl set-hostname #{name} --pretty
+                sudo hostnamectl set-hostname #{name} --static
+                sudo hostnamectl set-hostname #{name} --transient"
+            end
 
             #Run Ansible prerequisite roles on all deployed nodes
             if j == NumVm
                 if NumVm == 3
-                   inventory_file='inventory_3node'
+                   inventory_file='inventory_vbox_template'
                 else
                    inventory_file='inventory'
                 end
-                #config.vm.provision :shell do |sh|
-                #     sh.inline = "sudo hostnamectl set-hostname #{name}.si.local
-                #                  sudo hostnamectl set-hostname #{name}.si.local --pretty
-                #                  sudo hostnamectl set-hostname #{name}.si.local --static
-                #                  sudo hostnamectl set-hostname #{name}.si.local --transient"
-                #end
                 if config.vm.box.include? 'ubuntu'
                    node.vm.provision :ansible do |preps|
-                       preps.verbose = "vv"
-                       #preps.limit = "all"
+                       #preps.verbose = "vv"
+                       preps.limit = "all"
                        preps.playbook = "scripts/ansible-scripts/prerequisite/python.yml"
-                      preps.inventory_path = "inventory/#{inventory_file}"
+                       preps.inventory_path = "inventory/#{inventory_file}"
                    end
                 end
 
@@ -146,6 +152,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                             "setup_google_chrome" => "True",
                             "setup_r" => "True",
                             "setup_git" => "True",
+                            "setup_monit": "True",
+                            "num_nodes" => NumVm,
                             "custom_ip_check" => "True"
                        }
                     end

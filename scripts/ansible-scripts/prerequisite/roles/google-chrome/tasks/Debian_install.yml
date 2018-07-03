@@ -6,6 +6,7 @@
   apt_key:
     url: "{{ chrome_key_url }}"
     state: present
+    validate_certs: no
 
 - name: Update apt cache
   apt: update_cache=yes

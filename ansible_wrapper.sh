@@ -28,35 +28,45 @@ then
 fi
 echo "----------------------Successfully wrote Inventory File for AWS.-------------------"
 
-echo "----------------------Editing Hostfile per instance----------------------------"
+echo "----------------------Triggering the prerequisite playbook.----------------------------"
 ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/prerequisite/playbook.yml
 if [ $? -ne 0 ];
 then
     exit_code=$?
-    echo "failed while trying to set host mapping"
+    echo "failed while deploying prerequisites.."
     exit $exit_code
 fi
-echo "----------------------Successfully Set Hostfile mappings-------------------"
+echo "----------------------Successfully completed prerequisites playbook.-------------------"
 
-echo "----------------------Editing postgresql config file----------------------------"
+echo "----------------------Triggering the machine-setup playbook.---------------------------"
 ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/machine-setup/playbook.yml
 if [ $? -ne 0 ];
 then
     exit_code=$?
-    echo "failed while trying to reconfigure postgresql"
+    echo "failed while deploying machine-setup.."
     exit $exit_code
 fi
-echo "----------------------Successfully edited postgresql config file-------------------"
+echo "----------------------Successfully completed machine-setup playbook.-------------------"
 
-echo "----------------------Editing Hive-site config file----------------------------"
-ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/reconfigureHive.yml
+echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/playbook.yml
 if [ $? -ne 0 ];
 then
     exit_code=$?
-    echo "failed while trying add entries to hive site."
+    echo "failed while deploying apache-hadoop.."
     exit $exit_code
 fi
-echo "----------------------Successfully Hive-site config file-------------------"
+echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
+
+echo "----------------------Triggering the webserver playbook.-------------------------------"
+ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/webserver/playbook.yml
+if [ $? -ne 0 ];
+then
+    exit_code=$?
+    echo "failed while deploying webserver.."
+    exit $exit_code
+fi
+echo "----------------------Successfully completed webserver playbook.------------------------"
 
 echo "----------------------Triggering the start-cluster playbook.----------------------------"
 ansible-playbook -i inventory/inventory_aws scripts/ansible-scripts/apache-hadoop/startCluster.yml
@@ -68,5 +78,5 @@ then
 fi
 echo "----------------------Successfully completed start-cluster playbook.--------------------"
 
-echo "Successfully prepared the managed instances for SI deployment. Please proceed with SI context deployment."
+echo "Successfully prepared the managed machine for SI deployment. Please proceed with SI context deployment."
 exit 0

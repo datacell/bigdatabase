@@ -106,15 +106,6 @@
   roles:
     - { role: monit, when: setup_monit }
 
-- name: Install R
-  hosts: all
-  become: yes
-  become_method: sudo
-  environment:
-    "{{ proxy_env }}"
-  roles:
-    - { role: R, when: setup_r }
-
 - name: Install Google Chrome
   hosts: webserver
   become: yes
@@ -124,3 +115,12 @@
     "{{ get_url_proxy_env }}"
   roles:
     - { role: google-chrome, when: setup_google_chrome }
+
+- name: Install R
+  hosts: all
+  become: yes
+  become_method: sudo
+  environment:
+    "{{ proxy_env }}"
+  roles:
+    - { role: R, when: setup_r }

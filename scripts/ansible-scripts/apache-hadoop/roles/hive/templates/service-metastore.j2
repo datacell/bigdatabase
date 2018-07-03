@@ -1,6 +1,18 @@
 #!/bin/bash
 # Purpose: This script will start the Hive services
 
+if [ -z "$1" ];  then
+    ACTIVITY_TYPE=start
+else
+    ACTIVITY_TYPE=$1
+fi
 
-su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ hive_expended_version }}/bin/hive --service metastore > {{ hive_log_dir }}/metastore.log 2>&1 &"
-sleep 2s
+if [ "$ACTIVITY_TYPE" = "start" ]; then
+    su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ hive_expended_version }}/bin/hive --service metastore > {{ hive_log_dir }}/metastore.log 2>&1 &"
+    sleep 20s
+    su - hadoop -c "ps -ef | grep -v grep | grep org.apache.hadoop.hive.metastore.HiveMetaStore | awk '{print \$2}' | xargs  echo > /opt/hadoop/apache-hive-1.2.1-bin/metastore.pid"
+elif [ "$ACTIVITY_TYPE" = "stop" ]; then
+    su - hadoop -c "ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print \$2}' | xargs kill -9"
+else
+    :
+fi
