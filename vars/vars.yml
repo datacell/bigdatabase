@@ -1,10 +1,10 @@
 ---
 #Enable proxy
-proxy_optional: True
-proxy_server: bgproxy.persistent.co.in
-proxy_port: 8080
-proxy_user: leander_raveendran
-proxy_passwd: Zxcvbn!23
+proxy_optional: False
+proxy_server:
+proxy_port:
+proxy_user:
+proxy_passwd:
 proxy_env:
   none: false
 get_url_proxy_env:
