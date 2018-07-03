@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+command=$1
+service=$2
+
+if [ "$command" = "start" ]; then
+    #check namenode
+    if [ "$service" = "namenode" ]; then
+        #namenode
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/8020"
+        namenode=$?
+        if [  "$namenode" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-namenode.sh $command
+            exit 0
+        fi
+    fi
+    #check datanode
+    if [ "$service" = "datanode" ]; then
+        #datanode
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/50010"
+        datanode=$?
+        if [  "$datanode" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-datanode.sh $command
+            exit 0
+        fi
+    fi
+    #check nodemanager
+    if [ "$service" = "nodemanager" ]; then
+        #nodemanager
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/8042"
+        nodemanager=$?
+        if [  "$nodemanager" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-nodemanager.sh $command
+            exit 0
+        fi
+    fi
+    #check resourcemanager
+    if [ "$service" = "resourcemanager" ]; then
+        #resourcemanager
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/8030"
+        resourcemanager=$?
+        if [  "$resourcemanager" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-resource-manager.sh $command
+            exit 0
+        fi
+    fi
+    #check secondarynamenode
+    if [ "$service" = "secondarynamenode" ]; then
+        #secondarynamenode
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/50090"
+        secondarynamenode=$?
+        if [  "$secondarynamenode" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-secondary-namenode.sh $command
+            exit 0
+        fi
+    fi
+    #check jobhistoryserver
+    if [ "$service" = "jobhistoryserver" ]; then
+        #jobhistoryserver
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/10020"
+        jobhistoryserver=$?
+        if [  "$jobhistoryserver" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-mr-job-history.sh $command
+            exit 0
+        fi
+    fi
+    #check metastore -failed
+    if [ "$service" = "metastore" ]; then
+        #metastore
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/9083"
+        metastore=$?
+        if [  "$metastore" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-metastore.sh $command
+            exit 0
+        fi
+    fi
+    #check hiveserver2 -failed
+    if [ "$service" = "hiveserver2" ]; then
+        #hiveserver2
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/10000"
+        hiveserver2=$?
+        if [  "$hiveserver2" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-hive-server2.sh $command
+            exit 0
+        fi
+    fi
+    #check spark-master
+    if [ "$service" = "spark-master" ]; then
+        #spark-master
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/18080"
+        spark-master=$?
+        if [  "$spark-master" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-spark-master.sh $command
+            exit 0
+        fi
+    fi
+    #check spark-worker
+    if [ "$service" = "spark-worker" ]; then
+        #spark-worker
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/18081"
+        spark-worker=$?
+        if [  "$spark-worker" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-spark-slave.sh $command
+            exit 0
+        fi
+    fi
+    #check historyserver
+    if [ "$service" = "spark-historyserver" ]; then
+        #spark-historyserver
+        timeout 2 bash -c "</dev/tcp/127.0.0.1/18088"
+        spark-historyserver=$?
+        if [  "$spark-historyserver" != 0 ]; then
+            /bin/bash /opt/hadoop/services/service-spark-history.sh $command
+            exit 0
+        fi
+    fi
+fi

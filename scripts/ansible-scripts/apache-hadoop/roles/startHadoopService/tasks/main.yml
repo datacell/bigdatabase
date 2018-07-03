@@ -9,8 +9,15 @@
     src: service-start-cluster.j2
     dest: "{{ startup_script_init }}"
     mode: 0755
+  when: num_nodes|int == 1
 
 
 - include: service_hadoop.yml
 - include: service_hive.yml
 - include: service_spark.yml
+
+- name: Restart Monit
+  service:
+    name: monit
+    state: started
+  when: setup_monit

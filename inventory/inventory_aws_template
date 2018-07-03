@@ -1,0 +1,45 @@
+[webserver]
+cedric-1.0.0-1 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[git]
+cedric-1.0.0-1 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[redis]
+cedric-1.0.0-1 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+
+[hadoop_namenode]
+cedric-1.0.0-2 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[hive]
+cedric-1.0.0-2 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[postgresql]
+cedric-1.0.0-2 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[spark_master]
+cedric-1.0.0-2 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+
+
+[hadoop_seconday_namenode]
+cedric-1.0.0-3 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[spark_slaves]
+cedric-1.0.0-3 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+[hadoop_datanodes]
+cedric-1.0.0-3 ansible_ssh_private_key_file=si-bod.pem ansible_ssh_user=centos
+
+[git_client:children]
+git
+webserver
+
+[hdfscluster:children]
+hadoop_namenode
+hadoop_seconday_namenode
+hadoop_datanodes
+
+[hadoop_cluster:children]
+hadoop_namenode
+hadoop_seconday_namenode
+hadoop_datanodes
+hive
+spark_master
+spark_slaves
+
+
+[hadoop_clients:children]
+hadoop_cluster
+webserver

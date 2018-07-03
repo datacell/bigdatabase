@@ -1,0 +1,30 @@
+---
+# configure file for R
+- name: Set R_HOME on RedHat systems
+  copy: src=R_path dest=/etc/profile.d/r.sh mode=0755
+  when: ansible_os_family == 'RedHat'
+
+- name: Set R_HOME on Debian based systems
+  copy: src=R_path_deb dest=/etc/profile.d/r.sh mode=0755
+  when: ansible_os_family == 'Debian'
+
+#- name: Create R lib folder
+#  file: path=/usr/hdp/2.4.0.0-169/hadoop/lib/native state=directory owner=root group=root mode=0755
+#
+#- name: Link R libs
+#  file: src=/usr/lib64/R/library/rJava/jri/{{ item.src }} dest=/usr/hdp/2.4.0.0-169/hadoop/lib/{{ item.dest }} state=link
+#  with_items:
+#    - { src: 'libjri.so', dest: 'native/libjri.so' }
+#    - { src: 'JRIEngine.jar', dest: 'JRIEngine.jar' }
+#    - { src: 'JRI.jar', dest: 'JRI.jar' }
+#    - { src: 'REngine.jar', dest: 'REngine.jar' }
+#  when: ansible_os_family == 'RedHat'
+#
+#- name: Link R libs
+#  file: src=/usr/local/lib/R/site-library/rJava/jri/{{ item.src }} dest=/usr/hdp/2.4.0.0-169/hadoop/lib/{{ item.dest }} state=link
+#  with_items:
+#    - { src: 'libjri.so', dest: 'native/libjri.so' }
+#    - { src: 'JRIEngine.jar', dest: 'JRIEngine.jar' }
+#    - { src: 'JRI.jar', dest: 'JRI.jar' }
+#    - { src: 'REngine.jar', dest: 'REngine.jar' }
+#  when: ansible_os_family == 'Debian'

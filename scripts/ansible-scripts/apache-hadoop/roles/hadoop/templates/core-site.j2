@@ -1,3 +1,5 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <!--
@@ -19,6 +21,14 @@
 <configuration>
  <property>
   <name>fs.defaultFS</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
   <value>hdfs://{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8020/</value>
+{{''}}
+{% else %}
+{{''}}
+  <value>hdfs://localhost:8020/</value>
+{{''}}
+{%- endif %}
  </property>
 </configuration>

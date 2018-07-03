@@ -1,0 +1,4 @@
+check process resourcemanager  with pidfile /opt/hadoop/hadoop-2.7.2/yarn-hadoop-resourcemanager.pid
+start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start resourcemanager"
+stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop resourcemanager"
+depends on namenode, datanode

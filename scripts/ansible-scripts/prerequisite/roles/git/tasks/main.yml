@@ -5,14 +5,8 @@
   register: gitstatflag
 
 - block:
-  - name: Install Git for RedHat family
+  - name: Install Git
     include: git.yml
-    when: ansible_os_family == 'RedHat'
-
-  - name: Install Git for Debian family
-    package: name=git state=latest
 
   - file: path={{ gitstat }} state=touch
   when: not gitstatflag.stat.exists
-
-

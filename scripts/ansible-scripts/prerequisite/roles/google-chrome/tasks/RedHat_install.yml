@@ -1,0 +1,21 @@
+---
+- name: Add Google Chrome key by URL from a keyserver
+  rpm_key:
+    key: "{{ chrome_key_url }}"
+    state: present
+
+- name: Set Google Chrome Repo
+  template: src=RedHat_chrome_repo.j2 dest={{ RedHat_chrome_repo_dest }} mode=644 owner=root group=root
+
+- name: Clean repository for RedHat family
+  shell: yum clean all
+  when: ansible_os_family == 'RedHat'
+
+- name: Update yum cache for RedHat family
+  shell: yum repolist all
+  when: ansible_os_family == 'RedHat'
+  
+- name: Install Google Chrome
+  package: name={{ item }} state=latest
+  with_items:
+    - google-chrome-stable

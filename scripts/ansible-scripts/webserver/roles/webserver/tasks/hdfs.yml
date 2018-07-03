@@ -1,16 +1,16 @@
 ---
 - name: Create webserver HDFS user directory
-  shell: "source /etc/profile && hadoop fs -mkdir -p /usr/{{ webserver_user }}"
+  shell: "source /etc/profile && hadoop fs -mkdir -p /user/{{ webserver_user }}"
   args:
      executable: /bin/bash
 
 - name: Changing permission of webserver HDFS user directory
-  shell: "source /etc/profile && hadoop fs -chmod 0755 /usr/{{ webserver_user }}"
+  shell: "source /etc/profile && hadoop fs -chmod 0755 /user/{{ webserver_user }}"
   args:
      executable: /bin/bash
 
 - name: Changing ownership of webserver HDFS user directory
-  shell: "source /etc/profile && hadoop fs -chown {{ webserver_user }}:{{ webserver_user }} /usr/{{ webserver_user }}"
+  shell: "source /etc/profile && hadoop fs -chown {{ webserver_user }}:{{ webserver_user }} /user/{{ webserver_user }}"
   args:
      executable: /bin/bash
 

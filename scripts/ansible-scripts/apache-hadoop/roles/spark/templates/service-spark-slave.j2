@@ -1,7 +1,16 @@
 #!/bin/bash
 # Purpose: This script will start the Spark slave services
 
-
+if [ -z "$1" ];  then
+    ACTIVITY_TYPE=start
+else
+    ACTIVITY_TYPE=$1
+fi
+{% set num_nodes_local = num_nodes | int %}
+{%- if num_nodes_local > 2 | int %}
 su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-slave.sh spark://{{ hostvars[groups['spark_master'][0]].ansible_fqdn }}:7077"
+{{''}}
+{% else %}
+su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-slave.sh spark://`hostname -f`:7077"
+{%- endif %}
 sleep 2s
-

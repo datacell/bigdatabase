@@ -1,0 +1,4 @@
+check process redis
+with pidfile   /var/run/redis/redis.pid
+start program = "/bin/systemctl start redis.service"
+stop program = "/bin/systemctl stop redis.service"

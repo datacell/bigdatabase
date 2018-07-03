@@ -20,12 +20,12 @@
                    "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
                  }
 
-    - name: Setting download proxy
+    - name: Setting Download proxy
       set_fact:
-        get_url_proxy_env: {
-                   "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
-                   "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
-                 }
+      get_url_proxy_env: {
+                 "https_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
+                 "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
+               }
     when: proxy_optional
 
 
@@ -57,10 +57,10 @@
   become: yes
   become_method: sudo
   remote_user: root
-  roles:
-  - pip
   environment:
     "{{ proxy_env }}"
+  roles:
+  - pip
 
 
 - name: Download Python prerequisites on hadoop cluster
@@ -89,7 +89,7 @@
   become: yes
   become_method: sudo
   roles:
-  - git
+    - { role: git, when: setup_git }
 
 
 - name: Install JDK
@@ -105,3 +105,22 @@
   become_method: sudo
   roles:
     - { role: monit, when: setup_monit }
+
+- name: Install Google Chrome
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  remote_user: root
+  environment:
+    "{{ get_url_proxy_env }}"
+  roles:
+    - { role: google-chrome, when: setup_google_chrome }
+
+- name: Install R
+  hosts: all
+  become: yes
+  become_method: sudo
+  environment:
+    "{{ proxy_env }}"
+  roles:
+    - { role: R, when: setup_r }

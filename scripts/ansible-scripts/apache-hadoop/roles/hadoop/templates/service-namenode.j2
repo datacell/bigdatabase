@@ -2,6 +2,11 @@
 # file: service-namenode.sh
 # Purpose: This script will start the Hadoop services
 
+if [ -z "$1" ];  then
+    ACTIVITY_TYPE=start
+else
+    ACTIVITY_TYPE=$1
+fi
 
 su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start namenode"
 sleep 2s
