@@ -1,24 +1,21 @@
 ---
-- name: Uninstall git if present
-  package: name=git state=absent
+- name: Remove git if present
+  file: path={{ git_install_path }}s state=absent
 
 - name: Create Git Dir
-  file: path={{ git_install_path }}/bin state=directory
+  file: path={{ git_install_path }}s state=directory
 
 - name: Extract Git
-  unarchive: src={{ git_local_path }} dest={{ git_install_path }} remote_src=yes
+  shell: "tar -zxvf {{ git_local_path }} -C {{ git_install_path }}"
 
-- name: Compile Git for CentOS 7
-  shell: cd {{ git_install_path }}/git-2.0.4 ; make prefix={{ git_install_path }} all
+- name: Compile Git
+  shell: cd {{ git_install_path }}/git-{{ git_version }} ; make prefix={{ git_install_path }} all
 
 - name: Make Git binary
-  shell: cd {{ git_install_path }}/git-2.0.4 ; make prefix={{ git_install_path }} install
-
-#- name: Copy the git to GIT_HOME bin
-#  copy: remote_src=True src={{ git_install_path }}/git-2.0.4/git dest={{ git_install_path }}/bin mode=0755
+  shell: cd {{ git_install_path }}/git-{{ git_version }} ; make prefix={{ git_install_path }} install
 
 - name: Cleanup post git build
-  file: path={{ git_install_path }}/git-2.0.4 state=absent
+  file: path={{ git_install_path }}/git-{{ git_version }} state=absent
 
 - name: Set GIT_HOME
   template: src=git_path.j2 dest={{ git_profile_path }} mode=0755

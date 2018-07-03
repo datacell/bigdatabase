@@ -1,11 +1,12 @@
 ---
+- name: Set Google Chrome Repo
+  template: src=Debian_chrome_repo.j2 dest={{ Debian_chrome_repo_dest }} mode=644 owner=root group=root
+
 - name: Add Google Chrome key by URL from a keyserver
   apt_key:
     url: "{{ chrome_key_url }}"
     state: present
-
-- name: Set Google Chrome Repo
-  template: src=Debian_chrome_repo.j2 dest={{ Debian_chrome_repo_dest }} mode=644 owner=root group=root
+    validate_certs: no
 
 - name: Update apt cache
   apt: update_cache=yes

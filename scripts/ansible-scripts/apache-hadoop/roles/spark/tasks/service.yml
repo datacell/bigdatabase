@@ -12,6 +12,18 @@
   args:
     executable: /bin/bash
 
+- name: Copy Spark Master Monit script
+  template:
+    src: service-spark-master.j2
+    dest: "{{ spark_services_dir }}/service-spark-master.sh"
+  when: setup_monit
+
+- name: Copy Spark Master Monit service
+  template:
+    src: monit-spark-master.j2
+    dest: /etc/monit.d/service-spark-master
+  when: setup_monit
+
 - name: Copy Spark History Server service script
   template:
     src: service-spark-history-server.j2
@@ -24,6 +36,18 @@
   shell: "{{ spark_services_dir }}/service-spark-history-server.sh"
   args:
     executable: /bin/bash
+
+- name: Copy Spark History Server Monit script
+  template:
+    src: service-spark-history-server.j2
+    dest: "{{ spark_services_dir }}/service-spark-history.sh"
+  when: setup_monit
+
+- name: Copy Spark History Server Monit service
+  template:
+    src: monit-spark-history.j2
+    dest: /etc/monit.d/service-spark-history
+  when: setup_monit
 
 - name: Copy Spark Slave service script
   template:
@@ -41,6 +65,18 @@
     executable: /bin/bash
   delegate_to: "{{ item }}"
   with_items: "{{ groups['spark_slaves'] }}"
+
+- name: Copy Spark slave Monit script
+  template:
+    src: service-spark-slave.j2
+    dest: "{{ spark_services_dir }}/service-spark-slave.sh"
+  when: setup_monit
+
+- name: Copy Spark slave Monit service
+  template:
+    src: monit-spark-slave.j2
+    dest: /etc/monit.d/service-spark-slave
+  when: setup_monit
 
 - name: Copy service to start all Spark services
   template:

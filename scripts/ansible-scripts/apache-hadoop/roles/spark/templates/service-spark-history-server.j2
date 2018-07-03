@@ -1,7 +1,11 @@
 #!/bin/bash
 # Purpose: This script will start the Spark History Server services
 
+if [ -z "$1" ];  then
+    ACTIVITY_TYPE=start
+else
+    ACTIVITY_TYPE=$1
+fi
 
-su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-history-server.sh"
+su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-master.sh"
 sleep 2s
-

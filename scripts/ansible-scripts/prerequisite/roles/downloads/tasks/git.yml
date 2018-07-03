@@ -13,7 +13,7 @@
   - debug: msg="Requested Git package is not available locally. Will download {{ git_archive }}"
 
   - name: Downloading Git please wait it may take several minutes depending upon bandwidth
-    shell: "wget -O {{ git_local_path }} {{ git_mirror_download }}"
+    shell: "wget -O {{ git_local_path }} {{ git_mirror_download }} --no-check-certificate"
   environment:
      "{{ proxy_env }}"
   when: not git_stat.stat.exists

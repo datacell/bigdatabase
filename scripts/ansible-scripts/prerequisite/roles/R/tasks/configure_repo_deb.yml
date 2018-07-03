@@ -7,6 +7,8 @@
       keyserver: keyserver.ubuntu.com
       id: "{{ gpg_key }}"
       state: present
+    environment:
+      "{{ proxy_env }}"
 
   - name: Set repo
     template: src=deb_repo.j2 dest={{ r_repo_dest }} mode=644 owner=root group=root
