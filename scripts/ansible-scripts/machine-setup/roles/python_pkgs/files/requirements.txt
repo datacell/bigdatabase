@@ -46,7 +46,7 @@ redislite==3.0.296
 sasl==0.1.3
 thrift_sasl==0.1.0
 Whoosh==2.7.4
-git+https://github.com/datacell/PyHive.git@master
+git+https://github.com/datacell/PyHive.git@dropbox_pyhive_v5
 Babel
 Flask-Babel==0.11.1
 mock==2.0.0
