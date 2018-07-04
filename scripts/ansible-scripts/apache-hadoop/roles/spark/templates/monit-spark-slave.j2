@@ -1,4 +1,4 @@
 check process spark-slave with pidfile /opt/hadoop/spark-1.6.0-bin-hadoop2.6/spark-hadoop-org.apache.spark.deploy.worker.Worker-1.pid
-start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start worker"
-stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop worker"
+start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start spark-worker"
+stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop spark-worker"
 depends on namenode, datanode, resourcemanager, nodemanager, metastore, hiveserver2, spark-master

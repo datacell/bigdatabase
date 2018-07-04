@@ -8,5 +8,5 @@ else
     ACTIVITY_TYPE=$1
 fi
 
-su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start namenode"
+su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs $ACTIVITY_TYPE namenode"
 sleep 2s

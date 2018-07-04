@@ -4,114 +4,177 @@ command=$1
 service=$2
 
 if [ "$command" = "start" ]; then
+    #namenode
+    namenode=$(nc -zw2 127.0.0.1 8020 && echo "0" || echo "1" )
+    #datanode
+    datanode=$(nc -zw2 127.0.0.1 50010 && echo "0" || echo "1" )
+    #nodemanager
+    nodemanager=$(nc -zw2 127.0.0.1 8042 && echo "0" || echo "1" )
+    #resourcemanager
+    resourcemanager=$(nc -zw2 127.0.0.1 8030 && echo "0" || echo "1" )
+    #secondarynamenode
+    secondarynamenode=$(nc -zw2 127.0.0.1 50090 && echo "0" || echo "1" )
+    #jobhistoryserver
+    jobhistoryserver=$(nc -zw2 127.0.0.1 10020 && echo "0" || echo "1" )
+    #metastore
+    metastore=$(nc -zw2 127.0.0.1 9083 && echo "0" || echo "1" )
+    #hiveserver2
+    hiveserver2=$(nc -zw2 127.0.0.1 10000 && echo "0" || echo "1" )
+    #spark-master
+    spark_master=$(nc -zw2 127.0.0.1 18080 && echo "0" || echo "1" )
+    #spark_worker
+    spark_worker=$(nc -zw2 127.0.0.1 18081 && echo "0" || echo "1" )
+    #spark_historyserver
+    spark_historyserver=$(nc -zw2 127.0.0.1 18088 && echo "0" || echo "1" )
+
     #check namenode
     if [ "$service" = "namenode" ]; then
-        #namenode
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/8020"
-        namenode=$?
+        echo "Entering to start namenode with port status as $namenode"
         if [  "$namenode" != 0 ]; then
+            echo "Starting to service namenode"
             /bin/bash /opt/hadoop/services/service-namenode.sh $command
-            exit 0
         fi
     fi
+
     #check datanode
     if [ "$service" = "datanode" ]; then
-        #datanode
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/50010"
-        datanode=$?
+        echo "Entering to start datanode with port status as $datanode"
         if [  "$datanode" != 0 ]; then
+            echo "Starting to service datanode"
             /bin/bash /opt/hadoop/services/service-datanode.sh $command
-            exit 0
         fi
     fi
+
     #check nodemanager
     if [ "$service" = "nodemanager" ]; then
-        #nodemanager
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/8042"
-        nodemanager=$?
+        echo "Entering to start nodemanager with port status as $nodemanager"
         if [  "$nodemanager" != 0 ]; then
+            echo "Starting to service nodemanager"
             /bin/bash /opt/hadoop/services/service-nodemanager.sh $command
-            exit 0
         fi
     fi
     #check resourcemanager
     if [ "$service" = "resourcemanager" ]; then
-        #resourcemanager
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/8030"
-        resourcemanager=$?
+        echo "Entering to start resourcemanager with port status as $resourcemanager"
         if [  "$resourcemanager" != 0 ]; then
+          echo "Starting to service resourcemanager"
             /bin/bash /opt/hadoop/services/service-resource-manager.sh $command
-            exit 0
         fi
     fi
     #check secondarynamenode
     if [ "$service" = "secondarynamenode" ]; then
-        #secondarynamenode
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/50090"
-        secondarynamenode=$?
+        echo "Entering to start secondarynamenode with port status as $secondarynamenode"
         if [  "$secondarynamenode" != 0 ]; then
+          echo "Starting to service secondarynamenode"
             /bin/bash /opt/hadoop/services/service-secondary-namenode.sh $command
-            exit 0
         fi
     fi
     #check jobhistoryserver
     if [ "$service" = "jobhistoryserver" ]; then
-        #jobhistoryserver
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/10020"
-        jobhistoryserver=$?
-        if [  "$jobhistoryserver" != 0 ]; then
+        echo "Entering to start jobhistoryserver with port status as $jobhistoryserver"
+        if [  "$secondarynamenode" != 0 ]; then
+          echo "Starting to service secondarynamenode"
             /bin/bash /opt/hadoop/services/service-mr-job-history.sh $command
-            exit 0
         fi
     fi
-    #check metastore -failed
+    #check metastore
     if [ "$service" = "metastore" ]; then
-        #metastore
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/9083"
-        metastore=$?
+        echo "Entering to start metastore with port status as $metastore"
         if [  "$metastore" != 0 ]; then
+          echo "Starting to service metastore"
             /bin/bash /opt/hadoop/services/service-metastore.sh $command
-            exit 0
         fi
     fi
     #check hiveserver2 -failed
     if [ "$service" = "hiveserver2" ]; then
-        #hiveserver2
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/10000"
-        hiveserver2=$?
+        echo "Entering to start hiveserver2 with port status as $hiveserver2"
         if [  "$hiveserver2" != 0 ]; then
+            echo "Starting to service hiveserver2"
             /bin/bash /opt/hadoop/services/service-hive-server2.sh $command
-            exit 0
         fi
     fi
     #check spark-master
     if [ "$service" = "spark-master" ]; then
-        #spark-master
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/18080"
-        spark-master=$?
-        if [  "$spark-master" != 0 ]; then
+        echo "Entering to start spark-master with port status as $spark_master"
+        if [  "$spark_master" != 0 ]; then
+          echo "Starting to service spark-master"
             /bin/bash /opt/hadoop/services/service-spark-master.sh $command
-            exit 0
         fi
     fi
     #check spark-worker
     if [ "$service" = "spark-worker" ]; then
-        #spark-worker
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/18081"
-        spark-worker=$?
-        if [  "$spark-worker" != 0 ]; then
+        echo "Entering to start spark-worker with port status as $spark_worker"
+        if [  "$spark_worker" != 0 ]; then
+            echo "Starting to service spark-worker"
             /bin/bash /opt/hadoop/services/service-spark-slave.sh $command
-            exit 0
         fi
     fi
     #check historyserver
     if [ "$service" = "spark-historyserver" ]; then
-        #spark-historyserver
-        timeout 2 bash -c "</dev/tcp/127.0.0.1/18088"
-        spark-historyserver=$?
-        if [  "$spark-historyserver" != 0 ]; then
+        echo "Entering to start spark-historyserver with port status as $spark_historyserver"
+        if [  "$spark_historyserver" != 0 ]; then
+            echo "Starting to service spark-historyserver"
             /bin/bash /opt/hadoop/services/service-spark-history.sh $command
-            exit 0
         fi
     fi
+elif [ "$command" = "stop" ]; then
+    #check namenode
+    if [ "$service" = "namenode" ]; then
+        echo "Entering to stop namenode"
+        /bin/bash /opt/hadoop/services/service-namenode.sh $command
+    fi
+
+    #check datanode
+    if [ "$service" = "datanode" ]; then
+        echo "Entering to stop datanode"
+        /bin/bash /opt/hadoop/services/service-datanode.sh $command
+    fi
+
+    #check nodemanager
+    if [ "$service" = "nodemanager" ]; then
+        echo "Entering to stop nodemanager"
+        /bin/bash /opt/hadoop/services/service-nodemanager.sh $command
+    fi
+    #check resourcemanager
+    if [ "$service" = "resourcemanager" ]; then
+        echo "Entering to stop resourcemanger"
+        /bin/bash /opt/hadoop/services/service-resource-manager.sh $command
+    fi
+    #check secondarynamenode
+    if [ "$service" = "secondarynamenode" ]; then
+        echo "Entering to stop secondarynamenode"
+        /bin/bash /opt/hadoop/services/service-secondary-namenode.sh $command
+    fi
+    #check jobhistoryserver
+    if [ "$service" = "jobhistoryserver" ]; then
+        echo "Entering to stop jobhistoryserver"
+        /bin/bash /opt/hadoop/services/service-mr-job-history.sh $command
+    fi
+    #check metastore -failed
+    if [ "$service" = "metastore" ]; then
+        echo "Entering to stop metastore"
+        /bin/bash /opt/hadoop/services/service-metastore.sh $command
+    fi
+    #check hiveserver2 -failed
+    if [ "$service" = "hiveserver2" ]; then
+        echo "Entering to stop hiveserver2"
+        /bin/bash /opt/hadoop/services/service-hive-server2.sh $command
+    fi
+    #check spark-master
+    if [ "$service" = "spark-master" ]; then
+        echo "Entering to stop saprk-master"
+        /bin/bash /opt/hadoop/services/service-spark-master.sh $command
+    fi
+    #check spark-worker
+    if [ "$service" = "spark-worker" ]; then
+        echo "Entering to stop spark-worker"
+        /bin/bash /opt/hadoop/services/service-spark-slave.sh $command
+    fi
+    #check historyserver
+    if [ "$service" = "spark-historyserver" ]; then
+        echo "Entering to stop spark-historyserver"
+        /bin/bash /opt/hadoop/services/service-spark-history.sh $command
+    fi
+else
+    :
 fi

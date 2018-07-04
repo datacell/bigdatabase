@@ -1,12 +1,12 @@
 ---
 - name: Remove git if present
-  file: path={{ git_install_path }}s state=absent
+  file: path={{ git_install_path }} state=absent
 
 - name: Create Git Dir
-  file: path={{ git_install_path }}s state=directory
+  file: path={{ git_install_path }} state=directory
 
 - name: Extract Git
-  shell: "tar -zxvf {{ git_local_path }} -C {{ git_install_path }}"
+  unarchive: src={{ git_local_path }} dest={{ git_install_path }} mode=0755 remote_src=yes
 
 - name: Compile Git
   shell: cd {{ git_install_path }}/git-{{ git_version }} ; make prefix={{ git_install_path }} all

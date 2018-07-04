@@ -8,5 +8,5 @@ else
 fi
 
 
-su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-master.sh"
+su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/$ACTIVITY_TYPE-master.sh"
 sleep 2s

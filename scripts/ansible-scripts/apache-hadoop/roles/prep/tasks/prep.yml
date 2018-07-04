@@ -1,9 +1,4 @@
 ---
-- name: Kill all previous hadoop services if any
-  shell: "jps | grep -v Jps | awk '{print $1}' | xargs kill -9 > /dev/null"
-  become: "{{ hadoop_user }}"
-  ignore_errors: yes
-
 - name: Creating User
   user:
     name: "{{ hadoop_user }}"
@@ -72,10 +67,22 @@
     state: directory
     mode: 0755
 
+- name: Copy wrapper service for stopping all hadoop services
+  hosts: all
+  template:
+    src: service_hadoop_stop_all.j2
+    dest: "{{ hadoop_dir }}/services/service_hadoop_stop_all.sh"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    mode: 0755
+
 #######Copy Wrapper Service for monit#######
 - name: Copy wrapper service for starting hadoop services
   hosts: all
   template:
     src: service_hadoop.j2
-    dest: /opt/hadoop/services/service-hadoop.sh
+    dest: "{{ hadoop_dir }}/services/service-hadoop.sh"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    mode: 0755
   when: setup_monit

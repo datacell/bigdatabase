@@ -10,5 +10,5 @@ fi
 
 su - hadoop -c "hdfs dfsadmin -safemode leave"
 sleep 1s
-su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start datanode"
+su - {{ hadoop_user }} -c "/bin/bash {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs $ACTIVITY_TYPE datanode"
 sleep 2s

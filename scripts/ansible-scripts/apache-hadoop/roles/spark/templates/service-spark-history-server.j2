@@ -7,5 +7,5 @@ else
     ACTIVITY_TYPE=$1
 fi
 
-su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-master.sh"
+su - {{ hadoop_user }} -c "source /etc/profile && /bin/bash {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/$ACTIVITY_TYPE-history-server.sh"
 sleep 2s

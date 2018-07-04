@@ -17,4 +17,4 @@
     when: not chromeRepoFlag.stat.exists
 
   - file: path="{{ chrome_Stat}}" state=touch
-    when: not chrome_Flag.stat.exists
+  when: not chrome_Flag.stat.exists

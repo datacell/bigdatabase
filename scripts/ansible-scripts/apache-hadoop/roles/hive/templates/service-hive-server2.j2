@@ -8,11 +8,11 @@ else
 fi
 
 if [ "$ACTIVITY_TYPE" = "start" ]; then
-    su - hadoop -c "source /etc/profile && nohup /bin/bash /opt/hadoop/apache-hive-1.2.1-bin/bin/hive --service hiveserver2 > /opt/hadoop/apache-hive-1.2.1-bin/log/hiveserver2.log 2>&1 &"
+    su - {{ hadoop_user }} -c "source /etc/profile && nohup /bin/bash /opt/hadoop/apache-hive-1.2.1-bin/bin/hive --service hiveserver2 > /opt/hadoop/apache-hive-1.2.1-bin/log/hiveserver2.log 2>&1 &"
 sleep 20s
-    su - hadoop -c "ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print \$2}' | xargs  echo > /opt/hadoop/apache-hive-1.2.1-bin/hiveserver2.pid"
+    su - {{ hadoop_user }} -c "ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print \$2}' | xargs  echo > /opt/hadoop/apache-hive-1.2.1-bin/hiveserver2.pid"
 elif [ "$ACTIVITY_TYPE" = "stop" ]; then
-    su - hadoop -c "ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print \$2}' | xargs kill -9"
+    su - {{ hadoop_user }} -c "ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print \$2}' | xargs kill -9"
 else
     :
 fi

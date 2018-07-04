@@ -153,22 +153,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                             "setup_r" => "True",
                             "setup_git" => "True",
                             "setup_monit": "True",
-                            "num_nodes" => NumVm,
-                            "custom_ip_check" => "True"
+                            "num_nodes" => NumVm
                        }
                     end
                 end
 
                 #Run Ansible roles to start service on all deployed nodes
-                node.vm.provision :ansible, run: 'always' do |startService|
-                    startService.limit = "all"
-                    #startService.verbose = "vv"
-                    startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
-                    startService.inventory_path = "inventory/#{inventory_file}"
-                end
+                #node.vm.provision :ansible, run: 'always' do |startService|
+                #    startService.limit = "all"
+                #    #startService.verbose = "vv"
+                #    startService.playbook = "scripts/ansible-scripts/apache-hadoop/startCluster.yml"
+                #    startService.inventory_path = "inventory/#{inventory_file}"
+                #end
 
                 #Show box version, do we need to?
-                #config.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
+                node.vm.provision "shell", run: 'always', inline: "/bin/bash /var/box.version.sh"
             end
         end
     end
