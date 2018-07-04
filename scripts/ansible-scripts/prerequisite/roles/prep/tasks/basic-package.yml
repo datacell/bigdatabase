@@ -14,8 +14,7 @@
     - fontconfig
     - bzip2
     - wget
-    - nc
-
+ 
 - name: Install Basic packages for RedHat family
   package: name={{item}} state=latest
   with_items:
