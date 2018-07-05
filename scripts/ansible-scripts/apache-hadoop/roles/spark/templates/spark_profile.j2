@@ -1,3 +1,13 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 export SPARK_HOME={{ hadoop_dir }}/{{ spark_expended_version }}
 export PATH=$SPARK_HOME/bin:$PATH
 export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/{{ Py4J_src_file.stdout }}:$SPARK_HOME/python/lib/pyspark.zip:$PYTHONPATH
+{{ '' }}
+{%- if num_nodes_local > 1 | int %}
+export SPARK_LOCAL_IP={{hostvars[groups["spark_master"][0]].ansible_fqdn}}
+{% else %}
+export SPARK_MASTER_IP=127.0.0.1
+{{ '' }}
+export SPARK_LOCAL_IP=127.0.0.1
+{%- endif %}
