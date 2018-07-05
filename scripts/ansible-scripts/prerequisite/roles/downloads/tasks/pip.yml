@@ -13,7 +13,7 @@
   - debug: msg="Requested PIP package is not available locally. Will download {{ pip_archive }}"
 
   - name: Downloading PIP please wait it may take several minutes depending upon bandwidth
-    shell: "wget -O {{ pip_local_path }} {{ pip_mirror_download }}"
+    shell: "wget -O {{ pip_local_path }} {{ pip_mirror_download }} --no-check-certificate"
   environment:
      "{{ proxy_env }}"
   when: not pip_pkg_stat.stat.exists

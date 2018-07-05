@@ -1,2 +1,6 @@
 ---
 - include: prep.yml
+
+- name: Kill all previous hadoop services if any
+  shell: "sudo /bin/sh {{ hadoop_dir }}/services/service-hadoop.sh"
+  ignore_errors: yes

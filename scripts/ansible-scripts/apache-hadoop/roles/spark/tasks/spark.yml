@@ -24,14 +24,13 @@
     state: directory
     mode: 0777
 
-
-
 - name: Copy Spark Vars
   template:
     src: spark_profile.j2
     dest: "{{ spark_profile_path }}"
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
+    mode: 0755
+    owner: root
+    group: root
 
 
 - name: Copy spark env
