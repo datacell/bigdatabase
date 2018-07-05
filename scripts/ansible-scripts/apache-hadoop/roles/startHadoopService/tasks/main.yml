@@ -15,3 +15,9 @@
 - include: service_hadoop.yml
 - include: service_hive.yml
 - include: service_spark.yml
+
+- name: Restart Monit
+  service:
+    name: monit
+    state: started
+  when: setup_monit

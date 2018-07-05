@@ -1,14 +1,22 @@
-#jinja2: trim_blocks: "true", lstrip_blocks: "false"
-{%- for host in groups['all'] -%}{# Loop all hosts. Outer loop #}
-{% if custom_ip_check %}{# Condition for private network #}
-{% for ip in hostvars[host]['ansible_all_ipv4_addresses'] %}{# Loop all private IP addreaa #}
-{%- if ip|search(custom_ip_map_start) -%}{# Condition to find custom private IP assigned to VM #}
-{{ ip }}     {{ hostvars[host]['ansible_fqdn'] }}     {{ hostvars[host]['ansible_hostname'] }}
+127.0.0.1	localhost
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+{%- for host in groups['all'] -%}
 {{''}}
-{%- endif %}{# End of custom IP #}
-{% endfor %}{# End of inner for loop #}
-{% else %}{# Go for default IP #}
-{{ hostvars[host]['ansible_default_ipv4']['address'] }}     {{ hostvars[host]['ansible_fqdn']}}     {{ hostvars[host]['ansible_hostname'] }}
+{{ hostvars[host]['ansible_default_ipv4']['address'] }}     {{ hostvars[host]['ansible_fqdn']}}     {{ hostvars[host]['ansible_fqdn'] }}
 {{''}}
-{% endif %}{# End of default IP #}
-{%- endfor %}{# End of outer for loop #}
+{%- if hostvars[host]['ansible_virtualization_type'] == 'virtualbox'  -%}
+{%- for ip in hostvars[host]['ansible_all_ipv4_addresses'] -%}
+{%- if hostvars[host]['ansible_default_ipv4']['address'] != ip -%}
+{{''}}
+{{ ip }} {{ hostvars[host]['ansible_fqdn']}} {{ hostvars[host]['ansible_fqdn'] }}
+{{''}}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
