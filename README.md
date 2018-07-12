@@ -95,13 +95,3 @@ $ jps | grep -v Jps | awk '{print $1}' | xargs kill -9
 # Start the services
 $ /bin/bash /opt/service-start-cluster.sh
 ```
-
-
-# Credits
-
-Thanks to Andrew Rothstein for the great work at
-(https://github.com/andrewrothstein/ansible-anaconda)
-
-Thanks to Martin Robson and xiaomei-data for great work at
-(https://github.com/martinprobson/vagrant-hadoop-hive-spark)
-(https://github.com/xiaomei-data/ansible-hadoop-spark)
