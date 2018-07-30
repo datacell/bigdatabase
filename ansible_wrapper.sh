@@ -10,8 +10,9 @@ then
     echo "<Target machine hostname>"
     echo "<Target machine ip>"
     echo "<Target machine ssh port (usually 22)>"
+    echo "<Target machine ssh user (elevated user)>"
     echo "hadoop (To install APACHE HADOOP)"
-    echo "For example ./ansible_wrapper.sh -b hadoop-server 10.44.121.3 22 hadoop"
+    echo "For example ./ansible_wrapper.sh -b hadoop-server 10.44.121.3 22 root hadoop"
     echo "Note: ./ansible_wrapper.sh -b hadoop-server 10.44.121.3 22 without the hadoop parameter will install prerequisites to HADOOP"
     exit 0
   fi
@@ -23,7 +24,8 @@ then
       HOSTNAME=$2
       IP=$3
       SSHPORT=$4
-      if [ $5 = "hadoop" ];
+      SSHUSER=$5
+      if [ $6 = "hadoop" ];
       then
         HADOOP=true
       else
@@ -127,18 +129,19 @@ else
   sed -i "s/cedric-100-1/${HOSTNAME}/" inventory/inventory
   sed -i "s/127.0.0.1/${IP}/" inventory/inventory
   sed -i "s/2222/${SSHPORT}/" inventory/inventory
-  sed -i "s/ansible_ssh_private_key_file=.vagrant\/machines\/cedric-100-1\/virtualbox\/private_key//" inventory/inventory
+  sed -i "s/ansible_ssh_private_key_file/ansible_ssh_user/" inventory/inventory
+  sed -i "s/.vagrant\/machines\/cedric-100-1\/virtualbox\/private_key/${SSHUSER}/" inventory/inventory
   if [ $? -ne 0 ];
   then
     exit_code=$?
-    echo "Failed while trying to set inventory. Please pass Hostname IP SSH Port"
+    echo "Failed while trying to set inventory. Please pass Hostname IP SSHPort SSHUser"
     exit $exit_code
   fi
 
   echo "----------------------Successfully wrote Inventory File for Baremetal-------------------"
 
   echo "----------------------Triggering the prerequisite playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml -U --ask-pass -K
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -148,7 +151,7 @@ else
   echo "----------------------Successfully completed prerequisites playbook.-------------------"
 
   echo "----------------------Triggering the machine-setup playbook.---------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml  --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml -U --ask-pass -K
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -160,7 +163,7 @@ else
   echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
   if [ $HADOOP ];
   then
-    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml  --ask-pass -K
+    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml --become-user --ask-pass -K
     if [ $? -ne 0 ];
     then
       exit_code=$?
@@ -170,7 +173,7 @@ else
     echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
   fi
   echo "----------------------Triggering the webserver playbook.-------------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml  --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml -U --ask-pass -K
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -180,7 +183,7 @@ else
   echo "----------------------Successfully completed webserver playbook.------------------------"
 
   echo "----------------------Triggering the start-cluster playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml  --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml -U --ask-pass -K
   if [ $? -ne 0 ];
   then
       exit_code=$?
