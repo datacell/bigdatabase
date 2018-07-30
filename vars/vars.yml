@@ -33,6 +33,8 @@ anaconda_version: 5.0.1
 anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
+#java
+setup_java: True                                 #Options True|False
 
 #monit
 setup_monit: True                               #Options True|False
