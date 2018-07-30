@@ -61,7 +61,7 @@ Bare metal deployment
 download and extract the latest source of this project
 4. In your terminal change your directory into the project directory
 (i.e. `cd bigdatabase`)
-5. Run the ansible_wrapper.sh ```./ansible_wrapper.sh -b <Target machine hostname> <Target machine ip> <Target machine ssh port> <Target machine ssh user> hadoop```
+5. Run the ansible_wrapper.sh ```./ansible_wrapper.sh -b <Target machine hostname> <Target machine ip> <Target machine ssh port> <Target machine ssh user> [hadoop]```
 6. Note: Hadoop will not be installed if parameter is not specified
 7. Note: Script will ask for sudo passwords multiple times during execution, please ensure provided user has elevated rights
 8. If Java is to be installed, please set setup_java to True in the vars file
