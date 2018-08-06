@@ -25,13 +25,13 @@ then
       IP=$3
       SSHPORT=$4
       SSHUSER=$5
-      if [ $6 = "hadoop" ];
+      if [ "$6" = "hadoop" ];
       then
         HADOOP=true
       else
         HADOOP=false
-        echo "Invalid parameter detected"
-        exit 1
+        #echo "Invalid parameter detected"
+        #exit 1
       fi
     fi
   fi
