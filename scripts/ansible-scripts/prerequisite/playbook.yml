@@ -98,8 +98,7 @@
   become_method: sudo
   roles:
   - jdk
-  when: setup_java
-
+  
 - name: Install Monit
   hosts: webserver
   become: yes
