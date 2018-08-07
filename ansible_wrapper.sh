@@ -25,13 +25,13 @@ then
       IP=$3
       SSHPORT=$4
       SSHUSER=$5
-      if [ $6 = "hadoop" ];
+      if [ "$6" = "hadoop" ];
       then
         HADOOP=true
       else
         HADOOP=false
-        echo "Invalid parameter detected"
-        exit 1
+        #echo "Invalid parameter detected"
+        #exit 1
       fi
     fi
   fi
@@ -141,7 +141,7 @@ else
   echo "----------------------Successfully wrote Inventory File for Baremetal-------------------"
 
   echo "----------------------Triggering the prerequisite playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml -U --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml --ask-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -151,7 +151,7 @@ else
   echo "----------------------Successfully completed prerequisites playbook.-------------------"
 
   echo "----------------------Triggering the machine-setup playbook.---------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml -U --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml --ask-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -163,7 +163,7 @@ else
   echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
   if [ $HADOOP ];
   then
-    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml --become-user --ask-pass -K
+    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml --ask-pass
     if [ $? -ne 0 ];
     then
       exit_code=$?
@@ -173,7 +173,7 @@ else
     echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
   fi
   echo "----------------------Triggering the webserver playbook.-------------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml -U --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml --ask-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -183,7 +183,7 @@ else
   echo "----------------------Successfully completed webserver playbook.------------------------"
 
   echo "----------------------Triggering the start-cluster playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml -U --ask-pass -K
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml --ask-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
