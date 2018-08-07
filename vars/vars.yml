@@ -34,7 +34,7 @@ anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
 #java
-setup_java: True                                 #Options True|False
+setup_java: False                                 #Options True|False
 
 #monit
 setup_monit: True                               #Options True|False

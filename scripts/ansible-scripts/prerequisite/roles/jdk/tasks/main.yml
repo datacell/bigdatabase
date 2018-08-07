@@ -7,7 +7,6 @@
 - block:
   - name: Install Java kit
     include: java.yml
+    when: setup_java
   - file: path={{ jdkstat }} state=touch
-  when: not jdkstatflag.stat.exists
-
-
+  when: not jdkstatflag.stat.exists and setup_java
