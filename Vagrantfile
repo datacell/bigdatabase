@@ -79,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     (1..NumVm).each do |j|
         adder = ip_last_fraction_address + j
         ssh_adder = 2221 + j
-        name="#{server_initials}#{current_version}-#{j}"
+        name="#{server_initials}#{current_version}-#{j}.diggory.com"
         config.vm.define  "#{name}" do |node|
             node.vm.hostname="#{name}"
             node.vm.network :private_network, ip: "205.28.128.#{adder}"
@@ -151,6 +151,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                         ansible.extra_vars = {
                             "setup_google_chrome" => "True",
                             "setup_r" => "True",
+                            "setup_java" => "True",
                             "setup_git" => "True",
                             "setup_monit": "True",
                             "num_nodes" => NumVm
