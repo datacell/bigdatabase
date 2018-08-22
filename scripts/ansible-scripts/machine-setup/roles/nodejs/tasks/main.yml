@@ -48,6 +48,8 @@
      executable: /bin/bash
     with_items:
       - { name: 'stylus', version: '@0.54.5' }
+      - { name: 'babel-cli', version: '@6.26.0' }
+      - { name: 'babel-preset-es2015', version: '@6.24.1' }
       - { name: 'karma', version: '@1.4.1' }
       - { name: 'karma-jasmine', version: '@1.1.0' }
       - { name: 'karma-chrome-launcher', version: '@2.2.0' }
