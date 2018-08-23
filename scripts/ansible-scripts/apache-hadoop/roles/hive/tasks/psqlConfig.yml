@@ -48,7 +48,12 @@
    name: postgresql
    state: restarted
 
-
-- name: Verifying Tables exist in Image
+- name: Verifying Tables exist in Image for a multinode deployment
   shell: 'psql -U {{ hive_user }} -h {{hostvars[groups["postgresql"][0]].ansible_fqdn}} -d {{ hive_database_name }} -c
            "\i {{ hadoop_dir }}/{{ hive_expended_version }}/scripts/metastore/upgrade/postgres/{{ hive_schema }}"'
+  when: num_nodes > 1
+
+- name: Verifying Tables exist in Image for a singlenode deployment
+  shell: 'psql -U {{ hive_user }} -h localhost -d {{ hive_database_name }} -c
+           "\i {{ hadoop_dir }}/{{ hive_expended_version }}/scripts/metastore/upgrade/postgres/{{ hive_schema }}"'
+  when: num_nodes == 1

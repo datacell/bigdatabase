@@ -6,13 +6,23 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Metastore service
   shell: "{{ hive_services_dir }}/service-metastore.sh"
   args:
     executable: /bin/bash
+
+- name: Copy Hive Metastore Monit script
+  template:
+    src: service-metastore.j2
+    dest: "{{ hive_services_dir }}/service-metastore.sh"
+  when: setup_monit
+
+- name: Copy Hive Metastore Monit service
+  template:
+    src: monit-metastore.j2
+    dest: /etc/monit.d/service-metastore
+  when: setup_monit
 
 - name: Copy Hive Server2 service script
   template:
@@ -21,13 +31,23 @@
     mode: 0755
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
 
 - name: Start Hive Server2 service
   shell: "{{ hive_services_dir }}/service-hive-server2.sh"
   args:
     executable: /bin/bash
+
+- name: Copy Hive Server2 Monit script
+  template:
+    src: service-hive-server2.j2
+    dest: "{{ hive_services_dir }}/service-hive-server2.sh"
+  when: setup_monit
+
+- name: Copy Hive Server2 Monit service
+  template:
+    src: monit-hive-server2.j2
+    dest: /etc/monit.d/service-hive-server2
+  when: setup_monit
 
 - name: Copy service to start all Hive services
   template:
@@ -38,3 +58,4 @@
     group: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
+  when: num_nodes|int == 1

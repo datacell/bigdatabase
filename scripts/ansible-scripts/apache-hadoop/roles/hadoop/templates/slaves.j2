@@ -1,5 +1,11 @@
 #jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 {% for host in groups['hadoop_cluster'] %}
+{%- if num_nodes_local > 2 | int %}
 {{ hostvars[host]['ansible_fqdn'] }}
-
+{{''}}
+{% else %}
+localhost
+{{''}}
+{%- endif %}
 {% endfor %}

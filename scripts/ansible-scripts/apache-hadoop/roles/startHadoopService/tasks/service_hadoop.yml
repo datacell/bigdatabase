@@ -34,6 +34,11 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_datanodes'] }}"
 
+#- name: Start proxy server service
+#  shell: "{{ hadoop_services_dir }}/service-proxy-server.sh"
+#  args:
+#    executable: /bin/bash
+
 - name: Start Job History service
   shell: "{{ hadoop_services_dir }}/service-mr-job-history.sh"
   args:

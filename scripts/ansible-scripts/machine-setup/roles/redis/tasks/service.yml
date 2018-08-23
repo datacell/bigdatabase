@@ -1,6 +1,15 @@
 ---
-- name: Stop redis service to load new configuration.
-  service: name={{ redis_daemon }} state=stopped enabled=yes
+#- name: Stop redis service to load new configuration.
+#  service: name={{ redis_daemon }} state=stopped enabled=yes
 
-- name: Ensure redis is started and enabled to start at boot time.
-  service: name={{ redis_daemon }} state=started enabled=yes
+#- name: Ensure redis is started and enabled to start at boot time.
+#  service: name={{ redis_daemon }} state=started enabled=yes
+#  retries: 3
+#  delay: 3
+#  register: result
+#  until: result.state == "started"
+
+- name: Restarting the redis service to load new configuration.
+  service: name={{ redis_daemon }} state=restarted enabled=yes
+  register: result 
+

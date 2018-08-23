@@ -1,3 +1,5 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+{% set num_nodes_local = num_nodes | int %}
 <?xml version="1.0"?>
 <!--
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +33,38 @@
   </property>
 
   <property>
+    <name>yarn.resourcemanager.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8050</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:8050</value>
+{{''}}
+    {%- endif %}
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.scheduler.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:8030</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:8030</value>
+{{''}}
+{%- endif %}
+  </property>
+
+  <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>{{ ram_60_prc.stdout }}</value>
+  </property>
+  
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
     <value>{{ ram_60_prc.stdout }}</value>
   </property>
 
@@ -39,5 +72,59 @@
     <name>yarn.nodemanager.resource.cpu-vcores</name>
     <value>{{ total_cpu_count }}</value>
   </property>
-  
+
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:10020</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:10020</value>
+{{''}}
+{%- endif %}
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.webapp.address</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:19888</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>localhost:19888</value>
+{{''}}
+{%- endif %}
+  </property>
+
+  <property>
+    <name>yarn.log.server.url</name>
+{%- if num_nodes_local > 2 | int %}
+{{''}}
+    <value>http://{{ hostvars[groups["hadoop_namenode"][0]].ansible_fqdn }}:19888/jobhistory/logs/</value>
+{{''}}
+{% else %}
+{{''}}
+    <value>http://localhost:19888/jobhistory/logs/</value>>
+{{''}}
+{%- endif %}
+  </property>
+
+  <!-- Prevent spark OOM errors see - https://issues.apache.org/jira/browse/YARN-4714 -->
+  <property>
+   <name>yarn.nodemanager.pmem-check-enabled</name>
+   <value>false</value>
+  </property>
+  <property>
+   <name>yarn.nodemanager.vmem-check-enabled</name>
+   <value>false</value>
+  </property>
+
 </configuration>

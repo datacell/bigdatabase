@@ -17,6 +17,10 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
 
+- include: configureHdfs.yml
+  become: true
+  become_user: "{{ hadoop_user }}"
+
 - include: installPsqlDriver.yml
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
@@ -32,4 +36,3 @@
   with_items: "{{ groups['hadoop_clients'] }}"
 
 - include: service.yml
-

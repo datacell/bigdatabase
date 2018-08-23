@@ -8,3 +8,16 @@
 - include: install.yml
 - include: configure.yml
 - include: service.yml
+
+- name: Start redis with Monit
+  hosts: all
+  template:
+    src: redis_monit.j2
+    dest: /etc/monit.d/redis
+  when: setup_monit
+
+- name: Restart Monit for redis
+  service:
+    name: monit
+    state: started
+  when: setup_monit

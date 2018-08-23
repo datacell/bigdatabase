@@ -1,53 +1,41 @@
 [webserver]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
-
-[redis]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [git]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
+[redis]
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [postgresql]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hadoop_namenode]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hadoop_seconday_namenode]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hadoop_datanodes]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hive]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [spark_master]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [spark_slaves]
-bartemius ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [git_client:children]
 git
 webserver
 
-
 [hdfscluster:children]
 hadoop_namenode
 hadoop_seconday_namenode
 hadoop_datanodes
-
 
 [hadoop_cluster:children]
 hadoop_namenode
@@ -56,7 +44,6 @@ hadoop_datanodes
 hive
 spark_master
 spark_slaves
-
 
 [hadoop_clients:children]
 hadoop_cluster

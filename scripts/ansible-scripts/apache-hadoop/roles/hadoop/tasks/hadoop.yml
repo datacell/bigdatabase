@@ -1,13 +1,5 @@
 ---
 
-- name: Create Datanode directory
-  file:
-    path: "{{ hadoop_dir }}/volume/datanode"
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-    state: directory
-    mode: 0755
-
 - name: Extract Hadoop
   unarchive: src={{ hadoop_local_path }} dest={{ hadoop_dir }} owner={{ hadoop_user }} group={{ hadoop_user }} mode=0755 remote_src=yes
 
@@ -86,6 +78,13 @@
      dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/yarn-env.sh"
      regexp: ^export YARN_PID_DIR=.*
      line: "export YARN_PID_DIR=${HADOOP_HOME}"
+     state: present
+
+- name: Setting Job History pid
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/mapred-env.sh"
+     regexp: ^export HADOOP_MAPRED_PID_DIR=.*
+     line: "export HADOOP_MAPRED_PID_DIR=${HADOOP_HOME}"
      state: present
 
 
