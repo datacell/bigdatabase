@@ -4,3 +4,9 @@
   with_items: "{{ groups['hadoop_clients'] }}"
 
 - include: service.yml
+
+- name: Restart Monit to ensure all the services will come up by own
+  service:
+    name: monit
+    state: restarted
+  when: setup_monit

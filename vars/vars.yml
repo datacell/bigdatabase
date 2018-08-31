@@ -1,18 +1,17 @@
 ---
 #Enable proxy
 proxy_optional: False
-proxy_server: <your company proxy server>
-proxy_port: <your company proxy port>
-proxy_user: <your user name>
-proxy_passwd: <your password with scape charaters if any>
+proxy_server:
+proxy_port:
+proxy_user:
+proxy_passwd:
 proxy_env:
   none: false
 get_url_proxy_env:
   none: false
 
-
 #Enable custom IP check. This is required only for Virtualbox and Handle through Vagrantfile
-custom_ip_check: True                           #Options True|False
+#custom_ip_check: False                           #Options True|False
 custom_ip_map_start: 205.28.128
 
 build_name_: cedric
@@ -34,9 +33,11 @@ anaconda_version: 5.0.1
 anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
+#java
+setup_java: True                                 #Options True|False
 
 #monit
-setup_monit: False                               #Options True|False
+setup_monit: True                               #Options True|False
 
 #R
 setup_r: True                                   #Options True|False
@@ -47,6 +48,7 @@ setup_google_chrome: True                       #Options True|False
 
 #Git
 setup_git: True                                 #Options True|False
+git_base_version: 1.8.2.3
 
 #NodeJs
 node_version: 8.9.0
@@ -79,7 +81,7 @@ hive_password: root
 hive_schema: "hive-schema-1.2.0.postgres.sql"
 #Currently supported only with Postgresql. Setting False will result in hive failure.
 hive_with_postgresql: True                       #Options: True
-
+num_nodes: 3                                     #Options 1 / 3
 
 #Scala
 scala_version: 2.11.6

@@ -68,8 +68,6 @@
   serial: 1
   become: yes
   become_method: sudo
-  environment:
-    "{{ proxy_env }}"
   roles:
   - downloads
   vars:
@@ -80,8 +78,6 @@
   hosts: hadoop_cluster
   become: yes
   become_method: sudo
-  environment:
-    "{{ proxy_env }}"
   roles:
   - python
   vars:
@@ -102,22 +98,13 @@
   become_method: sudo
   roles:
   - jdk
-
+  
 - name: Install Monit
   hosts: webserver
   become: yes
   become_method: sudo
   roles:
     - { role: monit, when: setup_monit }
-
-- name: Install R
-  hosts: all
-  become: yes
-  become_method: sudo
-  environment:
-    "{{ proxy_env }}"
-  roles:
-    - { role: R, when: setup_r }
 
 - name: Install Google Chrome
   hosts: webserver
@@ -128,3 +115,12 @@
     "{{ get_url_proxy_env }}"
   roles:
     - { role: google-chrome, when: setup_google_chrome }
+
+- name: Install R
+  hosts: all
+  become: yes
+  become_method: sudo
+  environment:
+    "{{ proxy_env }}"
+  roles:
+    - { role: R, when: setup_r }

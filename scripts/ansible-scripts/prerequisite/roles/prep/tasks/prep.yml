@@ -7,26 +7,13 @@
 - name: Create status Directory for checking common
   file: path={{ stat_dir }} state=directory
 
-- name: Remove 127.0.0.1 localhost from host file
-  shell: 'sed -i "s/^127.0.0.1.*{{ item }}.*//g" /etc/hosts'
-  with_items: "{{ ansible_hostname }}"
-
-- name: Get all pivate ip
+- name: Configure host entires in host file
+  hosts: all
   template:
     src: host_file.j2
-    dest: /tmp/host_file
+    dest: /etc/hosts
 
-- name: Fetch host entries entries
-  shell: cat /tmp/host_file
-  register: hosts_entry
-
-- name: Configure host entires in host file
-  lineinfile:
-    dest: "/etc/hosts"
-    insertafter: EOF
-    line: "{{ hosts_entry.stdout }}"
-    state: present
- 
-- name: Remove 127.0.1.1 localhost entries if exist from host file
-  shell: 'sed -i "s/127.0.1.1/#127.0.1.1/g" /etc/hosts'
+- name: Remove NAT ip from host file
+  hosts: all
+  shell: 'sed -i "s/10.0.2.15/#10.0.2.15/g" /etc/hosts'
   with_items: "{{ ansible_hostname }}"

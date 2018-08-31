@@ -16,7 +16,10 @@
   when: ansible_os_family == 'Debian'
 
 - name: Update java path for Debian and RHEL Systems
-  command: R CMD javareconf
+  #command: R CMD javareconf
+  shell: "source /etc/profile && R CMD javareconf"
+  args:
+    executable: /bin/bash
 
 - name: Install R packages
   shell: "source /etc/profile && R -e 'install.packages(\"{{ item }}\", dependencies = TRUE, repos = \"{{ r_repo }}\")'"

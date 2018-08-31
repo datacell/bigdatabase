@@ -1,26 +1,32 @@
 [webserver]
-cedric-1.0.0-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-1/virtualbox/private_key
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
 [git]
-cedric-1.0.0-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-1/virtualbox/private_key
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
 [redis]
-cedric-1.0.0-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-1/virtualbox/private_key
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
+[postgresql]
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hadoop_namenode]
-cedric-1.0.0-2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2223 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-2/virtualbox/private_key
-[hive]
-cedric-1.0.0-2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2223 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-2/virtualbox/private_key
-[postgresql]
-cedric-1.0.0-2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2223 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-2/virtualbox/private_key
-[spark_master]
-cedric-1.0.0-2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2223 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-2/virtualbox/private_key
-
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [hadoop_seconday_namenode]
-cedric-1.0.0-3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2224 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-3/virtualbox/private_key
-[spark_slaves]
-cedric-1.0.0-3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2224 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-3/virtualbox/private_key
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
 [hadoop_datanodes]
-cedric-1.0.0-3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2224 ansible_ssh_private_key_file=.vagrant/machines/cedric-1.0.0-3/virtualbox/private_key
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
+[hive]
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
+[spark_master]
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
+
+[spark_slaves]
+cedric-100-1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_private_key_file=.vagrant/machines/cedric-100-1/virtualbox/private_key
 
 [git_client:children]
 git
@@ -38,7 +44,6 @@ hadoop_datanodes
 hive
 spark_master
 spark_slaves
-
 
 [hadoop_clients:children]
 hadoop_cluster

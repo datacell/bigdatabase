@@ -1,0 +1,4 @@
+check process nodemanager with pidfile  /opt/hadoop/hadoop-2.7.2/yarn-hadoop-nodemanager.pid
+start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start nodemanager"
+stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop nodemanager"
+depends on namenode, datanode, resourcemanager

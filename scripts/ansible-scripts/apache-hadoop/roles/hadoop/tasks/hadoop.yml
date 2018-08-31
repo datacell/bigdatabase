@@ -80,5 +80,12 @@
      line: "export YARN_PID_DIR=${HADOOP_HOME}"
      state: present
 
+- name: Setting Job History pid
+  lineinfile:
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/mapred-env.sh"
+     regexp: ^export HADOOP_MAPRED_PID_DIR=.*
+     line: "export HADOOP_MAPRED_PID_DIR=${HADOOP_HOME}"
+     state: present
+
 
 ######################################################################################
