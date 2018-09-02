@@ -10,7 +10,7 @@ then
     echo "<Target machine hostname>"
     echo "<Target machine ip>"
     echo "<Target machine ssh port (usually 22)>"
-    echo "<Target machine ssh user (elevated user)>"
+    echo "<Target machine sudo user, can be root> "
     echo "hadoop (To install APACHE HADOOP)"
     echo "For example ./ansible_wrapper.sh -b hadoop-server 10.44.121.3 22 root hadoop"
     echo "Note: ./ansible_wrapper.sh -b hadoop-server 10.44.121.3 22 without the hadoop parameter will install prerequisites to HADOOP"
@@ -19,20 +19,20 @@ then
   if [ $1 = "-b" ] || [ $1 = "--baremetal" ];
   then
     BAREMETAL=true
-    if [ $# -gt 1 ];
+    HADOOP=false
+    if [ $# -eq 5 ];
     then
       HOSTNAME=$2
       IP=$3
       SSHPORT=$4
       SSHUSER=$5
-      if [ "$6" = "hadoop" ];
-      then
-        HADOOP=true
-      else
-        HADOOP=false
-        #echo "Invalid parameter detected"
-        #exit 1
-      fi
+    elif [ "$6" = "hadoop" ];
+    then
+      HADOOP=true
+    else
+      echo "Invalid parameters detected"
+      echo "Please use ./ansible_wrapper.sh -h to check parameter support"
+      exit 1
     fi
   fi
 fi
@@ -141,17 +141,17 @@ else
   echo "----------------------Successfully wrote Inventory File for Baremetal-------------------"
 
   echo "----------------------Triggering the prerequisite playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml --ask-pass
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/prerequisite/playbook.yml --ask-pass --ask-become-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
-      echo "failed while deploying prerequisites.."
+      echo "Failed while deploying prerequisites.."
       exit $exit_code
   fi
   echo "----------------------Successfully completed prerequisites playbook.-------------------"
 
   echo "----------------------Triggering the machine-setup playbook.---------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml --ask-pass
+  ansible-playbook -i inventory/inventory scripts/ansible-scripts/machine-setup/playbook.yml --ask-pass --ask-become-pass
   if [ $? -ne 0 ];
   then
       exit_code=$?
@@ -159,11 +159,11 @@ else
       exit $exit_code
   fi
   echo "----------------------Successfully completed machine-setup playbook.-------------------"
-
-  echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
-  if [ $HADOOP ];
+  echo "Successfully prepared the managed machine with the prerequisites needed for SI deployment. Please proceed with Hadoop installation"
+  if [ "$HADOOP" = "true" ];
   then
-    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml --ask-pass
+    echo "----------------------Triggering the apache-hadoop playbook.---------------------------"
+    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/playbook.yml --ask-pass --ask-become-pass
     if [ $? -ne 0 ];
     then
       exit_code=$?
@@ -171,27 +171,26 @@ else
       exit $exit_code
     fi
     echo "----------------------Successfully completed apache-hadoop playbook.-------------------"
-  fi
-  echo "----------------------Triggering the webserver playbook.-------------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml --ask-pass
-  if [ $? -ne 0 ];
-  then
-      exit_code=$?
-      echo "failed while deploying webserver.."
-      exit $exit_code
-  fi
-  echo "----------------------Successfully completed webserver playbook.------------------------"
+    echo "----------------------Triggering the webserver playbook.-------------------------------"
+    ansible-playbook -i inventory/inventory scripts/ansible-scripts/webserver/playbook.yml --ask-pass --ask-become-pass
+    if [ $? -ne 0 ];
+    then
+        exit_code=$?
+        echo "failed while deploying webserver.."
+        exit $exit_code
+    fi
+    echo "----------------------Successfully completed webserver playbook.------------------------"
 
-  echo "----------------------Triggering the start-cluster playbook.----------------------------"
-  ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml --ask-pass
-  if [ $? -ne 0 ];
-  then
-      exit_code=$?
-      echo "failed while starting hadoop cluster.."
-      exit $exit_code
+    echo "----------------------Triggering the start-cluster playbook.----------------------------"
+    ansible-playbook -i inventory/inventory scripts/ansible-scripts/apache-hadoop/startCluster.yml --ask-pass --ask-become-pass
+    if [ $? -ne 0 ];
+    then
+        exit_code=$?
+        echo "failed while starting hadoop cluster.."
+        exit $exit_code
+    fi
+    echo "----------------------Successfully completed start-cluster playbook.--------------------"
+    echo "Successfully prepared the managed machine for SI deployment. Please proceed with SI context deployment."
   fi
-  echo "----------------------Successfully completed start-cluster playbook.--------------------"
-
 fi
-echo "Successfully prepared the managed machine for SI deployment. Please proceed with SI context deployment."
 exit 0
