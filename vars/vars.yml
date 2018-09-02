@@ -15,7 +15,8 @@ get_url_proxy_env:
 custom_ip_map_start: 205.28.128
 
 build_name_: cedric
-build_version_: 1.0.0
+build_name_last_: diggory
+build_version_: 1.0.1
 
 package_download_dir: /vagrant/resources
 #Status file dir
