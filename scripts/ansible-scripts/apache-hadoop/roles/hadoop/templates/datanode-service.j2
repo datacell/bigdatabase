@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop datanode
+After=network.target
+Requires=namenode.service
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStart=/bin/bash -c "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start datanode"
+PIDFile={{ hadoop_dir }}/{{ hadoop_expended_version }}/hadoop-hadoop-datanode.pid
+Restart={{ restart }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

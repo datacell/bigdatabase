@@ -1,0 +1,111 @@
+﻿---
+
+- name: Start namenode service
+  shell: "sudo systemctl start namenode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Start datanode service
+  shell: "sudo systemctl start datanode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Start secondary namenode service
+  shell: "sudo systemctl start secondarynamenode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Start node manager service
+  shell: "sudo systemctl start nodemanager"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Start resource manager service
+  shell: "sudo systemctl start resourcemanager"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Start job history service
+  shell: "sudo systemctl start jobhistoryserver"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable namenode service
+  shell: "sudo systemctl enable namenode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable datanode service
+  shell: "sudo systemctl enable datanode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable secondary namenode service
+  shell: "sudo systemctl enable secondarynamenode"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable node manager service
+  shell: "sudo systemctl enable nodemanager"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable resource manager service
+  shell: "sudo systemctl enable resourcemanager"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Enable job history service
+  shell: "sudo systemctl enable jobhistoryserver"
+  args:
+    executable: /bin/bash
+  when: not setup_monit
+
+- name: Copy namenode service script
+  template:
+    src: namenode-service.j2
+    dest: "{{ systemd_services_dir }}/namenode.service"
+  when: not setup_monit
+
+- name: Copy datanode service script
+  template:
+    src: datanode-service.j2
+    dest: "{{ systemd_services_dir }}/datanode.service"
+  when: not setup_monit
+
+- name: Copy secondary namenode service script
+  template:
+    src: secondarynamenode-service.j2
+    dest: "{{ systemd_services_dir }}/secondarynamenode.service"
+  when: not setup_monit
+
+- name: Copy node manager service script
+  template:
+    src: nodemanager-service.j2
+    dest: "{{ systemd_services_dir }}/nodemanager.service"
+  when: not setup_monit
+
+- name: Copy resource manager service script
+  template:
+    src: resourcemanager-service.j2
+    dest: "{{ systemd_services_dir }}/resourcemanager.service"
+  when: not setup_monit
+
+- name: Copy job history service script
+  template:
+    src: jobhistoryserver-service.j2
+    dest: "{{ systemd_services_dir }}/jobhistoryserver.service"
+  when: not setup_monit
+
+######################################################################################

@@ -11,11 +11,11 @@ get_url_proxy_env:
   none: false
 
 #Enable custom IP check. This is required only for Virtualbox and Handle through Vagrantfile
-#custom_ip_check: False                           #Options True|False
+#custom_ip_check: False                          #Options True|False
 custom_ip_map_start: 205.28.128
 
-build_name_: cedric
-build_name_last_: diggory
+build_name_: dirk
+build_name_last_: cresswell
 build_version_: 1.0.1
 
 package_download_dir: /vagrant/resources
@@ -35,16 +35,19 @@ anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
 #java
-setup_java: False                                 #Options True|False
+setup_java: False                                #Options True|False
 
 #monit
-setup_monit: True                               #Options True|False
+setup_monit: False                               #Options True|False
+
+#systemd
+systemd_services_dir: /usr/lib/systemd/system    
 
 #R
-setup_r: True                                   #Options True|False
+setup_r: True                                    #Options True|False
 
 #Google Chrome
-setup_google_chrome: True                       #Options True|False
+setup_google_chrome: True                        #Options True|False
 
 
 #Git

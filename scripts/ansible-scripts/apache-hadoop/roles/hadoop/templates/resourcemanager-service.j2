@@ -1,0 +1,20 @@
+[Unit]
+Description=Hadoop resourcemanager
+After=network.target
+Requires=namenode.service
+Requires=datanode.service
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStart=/bin/bash -c "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/yarn-daemon.sh  start resourcemanager"
+PIDFile={{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-resourcemanager.pid
+Restart={{ restart }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

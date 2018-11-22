@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop namenode
+After=network.target
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStartPre=-c "hdfs dfsadmin -safemode leave"
+ExecStart=/bin/bash -c "source /etc/profile &&  {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/hadoop-daemon.sh --script hdfs start namenode"
+PIDFile={{ hadoop_dir }}/{{ hadoop_expended_version }}/hadoop-hadoop-namenode.pid
+Restart={{ restart }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

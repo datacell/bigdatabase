@@ -150,6 +150,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                         ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
                         ansible.inventory_path = "inventory/#{inventory_file}"
                         ansible.extra_vars = {
+                            "setup_google_chrome" => "True",
+                            "setup_r" => "True",
+                            "setup_java" => "True",
+                            "setup_git" => "True",
+                            "setup_monit": "True",
                             "num_nodes" => NumVm
                        }
                     end
