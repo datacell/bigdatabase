@@ -3,17 +3,17 @@
 - name: Copy Spark Master service script
   template:
     src: spark-master-service.j2
-    dest: "{{ spark_services_dir }}/spark-master.service"
+    dest: "{{ systemd_services_dir }}/spark-master.service"
 
 - name: Copy Spark History Server service script
   template:
     src: spark-historyserver-service.j2
-    dest: "{{ spark_services_dir }}/spark-historyserver.service"
+    dest: "{{ systemd_services_dir }}/spark-historyserver.service"
 
 - name: Copy Spark Slave service script
   template:
     src: spark-slaves-service.j2
-    dest: "{{ spark_services_dir }}/spark-slaves.service"
+    dest: "{{ systemd_services_dir }}/spark-slaves.service"
 
 - name: Copy Spark Master Monit service
   template:
