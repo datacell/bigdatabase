@@ -43,7 +43,7 @@
   hosts: hadoop_namenode
   become: yes
   become_method: sudo
-  roles:spark
+  roles:
   - hadoop
 
 - name: Setup hive
