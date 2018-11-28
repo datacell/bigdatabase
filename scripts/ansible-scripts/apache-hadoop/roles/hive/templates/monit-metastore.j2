@@ -1,4 +1,3 @@
-check process metastore with  pidfile /opt/hadoop/apache-hive-1.2.1-bin/metastore.pid
-start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start metastore"
-stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop metastore"
-depends on namenode, datanode, resourcemanager, nodemanager
+check process metastore with  pidfile {{ hadoop_dir }}/{{ hive_expended_version }}/metastore.pid
+start program "systemctl start metastore"
+stop program "systemctl start metastore"

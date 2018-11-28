@@ -1,0 +1,20 @@
+[Unit]
+Description=HiveServer2
+After=network.target
+Requires=metastore.service
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStart=/bin/bash -c "source /etc/profile && nohup {{ hadoop_dir }}/{{ hive_expended_version }}/bin/hive --service hiveserver2 >{{ hadoop_dir }}/{{ hive_expended_version }}/log/hiveserver2.log 2>&1 &"
+ExecStartPost=/bin/bash -c "sleep 20 && ps -ef | grep -v grep | grep org.apache.hive.service.server.HiveServer2 | awk '{print $2}' | xargs  echo > {{ hadoop_dir }}/{{ hive_expended_version }}/hiveserver2.pid"
+PIDFile={{ hadoop_dir }}/{{ hive_expended_version }}/hiveserver2.pid
+Restart={{ restart }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
