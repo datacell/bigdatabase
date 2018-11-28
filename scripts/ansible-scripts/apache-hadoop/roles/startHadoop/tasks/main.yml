@@ -1,0 +1,37 @@
+---
+
+- name: Start namenode service
+  shell: "systemctl start namenode"
+  args:
+    executable: /bin/bash
+ 
+- name: Start datanode service
+  shell: "systemctl start datanode"
+  args:
+    executable: /bin/bash
+
+- name: Start secondary namenode service
+  shell: "systemctl start secondarynamenode"
+  args:
+    executable: /bin/bash
+
+- name: Start node manager service
+  shell: "systemctl start nodemanager"
+  args:
+    executable: /bin/bash
+
+- name: Start resource manager service
+  shell: "systemctl start resourcemanager"
+  args:
+    executable: /bin/bash
+
+- name: Start job history service
+  shell: "systemctl start jobhistoryserver"
+  args:
+    executable: /bin/bash
+
+- name: Start Monit
+  service:
+    name: monit
+    state: started
+  when: setup_monit

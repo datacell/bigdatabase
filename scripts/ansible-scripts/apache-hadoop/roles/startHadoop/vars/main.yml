@@ -1,0 +1,11 @@
+---
+spark_expended_version: "spark-{{ spark_version }}-bin-hadoop{{ spark_hadoop_verson }}"
+spark_archive: "{{ spark_expended_version }}.tgz"
+spark_profile_path: /etc/profile.d/spark.sh
+spark_services_dir: "{{ hadoop_dir }}/services"
+spark_suffle_jar: "spark-{{ spark_version }}-yarn-shuffle.jar"
+hadoop_expended_version: "hadoop-{{ hadoop_version }}"
+hive_expended_version: "apache-hive-{{ hive_version }}-bin"
+spark_local_dir: "{{ package_download_dir }}/spark"
+spark_local_path: "{{ spark_local_dir }}/{{ spark_archive }}"
+num_nodes: "{{ groups['all']|length }}"

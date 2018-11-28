@@ -1,8 +1,0 @@
-#!/bin/bash
-# file: Service-all-hive.sh
-# Purpose: This script will start the Hive services
-
-source /etc/profile
-
-/bin/bash "{{ hive_services_dir }}/service-metastore.sh"
-/bin/bash "{{ hive_services_dir }}/service-hive-server2.sh"

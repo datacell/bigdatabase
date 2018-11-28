@@ -1,4 +1,3 @@
 check process datanode with pidfile {{ hadoop_dir }}/{{ hadoop_expended_version }}/hadoop-hadoop-datanode.pid
-start program "/bin/bash {{ hadoop_services_dir }}/service-hadoop.sh start datanode"
-stop program "/bin/bash {{ hadoop_services_dir }}/service-hadoop.sh stop datanode"
-depends on namenode
+start program "systemctl start datanode"
+stop program "systemctl stop datanode"

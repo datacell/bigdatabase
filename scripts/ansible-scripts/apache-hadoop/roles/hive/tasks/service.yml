@@ -1,22 +1,18 @@
 ---
-- name: Copy Hive Metastore service script
+- name: Copy namenode service script
   template:
-    src: service-metastore.j2
-    dest: "{{ hive_services_dir }}/service-metastore.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-
+    src: namenode-service.j2
+    dest: "{{ systemd_services_dir }}/namenode.service"
+  
+- name: Copy datanode service script
+  template:
+    src: datanode-service.j2
+    dest: "{{ systemd_services_dir }}/datanode.service"
 - name: Start Metastore service
   shell: "{{ hive_services_dir }}/service-metastore.sh"
   args:
     executable: /bin/bash
 
-- name: Copy Hive Metastore Monit script
-  template:
-    src: service-metastore.j2
-    dest: "{{ hive_services_dir }}/service-metastore.sh"
-  when: setup_monit
 
 - name: Copy Hive Metastore Monit service
   template:
@@ -24,38 +20,22 @@
     dest: /etc/monit.d/service-metastore
   when: setup_monit
 
-- name: Copy Hive Server2 service script
-  template:
-    src: service-hive-server2.j2
-    dest: "{{ hive_services_dir }}/service-hive-server2.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-
-- name: Start Hive Server2 service
-  shell: "{{ hive_services_dir }}/service-hive-server2.sh"
+- name: Start resource manager service
+  shell: "sudo systemctl start resourcemanager"
   args:
     executable: /bin/bash
 
-- name: Copy Hive Server2 Monit script
-  template:
-    src: service-hive-server2.j2
-    dest: "{{ hive_services_dir }}/service-hive-server2.sh"
-  when: setup_monit
+- name: Start job history service
+  shell: "sudo systemctl start jobhistoryserver"
+  args:
+    executable: /bin/bash
 
-- name: Copy Hive Server2 Monit service
-  template:
-    src: monit-hive-server2.j2
-    dest: /etc/monit.d/service-hive-server2
-  when: setup_monit
+- name: Enable namenode service
+  shell: "sudo systemctl enable namenode"
+  args:
+    executable: /bin/bash
 
-- name: Copy service to start all Hive services
-  template:
-    src: service-all-hive.j2
-    dest: "{{ hive_services_dir }}/service-all-hive.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
-  when: num_nodes|int == 1
+- name: Enable datanode service
+  shell: "sudo systemctl enable datanode"
+  args:
+    executable: /bin/bash

@@ -16,7 +16,7 @@ custom_ip_map_start: 205.28.128
 
 build_name_: dirk
 build_name_last_: cresswell
-build_version_: 1.0.1
+build_version_: 1.0.0
 
 package_download_dir: /vagrant/resources
 #Status file dir
@@ -35,20 +35,16 @@ anaconda_parent_dir: /opt
 anaconda_make_sys_default: True                  #Options True|False
 
 #java
-setup_java: False                                #Options True|False
+setup_java: True                                #Options True|False
 
 #monit
 setup_monit: False                               #Options True|False
-
-#systemd
-systemd_services_dir: /usr/lib/systemd/system    
 
 #R
 setup_r: True                                    #Options True|False
 
 #Google Chrome
 setup_google_chrome: True                        #Options True|False
-
 
 #Git
 setup_git: True                                 #Options True|False
@@ -63,11 +59,9 @@ psqlUser: root
 psqlPassword: root
 setup_psql: True                                 #Options True
 
-
 #redis
 redis_port: 6379
 setup_redis: True                                #Options True|False
-
 
 #Hadoop Cluster Deployment
 # Hadoop Deployment user
@@ -89,7 +83,6 @@ num_nodes: 3                                     #Options 1 / 3
 
 #Scala
 scala_version: 2.11.6
-
 
 #Spark
 spark_version: 1.6.0

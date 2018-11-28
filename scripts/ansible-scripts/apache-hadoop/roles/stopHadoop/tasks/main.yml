@@ -1,0 +1,37 @@
+---
+
+- name: Stop Monit 
+  service:
+    name: monit
+    state: stop
+  when: setup_monit
+
+- name: Stop namenode service
+  shell: "systemctl stop namenode"
+  args:
+    executable: /bin/bash
+ 
+- name: Stop datanode service
+  shell: "systemctl stop datanode"
+  args:
+    executable: /bin/bash
+
+- name: Stop secondary namenode service
+  shell: "systemctl stop secondarynamenode"
+  args:
+    executable: /bin/bash
+
+- name: Stop node manager service
+  shell: "systemctl stop nodemanager"
+  args:
+    executable: /bin/bash
+
+- name: Stop resource manager service
+  shell: "systemctl stop resourcemanager"
+  args:
+    executable: /bin/bash
+
+- name: Stop job history service
+  shell: "systemctl stop jobhistoryserver"
+  args:
+    executable: /bin/bash
