@@ -1,0 +1,62 @@
+---
+
+- name: Stop Monit 
+  service:
+    name: monit
+    state: stop
+  when: setup_monit
+
+- name: Stop namenode service
+  shell: "sudo systemctl stop namenode"
+  args:
+    executable: /bin/bash
+ 
+- name: Stop datanode service
+  shell: "sudo systemctl stop datanode"
+  args:
+    executable: /bin/bash
+
+- name: Stop secondary namenode service
+  shell: "sudo systemctl stop secondarynamenode"
+  args:
+    executable: /bin/bash
+
+- name: Stop node manager service
+  shell: "sudo systemctl stop nodemanager"
+  args:
+    executable: /bin/bash
+
+- name: Stop resource manager service
+  shell: "sudo systemctl stop resourcemanager"
+  args:
+    executable: /bin/bash
+
+- name: Stop job history service
+  shell: "sudo systemctl stop jobhistoryserver"
+  args:
+    executable: /bin/bash
+
+- name: Stop Hive Metastore service
+  shell: "sudo systemctl stop metastore"
+  args:
+    executable: /bin/bash
+
+- name: Stop Hive Server2 service
+  shell: "sudo systemctl stop hiveserver2"
+  args:
+    executable: /bin/bash
+
+- name: Stop Spark Master service
+  shell: "sudo systemctl stop spark-master"
+  args:
+    executable: /bin/bash
+
+- name: Stop Spark History Server service
+  shell: "sudo systemctl stop spark-historyserver"
+  args:
+    executable: /bin/bash
+
+- name: Stop Spark Slaves service
+  shell: "sudo systemctl stop spark-slaves"
+  args:
+    executable: /bin/bash

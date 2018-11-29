@@ -32,12 +32,12 @@
   roles:
   - prep
 
-- name: Stop existing Hadoop services
-  hosts: hadoop_clients
-  become: yes
-  become_method: sudo
-  roles:
-  - stopHadoop
+#- name: Stop existing Hadoop services
+#  hosts: hadoop_clients
+#  become: yes
+#  become_method: sudo
+#  roles:
+#  - stopServices
 
 - name: Setup Hadoop
   hosts: hadoop_namenode
@@ -74,11 +74,11 @@
   become: yes
   become_method: sudo
   roles:
-  - stopHadoop
+  - stopServices
 
 - name: Start Hadoop services
   hosts: hadoop_clients
   become: yes
   become_method: sudo
   roles:
-  - startHadoop
+  - startServices
