@@ -3,7 +3,7 @@
 - name: Stop Monit 
   service:
     name: monit
-    state: stop
+    state: stopped
   when: setup_monit
 
 - name: Stop namenode service
