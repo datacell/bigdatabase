@@ -29,13 +29,11 @@
   shell: "echo $((80*{{ total_ram }}/100))"
   register: ram_60_prc
 
-
 - include: hadoop.yml
   become: true
   become_user: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
-
 
 - include: configureHdfs.yml
   become: true
@@ -44,23 +42,6 @@
 - include: configureVars.yml
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
-
-#systemd
-- name: Updating system files path for RedHat family 
-  set_fact: systemd_services_dir=/usr/lib/systemd/system 
-  when: ansible_os_family == 'RedHat'
-    
-- name: Updating system files path for Debian family
-  set_fact: systemd_services_dir=/lib/systemd/system
-  when: ansible_os_family == 'Debian'
-
-- name: Updating systemd restart to default 
-  set_fact: restart=no
-  when: setup_monit
-
-- name: Updating systemd restart to always  
-  set_fact: restart=always
-  when: not setup_monit
 
 - include: monit.yml
   when: setup_monit

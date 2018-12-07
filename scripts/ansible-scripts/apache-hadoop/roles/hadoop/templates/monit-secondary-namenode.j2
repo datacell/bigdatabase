@@ -1,4 +1,4 @@
 check process secondarynamenode with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/hadoop-hadoop-secondarynamenode.pid
-start program "systemctl start secondarynamenode "
-stop program "systemctl stop secondarynamenode"
+start program "/bin/systemctl start secondarynamenode "
+stop program "/bin/systemctl stop secondarynamenode"
 

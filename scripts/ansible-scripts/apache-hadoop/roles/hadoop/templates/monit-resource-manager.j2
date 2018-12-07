@@ -1,4 +1,4 @@
 check process resourcemanager with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-resourcemanager.pid
-start program "systemctl start resourcemanager"
-stop program "systemctl stop resourcemanager"
+start program "/bin/systemctl start resourcemanager"
+stop program "/bin/systemctl stop resourcemanager"
 

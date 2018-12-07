@@ -1,3 +1,3 @@
 check process metastore with  pidfile {{ hadoop_dir }}/{{ hive_expended_version }}/metastore.pid
-start program "systemctl start metastore"
-stop program "systemctl start metastore"
+start program "/bin/systemctl start metastore"
+stop program "/bin/systemctl start metastore"

@@ -1,4 +1,4 @@
 check process jobhistoryserver with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/mapred-hadoop-historyserver.pid
-start program "systemctl start jobhistoryserver"
-stop program "systemctl stop jobhistoryserver"
+start program "/bin/systemctl start jobhistoryserver"
+stop program "/bin/systemctl stop jobhistoryserver"
 

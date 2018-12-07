@@ -1,3 +1,3 @@
 check process nodemanager with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-nodemanager.pid
-start program "systemctl start nodemanager"
-stop program "systemctl stop nodemanager"
+start program "/bin/systemctl start nodemanager"
+stop program "/bin/systemctl stop nodemanager"
