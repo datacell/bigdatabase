@@ -1,0 +1,19 @@
+[Unit]
+Description=Redis persistent key-value database
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/redis-server {{redis_conf_file}} --daemonize no
+ExecStartPost=/bin/sh -c "pgrep -n redis > {{redis_pid}}"
+ExecStopPost=/bin/rm -f {{redis_pid}}
+User=redis
+Group=redis
+RuntimeDirectory=redis
+RuntimeDirectoryMode=0755
+Restart={{ restart[0] }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
