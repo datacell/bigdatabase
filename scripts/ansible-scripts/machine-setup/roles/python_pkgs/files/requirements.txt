@@ -65,6 +65,8 @@ funcsigs
 cx_Oracle==6.1
 pytest-timeout==1.2.0
 pyjnius==1.1.1
+ipython==5.4.1 
+ipykernel==4.6.1
 jupyter_kernel_gateway==2.0.2
 tensorflow==1.6.0
 py4j==0.9
