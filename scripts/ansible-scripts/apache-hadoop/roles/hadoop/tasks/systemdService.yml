@@ -31,64 +31,69 @@
     dest: "{{ systemd_services_dir }}/jobhistoryserver.service"
  
 - name: Start namenode service
-  shell: "sudo systemctl start namenode"
-  args:
-    executable: /bin/bash
+  service:
+    name: namenode
+    state: started
  
 - name: Start datanode service
-  shell: "sudo systemctl start datanode"
-  args:
-    executable: /bin/bash
+  service:
+    name: datanode
+    state: started
 
 - name: Start secondary namenode service
-  shell: "sudo systemctl start secondarynamenode"
-  args:
-    executable: /bin/bash
+  service:
+    name: secondarynamenode
+    state: started
 
 - name: Start node manager service
-  shell: "sudo systemctl start nodemanager"
-  args:
-    executable: /bin/bash
-
+  service:
+    name: nodemanager
+    state: started
+    
 - name: Start resource manager service
-  shell: "sudo systemctl start resourcemanager"
-  args:
-    executable: /bin/bash
+  service:
+    name: resourcemanager
+    state: started
 
 - name: Start job history service
-  shell: "sudo systemctl start jobhistoryserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: jobhistoryserver
+    state: started
 
 - name: Enable namenode service
-  shell: "sudo systemctl enable namenode"
-  args:
-    executable: /bin/bash
+  service:
+    name: namenode
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable datanode service
-  shell: "sudo systemctl enable datanode"
-  args:
-    executable: /bin/bash
+  service:
+    name: datanode
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable secondary namenode service
-  shell: "sudo systemctl enable secondarynamenode"
-  args:
-    executable: /bin/bash
+   service:
+    name: secondarynamenode
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable node manager service
-  shell: "sudo systemctl enable nodemanager"
-  args:
-    executable: /bin/bash
+  service:
+    name: nodemanager
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable resource manager service
-  shell: "sudo systemctl enable resourcemanager"
-  args:
-    executable: /bin/bash
+  service:
+    name: resourcemanager
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable job history service
-  shell: "sudo systemctl enable jobhistoryserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: jobhistoryserver
+    enabled: yes 
+  when: setup_monit
 
-
-######################################################################################
+######################################################################################	

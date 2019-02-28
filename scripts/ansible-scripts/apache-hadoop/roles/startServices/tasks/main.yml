@@ -1,59 +1,59 @@
 ---
 
 - name: Start namenode service
-  shell: "sudo systemctl start namenode"
-  args:
-    executable: /bin/bash
+  service:
+    name: namenode
+    state: started
  
 - name: Start datanode service
-  shell: "sudo systemctl start datanode"
-  args:
-    executable: /bin/bash
+  service:
+    name: datanode
+    state: started
 
 - name: Start secondary namenode service
-  shell: "sudo systemctl start secondarynamenode"
-  args:
-    executable: /bin/bash
+  service:
+    name: secondarynamenode
+    state: started
 
 - name: Start node manager service
-  shell: "sudo systemctl start nodemanager"
-  args:
-    executable: /bin/bash
+  service:
+    name: nodemanager
+    state: started
 
 - name: Start resource manager service
-  shell: "sudo systemctl start resourcemanager"
-  args:
-    executable: /bin/bash
+  service:
+    name: resourcemanager
+    state: started
 
 - name: Start job history service
-  shell: "sudo systemctl start jobhistoryserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: jobhistoryserver
+    state: started
 
 - name: Start Hive Metastore service
-  shell: "sudo systemctl start metastore"
-  args:
-    executable: /bin/bash
+  service:
+    name: metastore
+    state: started
 
 - name: Start Hive Server2 service
-  shell: "sudo systemctl start hiveserver2"
-  args:
-    executable: /bin/bash
+  service:
+    name: hiveserver2
+    state: started
 
 - name: Start Spark Master service
-  shell: "sudo systemctl start spark-master"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-master
+    state: started
 
 - name: Start Spark History Server service
-  shell: "sudo systemctl start spark-historyserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-historyserver
+    state: started
 
 - name: Start Spark Slaves service
-  shell: "sudo systemctl start spark-slaves"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-slaves
+    state: started
 
 - name: Start Monit
   service:

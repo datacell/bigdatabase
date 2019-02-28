@@ -1,3 +1,4 @@
-check process metastore with  pidfile {{ hadoop_dir }}/{{ hive_expended_version }}/metastore.pid
+check process metastore matching "org\.apache\.hadoop\.hive\.metastore\.HiveMetaStore"
 start program "/bin/systemctl start metastore"
-stop program "/bin/systemctl start metastore"
+#stop program "/bin/systemctl start metastore"
+depends on nodemanager

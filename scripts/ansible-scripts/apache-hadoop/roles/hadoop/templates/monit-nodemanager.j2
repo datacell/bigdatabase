@@ -1,3 +1,4 @@
-check process nodemanager with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-nodemanager.pid
+check process nodemanager matching "org\.apache\.hadoop\.yarn\.server\.nodemanager\.NodeManager"
 start program "/bin/systemctl start nodemanager"
-stop program "/bin/systemctl stop nodemanager"
+#stop program "/bin/systemctl stop nodemanager"
+depends on resourcemanager

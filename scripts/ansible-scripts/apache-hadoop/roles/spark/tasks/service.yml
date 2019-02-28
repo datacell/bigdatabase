@@ -34,31 +34,34 @@
   when: setup_monit
 
 - name: Start Spark Master service
-  shell: "sudo systemctl start spark-master"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-master
+    state: started
 
 - name: Start Spark History Server service
-  shell: "sudo systemctl start spark-historyserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-historyserver
+    state: started
 
 - name: Start Spark Slaves service
-  shell: "sudo systemctl start spark-slaves"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-slaves
+    state: started
 
 - name: Enable Spark Master service
-  shell: "sudo systemctl enable spark-master"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-master
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable Spark History Server service
-  shell: "sudo systemctl enable spark-historyserver"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-historyserver
+    enabled: yes 
+  when: setup_monit
 
 - name: Enable Spark Slaves service
-  shell: "sudo systemctl enable spark-slaves"
-  args:
-    executable: /bin/bash
+  service:
+    name: spark-slaves
+    enabled: yes 
+  when: setup_monit

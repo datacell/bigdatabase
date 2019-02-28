@@ -1,3 +1,4 @@
-check process spark-slave with pidfile {{ hadoop_dir }}/{{ spark_expended_version }}/spark-hadoop-org.apache.spark.deploy.worker.Worker-1.pid
+check process spark-slave matching "org\.apache\.spark\.deploy\.worker\.Worker"
 start program "/bin/systemctl start spark-slaves"
-stop program "/bin/systemctl stop spark-slaves"
+#stop program "/bin/systemctl stop spark-slaves"
+depends on spark-master

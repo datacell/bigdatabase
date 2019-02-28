@@ -1,3 +1,4 @@
-check process datanode with pidfile {{ hadoop_dir }}/{{ hadoop_expended_version }}/hadoop-hadoop-datanode.pid
+check process datanode matching "org\.apache\.hadoop\.hdfs\.server\.datanode\.DataNode"
 start program "/bin/systemctl start datanode"
-stop program "/bin/systemctl stop datanode"
+#stop program "/bin/systemctl stop datanode"
+depends on namenode

@@ -1,3 +1,4 @@
-check process spark-historyserver with pidfile {{ hadoop_dir }}/{{ spark_expended_version }}/spark-hadoop-org.apache.spark.deploy.history.HistoryServer-1.pid
+check process spark-historyserver matching "org\.apache\.spark\.deploy\.history\.HistoryServer"
 start program "/bin/systemctl start spark-historyserver"
-stop program "/bin/systemctl stop spark-historyserver"
+#stop program "/bin/systemctl stop spark-historyserver"
+depends on spark-master

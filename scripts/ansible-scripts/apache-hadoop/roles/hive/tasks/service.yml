@@ -22,21 +22,23 @@
   when: setup_monit
 
 - name: Start Hive Metastore service
-  shell: "sudo systemctl start metastore"
-  args:
-    executable: /bin/bash
+  service:
+    name: metastore
+    state: started
 
 - name: Start Hive Server2 service
-  shell: "sudo systemctl start hiveserver2"
-  args:
-    executable: /bin/bash
+  service:
+    name: hiveserver2
+    state: started
 
 - name: Enable Metastore service
-  shell: "sudo systemctl enable metastore"
-  args:
-    executable: /bin/bash
+  service:
+    name: metastore
+    enabled: yes
+  when: setup_monit
 
 - name: Enable Hive Server2 service
-  shell: "sudo systemctl enable hiveserver2"
-  args:
-    executable: /bin/bash
+  service:
+    name: hiveserver2
+    enabled: yes
+  when: setup_monit

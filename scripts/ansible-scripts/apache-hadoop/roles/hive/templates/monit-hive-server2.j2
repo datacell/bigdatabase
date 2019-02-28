@@ -1,3 +1,4 @@
-check process hiveserver2 with pidfile {{ hadoop_dir }}/{{ hive_expended_version }}/hiveserver2.pid
+check process hiveserver2 matching "org\.apache\.hive\.service\.server\.HiveServer2"
 start program "/bin/systemctl start hiveserver2"
-stop program "/bin/systemctl stop hiveserver2"
+#stop program "/bin/systemctl stop hiveserver2"
+depends on metastore, resourcemanager

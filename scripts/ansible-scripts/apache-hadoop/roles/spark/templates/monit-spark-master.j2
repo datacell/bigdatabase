@@ -1,3 +1,4 @@
-check process spark-master with pidfile /{{ hadoop_dir }}/{{ spark_expended_version }}/spark-hadoop-org.apache.spark.deploy.master.Master-1.pid
+check process spark-master matching "org\.apache\.spark\.deploy\.master\.Master"
 start program "/bin/systemctl start spark-master"
-stop program "/bin/systemctl stop spark-master"
+#stop program "/bin/systemctl stop spark-master"
+depends on hiveserver2

@@ -1,4 +1,5 @@
-check process resourcemanager with pidfile  {{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-resourcemanager.pid
+check process resourcemanager matching "org\.apache\.hadoop\.yarn\.server\.resourcemanager\.ResourceManager"
 start program "/bin/systemctl start resourcemanager"
-stop program "/bin/systemctl stop resourcemanager"
+#stop program "/bin/systemctl stop resourcemanager"
+depends on namenode, datanode
 
