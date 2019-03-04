@@ -70,7 +70,7 @@
       - { name: 'js-yaml', version: '@latest' , args: '' }
       - { name: 'fs', version: '@latest' , args: '' }
       - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' , args: '' }
-      - { name: ' puppeteer', version: '@1.11.0' , args: '--allow-root --unsafe-perm=true' }
+      - { name: 'puppeteer', version: '@1.11.0' , args: '--allow-root --unsafe-perm=true' }
       
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"
