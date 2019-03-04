@@ -42,7 +42,7 @@
     when: proxy_optional
 
   - name: Install NPM modules
-    shell: "sudo su - root -c 'npm install {{ item.name }}{{ item.version }} -g {{ args }}'"
+    shell: "sudo su - root -c 'npm install {{ item.name }}{{ item.version }} -g {{ item.args }}'"
     args:
      chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
      executable: /bin/bash
