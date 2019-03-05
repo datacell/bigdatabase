@@ -58,10 +58,10 @@
   service:
     name: spark-historyserver
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable Spark Slaves service
   service:
     name: spark-slaves
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
