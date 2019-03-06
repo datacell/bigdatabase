@@ -1,10 +1,5 @@
 ---
 
-- name: Check if sqlite module is executed
-  stat: path={{ sqlitestat }}
-  register: sqlitestatflag
-
-
 - block:
   - name: Create sqlite Dir
     file: path={{ sqlite_install_path }} state=directory owner=root group=root mode=0755
