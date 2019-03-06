@@ -6,10 +6,6 @@
 
 
 - block:
-  #- include: download.yml
-  #  environment:
-  #    "{{ proxy_env }}"
-
   - name: Create sqlite Dir
     file: path={{ sqlite_install_path }} state=directory owner=root group=root mode=0755
 
