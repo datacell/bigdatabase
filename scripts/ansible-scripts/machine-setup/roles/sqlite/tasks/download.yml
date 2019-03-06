@@ -1,0 +1,25 @@
+---
+- name: Create Sqlite Download location
+  file:
+    path: "{{ sqlite_local_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Check if Sqlite is available locally
+  stat: path="{{ sqlite_local_dir }}"
+  register: sqlite_stat
+
+- name: Downloading Sqlite please wait it may take several minutes depending upon bandwidth
+  shell: "wget https://github.com/boramalper/sqlite3-x64/releases/download/3260000--2018-12-04T15.50.21Z/sqlite-tools-linux-x64-3260000.zip --no-check-certificate"
+  environment:
+     "{{ proxy_env }}"
+
+https://github-production-release-asset-2e65be.s3.amazonaws.com/143623151/55412a80-f7dc-11e8-9977-52e727ebb85a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20190306%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190306T085456Z&X-Amz-Expires=300&X-Amz-Signature=ee54236fc9f8d70803a469e69fb54b8b8ddabebfa6ed4795c3b499f69f4dc2de&X-Amz-SignedHeaders=host&actor_id=0&response-content-disposition=attachment%3B%20filename%3Dsqlite-tools-linux-x64-3260000.zip&response-content-type=application%2Foctet-stream
+
+
+#- name: Download sqlite 
+#  get_url:
+#    url: https://github.com/boramalper/sqlite3-x64/releases/download/3260000--2018-12-04T15.50.21Z/sqlite-tools-linux-x64-3260000.zip
+#    dest: "{{ sqlite_local_dir }}"
+#  environment:
+#     "{{ proxy_env }}"

@@ -1,0 +1,32 @@
+---
+
+- name: Check if q module is executed
+  stat: path={{ qstat }}
+  register: qstatflag
+
+- block:
+  - name: Copy q package for Debian to remote machine
+    copy:
+      src: q-text-as-data_1.7.1-2_all.deb
+      dest: "/tmp"
+    when: ansible_os_family == 'Debian'
+
+  - name: Copy q package for RedHat to remote machine
+    copy:
+      src: q-text-as-data-1.7.1-1.noarch.rpm
+      dest: "/tmp"
+    when: ansible_os_family == 'RedHat'
+
+  - name: Create q Dir
+    file: path={{ q_install_path }} state=directory owner=root group=root mode=0755
+
+  - name: Install q package for Debian
+    apt: deb=/tmp/q-text-as-data_1.7.1-2_all.deb
+    when: ansible_os_family == 'Debian'
+
+  - name: Install q package for RedHat
+    yum:
+     name: /tmp/q-text-as-data-1.7.1-1.noarch.rpm
+     state: present
+    when: ansible_os_family == 'RedHat'
+    
