@@ -1,9 +1,4 @@
 ---
-
-- name: Check if q module is executed
-  stat: path={{ qstat }}
-  register: qstatflag
-
 - block:
   - name: Create q Dir
     file: path={{ q_install_path }} state=directory owner=root group=root mode=0755
