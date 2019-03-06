@@ -84,3 +84,20 @@
   - nodejs
   environment:
     "{{ proxy_env }}"
+
+- name: Install Sqlite
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - sqlite
+  environment:
+    "{{ proxy_env }}"
+
+- name: Install q package
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - q
+

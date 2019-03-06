@@ -64,36 +64,36 @@
   service:
     name: namenode
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable datanode service
   service:
     name: datanode
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable secondary namenode service
    service:
     name: secondarynamenode
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable node manager service
   service:
     name: nodemanager
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable resource manager service
   service:
     name: resourcemanager
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable job history service
   service:
     name: jobhistoryserver
     enabled: yes 
-  when: setup_monit
+  when: not setup_monit
 
 ######################################################################################	

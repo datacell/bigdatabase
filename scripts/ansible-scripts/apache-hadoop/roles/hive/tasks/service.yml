@@ -35,10 +35,10 @@
   service:
     name: metastore
     enabled: yes
-  when: setup_monit
+  when: not setup_monit
 
 - name: Enable Hive Server2 service
   service:
     name: hiveserver2
     enabled: yes
-  when: setup_monit
+  when: not setup_monit
