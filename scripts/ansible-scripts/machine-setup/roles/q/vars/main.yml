@@ -1,0 +1,3 @@
+---
+qstat: "{{ stat_dir }}/q"
+q_install_path: /opt/q

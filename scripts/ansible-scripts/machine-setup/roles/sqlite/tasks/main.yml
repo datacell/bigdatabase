@@ -1,0 +1,20 @@
+---
+
+- name: Check if sqlite module is executed
+  stat: path={{ sqlitestat }}
+  register: sqlitestatflag
+
+
+- block:
+  #- include: download.yml
+  #  environment:
+  #    "{{ proxy_env }}"
+
+  - name: Create sqlite Dir
+    file: path={{ sqlite_install_path }} state=directory owner=root group=root mode=0755
+
+  - name: Extract sqlite
+    unarchive: src=sqlite-tools-linux-x64-3260000.zip dest={{ sqlite_install_path }} remote_src=no owner=root group=root mode=0755
+
+  - name: Set sqlite Vars
+    template: src=sqlite_path.j2 dest={{ sqlite_profile_path }} mode=0755
