@@ -1,6 +1,3 @@
 ---
-sqlitestat: "{{ stat_dir }}/sqlite-stat"
 sqlite_profile_path: /etc/profile.d/sqlite.sh
 sqlite_install_path: /opt/sqlite
-sqlite_local_dir: "{{ package_download_dir }}/sqlite"
-sqlite_local_path: "{{ sqlite_local_dir }}/sqlite-tools-linux-x64-3260000.zip"
