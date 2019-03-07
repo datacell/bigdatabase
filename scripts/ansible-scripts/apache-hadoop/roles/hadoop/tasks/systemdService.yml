@@ -73,7 +73,7 @@
   when: not setup_monit
 
 - name: Enable secondary namenode service
-   service:
+  service:
     name: secondarynamenode
     enabled: yes 
   when: not setup_monit
