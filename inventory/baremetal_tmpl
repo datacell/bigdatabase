@@ -49,7 +49,6 @@ spark_slaves
 hadoop_cluster
 webserver
 
-
 [all:vars]
 ansible_connection=ssh
 ansible_user=<USERNAME>
