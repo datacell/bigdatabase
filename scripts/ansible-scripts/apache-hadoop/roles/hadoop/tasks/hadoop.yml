@@ -43,6 +43,23 @@
      owner: "{{ hadoop_user }}"
      group: "{{ hadoop_user }}"
 
+- name: Copy hadoop-aws-2.7.2.jar
+  copy:
+     src: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/tools/lib/hadoop-aws-2.7.2.jar"
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/common/lib/hadoop-aws-2.7.2.jar"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+     remote_src: true
+     mode: 0755
+
+- name: Copy aws-java-sdk-1.7.4.jar
+  copy:
+     src: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/tools/lib/aws-java-sdk-1.7.4.jar"
+     dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/share/hadoop/common/lib/aws-java-sdk-1.7.4.jar"
+     owner: "{{ hadoop_user }}"
+     group: "{{ hadoop_user }}"
+     remote_src: true
+     mode: 0755
 
 - name: Register JAVA_HOME
   shell: "source /etc/profile && echo $JAVA_HOME"
