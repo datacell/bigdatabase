@@ -6,11 +6,12 @@
     dest: "{{ systemd_services_dir }}/{{ redis_daemon }}.service"
 
 - name: Start redis service
-  shell: "sudo systemctl start {{ redis_daemon }}"
-  args:
-    executable: /bin/bash
+  service:
+    name: "{{ redis_daemon }}"
+    state: restarted
+  
 
 - name: Enable redis service
-  shell: "sudo systemctl enable {{ redis_daemon }}"
-  args:
-    executable: /bin/bash
+  service:
+    name: "{{ redis_daemon }}"
+    enabled: yes 

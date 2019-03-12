@@ -35,7 +35,7 @@
       when: not setup_monit
 
 
-# - name: Gathering Facts
+#- name: Gathering Facts
 #   hosts: all
 #   gather_facts: yes
 #   become: yes
@@ -90,12 +90,5 @@
   become: yes
   become_method: sudo
   roles:
-  - sqlite
-
-- name: Install q package
-  hosts: webserver
-  become: yes
-  become_method: sudo
-  roles:
-  - q
+  - { role: sqlite, when: setup_sqlite }
 
