@@ -91,8 +91,8 @@ num_nodes: 3                                     #Options 1 / 3
 scala_version: 2.11.6
 
 #Spark
-spark_version: 2.2.0
-spark_hadoop_verson: 2.7
+spark_version: 1.6.0
+spark_hadoop_verson: 2.6
 #Verify the avalable version file at
 #http://archive.apache.org/dist/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop{{ spark_hadoop_verson }}.tgz
 #Below ports are mapped from CDH defaults
