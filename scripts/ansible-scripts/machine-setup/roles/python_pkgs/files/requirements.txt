@@ -27,6 +27,7 @@ redis==2.10.3
 cython
 paramiko==2.4.1
 networkx==1.9.1
+psycopg2==2.6.1
 numpy
 nltk
 logutils==0.3.3
