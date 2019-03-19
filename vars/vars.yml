@@ -57,7 +57,7 @@ setup_git: True                                 #Options True|False
 git_base_version: 1.8.2.3
 
 #NodeJs
-node_version: 8.9.0
+node_version: 10.15.3
 
 #postgresql
 postgresql_port: 5432
