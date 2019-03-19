@@ -1,0 +1,3 @@
+---
+sqlite_profile_path: /etc/profile.d/sqlite.sh
+sqlite_install_path: /opt/sqlite

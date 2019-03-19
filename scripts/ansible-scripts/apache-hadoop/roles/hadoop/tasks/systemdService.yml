@@ -1,0 +1,99 @@
+﻿---
+
+- name: Copy namenode service script
+  template:
+    src: namenode-service.j2
+    dest: "{{ systemd_services_dir }}/namenode.service"
+  
+- name: Copy datanode service script
+  template:
+    src: datanode-service.j2
+    dest: "{{ systemd_services_dir }}/datanode.service"
+  
+- name: Copy secondary namenode service script
+  template:
+    src: secondarynamenode-service.j2
+    dest: "{{ systemd_services_dir }}/secondarynamenode.service"
+  
+- name: Copy node manager service script
+  template:
+    src: nodemanager-service.j2
+    dest: "{{ systemd_services_dir }}/nodemanager.service"
+  
+- name: Copy resource manager service script
+  template:
+    src: resourcemanager-service.j2
+    dest: "{{ systemd_services_dir }}/resourcemanager.service"
+  
+- name: Copy job history service script
+  template:
+    src: jobhistoryserver-service.j2
+    dest: "{{ systemd_services_dir }}/jobhistoryserver.service"
+ 
+- name: Start namenode service
+  service:
+    name: namenode
+    state: started
+ 
+- name: Start datanode service
+  service:
+    name: datanode
+    state: started
+
+- name: Start secondary namenode service
+  service:
+    name: secondarynamenode
+    state: started
+
+- name: Start node manager service
+  service:
+    name: nodemanager
+    state: started
+    
+- name: Start resource manager service
+  service:
+    name: resourcemanager
+    state: started
+
+- name: Start job history service
+  service:
+    name: jobhistoryserver
+    state: started
+
+- name: Enable namenode service
+  service:
+    name: namenode
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable datanode service
+  service:
+    name: datanode
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable secondary namenode service
+  service:
+    name: secondarynamenode
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable node manager service
+  service:
+    name: nodemanager
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable resource manager service
+  service:
+    name: resourcemanager
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable job history service
+  service:
+    name: jobhistoryserver
+    enabled: yes 
+  when: not setup_monit
+
+######################################################################################	

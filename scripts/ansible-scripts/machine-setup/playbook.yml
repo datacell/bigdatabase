@@ -1,24 +1,45 @@
 ---
 - name: Initalize playbook
   hosts: all
-  gather_facts: False
+  gather_facts: True
   become: yes
   become_method: sudo
 
   tasks:
-  - name: Setting proxy
-    set_fact:
-      proxy_env: {
+    - name: Setting proxy
+      set_fact:
+        proxy_env: {
                    "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
                    "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
                  }
-    when: proxy_optional
+      when: proxy_optional
+    #systemd
+    - name: Setting system files path for RedHat family
+      set_fact: systemd_services_dir=/usr/lib/systemd/system
+      when: ansible_os_family == 'RedHat'
 
-- name: Gathering Facts
-  hosts: all
-  gather_facts: yes
-  become: yes
-  become_method: sudo
+    - name: Setting system files path for Debian family
+      set_fact: systemd_services_dir=/lib/systemd/system
+      when: ansible_os_family == 'Debian'
+
+    - name: Setting systemd restart to default
+      set_fact:
+        restart:
+            ["no"]
+      when: setup_monit
+
+    - name: Setting systemd restart to always
+      set_fact:
+        restart:
+            ["always"]
+      when: not setup_monit
+
+
+#- name: Gathering Facts
+#   hosts: all
+#   gather_facts: yes
+#   become: yes
+#   become_method: sudo
 
 - name: Install Postgresql
   hosts: postgresql
@@ -63,3 +84,11 @@
   - nodejs
   environment:
     "{{ proxy_env }}"
+
+- name: Install Sqlite
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - { role: sqlite, when: setup_sqlite }
+

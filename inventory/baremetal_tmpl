@@ -48,3 +48,8 @@ spark_slaves
 [hadoop_clients:children]
 hadoop_cluster
 webserver
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=<USERNAME>
+ansible_ssh_pass=<USER_PASSWORD>

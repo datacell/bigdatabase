@@ -1,4 +1,4 @@
-check process datanode with pidfile /opt/hadoop/hadoop-2.7.2/hadoop-hadoop-datanode.pid
-start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start datanode"
-stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop datanode"
+check process datanode matching "org\.apache\.hadoop\.hdfs\.server\.datanode\.DataNode"
+start program "/bin/systemctl start datanode"
+#stop program "/bin/systemctl stop datanode"
 depends on namenode

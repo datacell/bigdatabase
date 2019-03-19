@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop nodemanager
+After=network.target
+Requires=resourcemanager.service
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStart=/bin/bash -c "source /etc/profile && {{ hadoop_dir }}/{{ hadoop_expended_version }}/sbin/yarn-daemon.sh  start nodemanager"
+PIDFile={{ hadoop_dir }}/{{ hadoop_expended_version }}/yarn-hadoop-nodemanager.pid
+Restart={{ restart[0] }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

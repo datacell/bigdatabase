@@ -39,18 +39,3 @@
 
 - name: Create pid directory
   file: path={{ redis_pid_path }} state=directory owner=redis group=redis mode=0755
-
-#Hack for generating PID in CentOS 7 (Redis - CentOS 7 PID file known bug)
-- block:
-  - name: Configure Redis service to Create pid file on start
-    lineinfile:
-      dest: /usr/lib/systemd/system/redis.service
-      insertafter: "^ExecStart="
-      line: 'ExecStartPost=/usr/bin/sh -c "pgrep redis > {{ redis_pid }}"'
-
-  - name: Configure Redis service to Delete pid file on stop
-    lineinfile:
-      dest: /usr/lib/systemd/system/redis.service
-      insertafter: "^ExecStop="
-      line: 'ExecStopPost=/usr/bin/rm -f {{ redis_pid }}'
-  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"

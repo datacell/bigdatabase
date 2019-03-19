@@ -1,4 +1,5 @@
-check process jobhistoryserver with pidfile  /opt/hadoop/hadoop-2.7.2/mapred-hadoop-historyserver.pid
-start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start jobhistoryserver"
-stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop jobhistoryserver"
-depends on namenode, datanode, resourcemanager, nodemanager
+check process jobhistoryserver matching "org\.apache\.hadoop\.mapreduce\.v2\.hs\.JobHistoryServer"
+start program "/bin/systemctl start jobhistoryserver"
+#stop program "/bin/systemctl stop jobhistoryserver"
+depends on nodemanager
+

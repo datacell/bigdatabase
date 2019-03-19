@@ -1,4 +1,4 @@
 check process redis
-with pidfile   /var/run/redis/{{ redis_daemon }}.pid
+with pidfile   {{ redis_pid }}
 start program = "/bin/systemctl start {{ redis_daemon }}"
 stop program = "/bin/systemctl stop {{ redis_daemon }}"

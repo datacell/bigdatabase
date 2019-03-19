@@ -31,4 +31,20 @@
 {{''}}
 {%- endif %}
  </property>
+ 
+ <property>
+  <name>fs.s3a.connection.maximum</name>
+  <value>1500</value>
+  <description>Controls the maximum number of simultaneous connections to S3.</description>
+ </property>
+
+ <property>
+  <name>fs.s3a.aws.credentials.provider</name>
+  <value>
+  org.apache.hadoop.fs.s3a.SharedInstanceProfileCredentialsProvider,
+  org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider,
+  com.amazonaws.auth.EnvironmentVariableCredentialsProvider
+  </value>
+ </property>
+ 
 </configuration>

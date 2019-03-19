@@ -4,3 +4,4 @@ redis_conf_file: "{{ redis_config_path }}/{{ redis_conf_file_name }}"
 redis_packages:
   - redis
 redis_daemon: redis
+redis_pid: "{{ redis_pid_path }}/{{redis_daemon}}.pid"

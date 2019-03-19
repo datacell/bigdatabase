@@ -1,4 +1,4 @@
-check process hiveserver2 with pidfile /opt/hadoop/apache-hive-1.2.1-bin/hiveserver2.pid
-start program "/bin/bash /opt/hadoop/services/service-hadoop.sh start hiveserver2"
-stop program "/bin/bash /opt/hadoop/services/service-hadoop.sh stop hiveserver2"
-depends on namenode, datanode, resourcemanager, nodemanager, metastore
+check process hiveserver2 matching "org\.apache\.hive\.service\.server\.HiveServer2"
+start program "/bin/systemctl start hiveserver2"
+#stop program "/bin/systemctl stop hiveserver2"
+depends on metastore, resourcemanager

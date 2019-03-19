@@ -1,46 +1,24 @@
 ---
+
 - name: Copy Spark Master service script
   template:
-    src: service-spark-master.j2
-    dest: "{{ spark_services_dir }}/service-spark-master.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
+    src: spark-master-service.j2
+    dest: "{{ systemd_services_dir }}/spark-master.service"
 
-- name: Start Spark Master service
-  shell: "{{ spark_services_dir }}/service-spark-master.sh"
-  args:
-    executable: /bin/bash
-
-- name: Copy Spark Master Monit script
+- name: Copy Spark History Server service script
   template:
-    src: service-spark-master.j2
-    dest: "{{ spark_services_dir }}/service-spark-master.sh"
-  when: setup_monit
+    src: spark-historyserver-service.j2
+    dest: "{{ systemd_services_dir }}/spark-historyserver.service"
+
+- name: Copy Spark Slave service script
+  template:
+    src: spark-slaves-service.j2
+    dest: "{{ systemd_services_dir }}/spark-slaves.service"
 
 - name: Copy Spark Master Monit service
   template:
     src: monit-spark-master.j2
     dest: /etc/monit.d/service-spark-master
-  when: setup_monit
-
-- name: Copy Spark History Server service script
-  template:
-    src: service-spark-history-server.j2
-    dest: "{{ spark_services_dir }}/service-spark-history-server.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-
-- name: Start Spark History Server service
-  shell: "{{ spark_services_dir }}/service-spark-history-server.sh"
-  args:
-    executable: /bin/bash
-
-- name: Copy Spark History Server Monit script
-  template:
-    src: service-spark-history-server.j2
-    dest: "{{ spark_services_dir }}/service-spark-history.sh"
   when: setup_monit
 
 - name: Copy Spark History Server Monit service
@@ -49,42 +27,41 @@
     dest: /etc/monit.d/service-spark-history
   when: setup_monit
 
-- name: Copy Spark Slave service script
-  template:
-    src: service-spark-slave.j2
-    dest: "{{ spark_services_dir }}/service-spark-slave.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['spark_slaves'] }}"
-
-- name: Start Spark Slaves service
-  shell: "{{ spark_services_dir }}/service-spark-slave.sh"
-  args:
-    executable: /bin/bash
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['spark_slaves'] }}"
-
-- name: Copy Spark slave Monit script
-  template:
-    src: service-spark-slave.j2
-    dest: "{{ spark_services_dir }}/service-spark-slave.sh"
-  when: setup_monit
-
 - name: Copy Spark slave Monit service
   template:
     src: monit-spark-slave.j2
     dest: /etc/monit.d/service-spark-slave
   when: setup_monit
 
-- name: Copy service to start all Spark services
-  template:
-    src: service-all-spark.j2
-    dest: "{{ spark_services_dir }}/service-all-spark.sh"
-    mode: 0755
-    owner: "{{ hadoop_user }}"
-    group: "{{ hadoop_user }}"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hadoop_clients'] }}"
-  when: num_nodes|int == 1
+- name: Start Spark Master service
+  service:
+    name: spark-master
+    state: started
+
+- name: Start Spark History Server service
+  service:
+    name: spark-historyserver
+    state: started
+
+- name: Start Spark Slaves service
+  service:
+    name: spark-slaves
+    state: started
+
+- name: Enable Spark Master service
+  service:
+    name: spark-master
+    enabled: yes 
+  when: setup_monit
+
+- name: Enable Spark History Server service
+  service:
+    name: spark-historyserver
+    enabled: yes 
+  when: not setup_monit
+
+- name: Enable Spark Slaves service
+  service:
+    name: spark-slaves
+    enabled: yes 
+  when: not setup_monit

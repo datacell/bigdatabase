@@ -1,15 +1,17 @@
 ---
-#- name: Stop redis service to load new configuration.
-#  service: name={{ redis_daemon }} state=stopped enabled=yes
 
-#- name: Ensure redis is started and enabled to start at boot time.
-#  service: name={{ redis_daemon }} state=started enabled=yes
-#  retries: 3
-#  delay: 3
-#  register: result
-#  until: result.state == "started"
+- name: Copy redis service script
+  template:
+    src: redis-service.j2
+    dest: "{{ systemd_services_dir }}/{{ redis_daemon }}.service"
 
-- name: Restarting the redis service to load new configuration.
-  service: name={{ redis_daemon }} state=restarted enabled=yes
-  register: result 
+- name: Start redis service
+  service:
+    name: "{{ redis_daemon }}"
+    state: restarted
+  
 
+- name: Enable redis service
+  service:
+    name: "{{ redis_daemon }}"
+    enabled: yes 

@@ -1,0 +1,62 @@
+---
+
+- name: Stop Monit 
+  service:
+    name: monit
+    state: stopped
+  when: setup_monit
+
+- name: Stop namenode service
+  service:
+    name: namenode
+    state: stopped
+ 
+- name: Stop datanode service
+  service:
+    name: datanode
+    state: stopped
+
+- name: Stop secondary namenode service
+  service:
+    name: secondarynamenode
+    state: stopped
+
+- name: Stop node manager service
+  service:
+    name: nodemanager
+    state: stopped
+
+- name: Stop resource manager service
+  service:
+    name: resourcemanager
+    state: stopped
+
+- name: Stop job history service
+  service:
+    name: jobhistoryserver
+    state: stopped
+
+- name: Stop Hive Metastore service
+  service:
+    name: metastore
+    state: stopped
+
+- name: Stop Hive Server2 service
+  service:
+    name: hiveserver2
+    state: stopped
+
+- name: Stop Spark Master service
+  service:
+    name: spark-master
+    state: stopped
+
+- name: Stop Spark History Server service
+  service:
+    name: spark-historyserver
+    state: stopped
+
+- name: Stop Spark Slaves service
+  service:
+    name: spark-slaves
+    state: stopped
