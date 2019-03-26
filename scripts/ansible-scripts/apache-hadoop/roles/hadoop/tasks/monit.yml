@@ -1,0 +1,33 @@
+---
+
+- name: Copy namenode Monit service
+  template:
+    src: monit-namenode.j2
+    dest: /etc/monit.d/service-namenode
+
+- name: Copy datanode Monit service
+  template:
+    src: monit-datanode.j2
+    dest: /etc/monit.d/service-datanode
+
+- name: Copy secondary namenode Monit service
+  template:
+    src: monit-secondary-namenode.j2
+    dest: /etc/monit.d/service-secondary-namenode
+
+- name: Copy resource manager  Monit service
+  template:
+    src: monit-resource-manager.j2
+    dest: /etc/monit.d/service-resource-manager
+
+- name: Copy node manager Monit service
+  template:
+    src: monit-nodemanager.j2
+    dest: /etc/monit.d/service-nodemanager
+
+- name: Copy Job History Monit service
+  template:
+    src: monit-mr-job-history.j2
+    dest: /etc/monit.d/service-mr-job-history
+
+######################################################################################

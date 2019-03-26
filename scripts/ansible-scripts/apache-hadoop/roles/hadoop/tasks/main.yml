@@ -29,13 +29,11 @@
   shell: "echo $((80*{{ total_ram }}/100))"
   register: ram_60_prc
 
-
 - include: hadoop.yml
   become: true
   become_user: "{{ hadoop_user }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
-
 
 - include: configureHdfs.yml
   become: true
@@ -45,7 +43,10 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hadoop_clients'] }}"
 
-- include: service.yml
+- include: monit.yml
+  when: setup_monit
+
+- include: systemdService.yml
 
 - include: setupHdfs.yml
   become: true

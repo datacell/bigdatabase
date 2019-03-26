@@ -93,7 +93,11 @@
     owner: "{{ hadoop_user }}"
     group: "{{ hadoop_user }}"
 
-
+- name: Replace shuffle parameter values
+  replace:
+    dest: "{{ hadoop_dir }}/{{ hadoop_expended_version }}/etc/hadoop/yarn-site.xml"
+    regexp: '<value>mapreduce_shuffle</value>'
+    replace: '<value>mapreduce_shuffle,spark_shuffle</value>'
 
 - name: Check if Spark shuffle directory
   stat: path="{{ hadoop_dir }}/{{ spark_expended_version }}/lib/{{ spark_suffle_jar }}"

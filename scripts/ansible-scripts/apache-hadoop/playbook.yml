@@ -6,15 +6,33 @@
   become_method: sudo
 
   tasks:
-  - block:
     - name: Setting proxy
       set_fact:
         proxy_env: {
                    "https_proxy": "https://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}",
                    "http_proxy": "http://{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_server }}:{{ proxy_port }}"
                  }
-    when: proxy_optional
+      when: proxy_optional
+    #systemd
+    - name: Setting system files path for RedHat family 
+      set_fact: systemd_services_dir=/usr/lib/systemd/system 
+      when: ansible_os_family == 'RedHat'
+    
+    - name: Setting system files path for Debian family
+      set_fact: systemd_services_dir=/lib/systemd/system
+      when: ansible_os_family == 'Debian'
 
+    - name: Setting systemd restart to default 
+      set_fact: 
+        restart: 
+            ["no"]
+      when: setup_monit
+
+    - name: Setting systemd restart to always  
+      set_fact:  
+        restart:
+            ["always"]
+      when: not setup_monit
 
 - name: Prepare to download Hadoop packages
   hosts: hadoop_clients
@@ -32,6 +50,12 @@
   roles:
   - prep
 
+#- name: Stop existing Hadoop services
+#  hosts: hadoop_clients
+#  become: yes
+#  become_method: sudo
+#  roles:
+#  - stopServices
 
 - name: Setup Hadoop
   hosts: hadoop_namenode
@@ -62,3 +86,17 @@
   become_method: sudo
   roles:
   - spark
+
+- name: Stop existing Hadoop services
+  hosts: hadoop_clients
+  become: yes
+  become_method: sudo
+  roles:
+  - stopServices
+
+- name: Start Hadoop services
+  hosts: hadoop_clients
+  become: yes
+  become_method: sudo
+  roles:
+  - startServices

@@ -1,0 +1,62 @@
+---
+
+- name: Start namenode service
+  service:
+    name: namenode
+    state: started
+ 
+- name: Start datanode service
+  service:
+    name: datanode
+    state: started
+
+- name: Start secondary namenode service
+  service:
+    name: secondarynamenode
+    state: started
+
+- name: Start node manager service
+  service:
+    name: nodemanager
+    state: started
+
+- name: Start resource manager service
+  service:
+    name: resourcemanager
+    state: started
+
+- name: Start job history service
+  service:
+    name: jobhistoryserver
+    state: started
+
+- name: Start Hive Metastore service
+  service:
+    name: metastore
+    state: started
+
+- name: Start Hive Server2 service
+  service:
+    name: hiveserver2
+    state: started
+
+- name: Start Spark Master service
+  service:
+    name: spark-master
+    state: started
+
+- name: Start Spark History Server service
+  service:
+    name: spark-historyserver
+    state: started
+
+- name: Start Spark Slaves service
+  service:
+    name: spark-slaves
+    state: started
+
+- name: Start Monit
+  service:
+    name: monit
+    state: started
+  when: setup_monit

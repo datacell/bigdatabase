@@ -1,0 +1,19 @@
+[Unit]
+Description=Spark Master
+After=network.target
+Requires=hiveserver2.service
+
+[Service]
+Type=forking
+User=hadoop
+Group=hadoop
+PermissionsStartOnly=true
+ExecStart=/bin/bash -c "source /etc/profile && {{ hadoop_dir }}/{{ spark_expended_version }}/sbin/start-master.sh"
+PIDFile={{ hadoop_dir }}/{{ spark_expended_version }}/spark-hadoop-org.apache.spark.deploy.master.Master-1.pid
+Restart={{ restart[0] }}
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

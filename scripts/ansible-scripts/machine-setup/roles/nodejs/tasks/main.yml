@@ -42,7 +42,7 @@
     when: proxy_optional
 
   - name: Install NPM modules
-    shell: "sudo su - root -c 'npm install {{ item.name }}{{ item.version }} -g'"
+    shell: "sudo su - root -c 'source /etc/profile && npm install {{ item.name }}{{ item.version }} -g'"
     args:
      chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
      executable: /bin/bash
@@ -70,6 +70,12 @@
       - { name: 'js-yaml', version: '@latest' }
       - { name: 'fs', version: '@latest' }
       - { name: 'git+https://git@github.com/prashantsail/CodeceptJS#80e8f28', version: '' }
+    
+  - name: Install puppeteer NPM module
+    shell: "sudo su - root -c 'source /etc/profile && npm install puppeteer@1.11.0 -g --allow-root --unsafe-perm=true'"
+    args:
+     chdir: "{{ node_install_path }}/{{ node_expanded_version }}"
+     executable: /bin/bash
 
   - name: Remove NPM http proxy
     shell: "source /etc/profile && npm config delete http-proxy -g"

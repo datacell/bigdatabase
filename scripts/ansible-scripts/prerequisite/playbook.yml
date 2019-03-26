@@ -124,3 +124,10 @@
     "{{ proxy_env }}"
   roles:
     - { role: R, when: setup_r }
+
+- name: Install q package
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  roles:
+  - { role: q, when: setup_q }

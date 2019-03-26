@@ -73,6 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     #Define box information
     config.vm.box_download_insecure = true
+    config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
     config.disksize.size = "#{root_disk_size}GB"
 
     #Create 3 virtual machines and map host ansible ssh port to internal port
@@ -83,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         name="#{server_initials}#{current_version}-#{j}.#{server_last}.com"
         config.vm.define  "#{name}" do |node|
             node.vm.hostname="#{name}"
-            node.vm.network :private_network, ip: "205.28.128.#{adder}"
+            node.vm.network :private_network, ip: "205.28.128.#{adder}", virtualbox__intnet: true
             node.vm.network :forwarded_port, guest: 22, host: ssh_adder, id: "ssh"
             node.vm.provider "virtualbox" do |v|
                 v.name =  "#{name}"
@@ -94,6 +95,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 end
                 v.cpus = 2
                 v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+                v.customize [ "modifyvm", :id, "--nic2", "nat" ]
             end
 
             #Define port forwarding per VM deployed
@@ -150,11 +152,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                         ansible.playbook = "scripts/ansible-scripts/#{name[:play]}/playbook.yml"
                         ansible.inventory_path = "inventory/#{inventory_file}"
                         ansible.extra_vars = {
-                            "setup_google_chrome" => "True",
-                            "setup_r" => "True",
-                            "setup_java" => "True",
-                            "setup_git" => "True",
-                            "setup_monit": "True",
                             "num_nodes" => NumVm
                        }
                     end
