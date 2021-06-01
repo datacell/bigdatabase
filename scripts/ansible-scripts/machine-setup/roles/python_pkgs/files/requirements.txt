@@ -76,4 +76,4 @@ csvkit==1.0.3
 snowflake
 snowflake-connector-python
 snowflake-sqlalchemy
-urllib3==1.22
+urllib3==1.26.5
